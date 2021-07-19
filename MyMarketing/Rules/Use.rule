@@ -1,0 +1,28 @@
+/**
+ * @description Use
+ * @author LAPTOP-C0UDA4TV
+ */
+rule Rules.Use {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.PointEvent pointEvent;
+		Concepts.MemberInfo memberInfo;
+	}
+	when {
+		pointEvent.isDeposit == false;
+		// || pointEvent.memberId == "jwlee";
+		pointEvent.memberId == memberInfo.memberId;
+		
+	}
+	then {
+		Object logger = Log.getLogger("Use");
+		Log.log(logger, "INFO", "[isDeposit:%s]", pointEvent.isDeposit);
+		Log.log(logger, "INFO", "[memberId:%s]", memberInfo.memberId);
+		
+		memberInfo.memberPoint = memberInfo.memberPoint - pointEvent.amount;
+		Log.log(logger, "INFO", "[memberPoint:%s]", memberInfo.memberPoint);
+	}
+}

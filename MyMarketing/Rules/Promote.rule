@@ -1,0 +1,24 @@
+/**
+ * @description Promote
+ * @author LAPTOP-C0UDA4TV
+ */
+rule Rules.Promote {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Concepts.MemberInfo memberInfo;
+	}
+	when {
+		memberInfo.memberPoint >= 2500;
+		memberInfo.memberLevel == "DEF";
+	}
+	then {
+		Object logger = Log.getLogger("Promote");
+		
+		memberInfo.memberLevel = "VIP";
+		Log.log(logger, "INFO", "[memberLevel:%s]", memberInfo.memberLevel);
+		
+	}
+}

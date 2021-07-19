@@ -1,0 +1,31 @@
+/**
+ * @description PreProcessorForSavePoint
+ */
+void rulefunction RuleFunctions.PreProcessorForSavePoint {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Inbound evtInbound;
+	}
+	body {
+		Object logger = Log.getLogger("PreProcessorForSavePoint");
+		Log.log(logger, "INFO", "msg [%s]", evtInbound.msg);
+		
+		//Events.PointEvent
+		Events.PointEvent evt = Events.PointEvent.PointEvent(null /*extId String */
+															, evtInbound.msg /*payload String */
+															, String.substringBefore(evtInbound.msg, ",") /*memberId String */
+															, Number.longValue(String.substringAfter(evtInbound.msg, ","), 10) /*amount long */
+															, true /*isDeposit boolean */);
+		
+		Concepts.MemberInfo memberInfo = RuleFunctions.ReadMemberInfoFromDB(evt /*pointevent Events.PointEvent */);
+		Log.log(logger, "INFO", "MemberInfo concept created..... = [memberId:%s][Point:%d]", memberInfo.memberId, memberInfo.memberPoint);
+		
+		Event.replyEvent(evtInbound, evtInbound);
+		Event.consumeEvent(evtInbound);
+		
+		Event.assertEvent(evt);
+								
+	}
+}

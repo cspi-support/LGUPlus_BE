@@ -1,0 +1,25 @@
+/**
+ * @description Suspicous
+ * @author LAPTOP-C0UDA4TV
+ */
+rule Rules.Suspicous {
+	attribute {
+		priority = 2;
+		forwardChain = true;
+	}
+	declare {
+		Events.PointEvent pointEvent;
+		Concepts.MemberInfo memberInfo;
+	}
+	when {
+		pointEvent.isDeposit == false;
+		pointEvent.memberId == memberInfo.memberId;
+		pointEvent.amount > memberInfo.memberPoint;
+	}
+	then {
+		Object logger = Log.getLogger("Suspicous");
+		Log.log(logger, "INFO", "[memberPoint:%s] [amount:%d]", memberInfo.memberPoint, pointEvent.amount);
+		Log.log(logger, "INFO", "Suspicous!!!!");
+		Event.consumeEvent(pointEvent);
+	}
+}

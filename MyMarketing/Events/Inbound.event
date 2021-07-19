@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/" name="Inbound" description="Inbound" GUID="7CAF7582-1BAB-E7E1-5824-AFE0285552C3" ownerProjectName="MyMarketing" superEventPath="" ttlUnits="Seconds">
+  <properties name="msg" ownerProjectName="MyMarketing"/>
+  <expiryAction name="Inbound_expiryAction" ownerProjectName="MyMarketing" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="inbound" type="/Events/Inbound"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

@@ -1,0 +1,24 @@
+/**
+ * @description ReadMemberInfoFromDB
+ */
+Concepts.MemberInfo rulefunction RuleFunctions.ReadMemberInfoFromDB {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.PointEvent pointevent;
+	}
+	body {
+		Concepts.MemberInfo memberInfo = null;
+		
+		Concept concept = Instance.getByExtId(pointevent.memberId);
+		
+		if(concept != null) {
+			memberInfo = concept;
+		} else {
+			memberInfo = Concepts.MemberInfo.MemberInfo(pointevent.memberId, pointevent.memberId, 0, "DEF");
+		}
+		
+		return memberInfo;
+	}
+}

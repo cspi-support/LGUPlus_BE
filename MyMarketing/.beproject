@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration:StudioProjectConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:configuration="http:///com/tibco/cep/studio/common/configuration/model/project_configuration.ecore" name="MyMarketing" version="6.1.1" build="050" xpathVersion="2.0">
+  <javaSourceFolderEntries entryType="JAVA_SOURCE_FOLDER" path="/MyMarketing/JavaSrc" readOnly="true"/>
+  <enterpriseArchiveConfiguration name="MyMarketing" author="jwlee" version="14" path="D:\cspi\30.project\31.site\02.LGUPLUS REBM\50.project\deployments\MyMarketing\MyMarketing.ear" overwrite="true"/>
+  <bpmnProcessSettings/>
+</configuration:StudioProjectConfiguration>

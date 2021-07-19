@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/" name="PointEvent" description="PointEvent" GUID="8393C26D-A9C4-DBB9-2A7D-7CBEC1FA0665" ownerProjectName="MyMarketing" superEventPath="" ttlUnits="Seconds">
+  <properties name="memberId" ownerProjectName="MyMarketing"/>
+  <properties name="amount" ownerProjectName="MyMarketing" type="long"/>
+  <properties name="isDeposit" ownerProjectName="MyMarketing" type="boolean"/>
+  <expiryAction name="PointEvent_expiryAction" ownerProjectName="MyMarketing" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="pointevent" type="/Events/PointEvent"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>
