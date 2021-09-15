@@ -1,0 +1,39 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.StartUp.initializeConceptsFromDatamart {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + ":initializeConceptsFromDatamart");
+		Object dbConn = null;
+		Object res = null;
+		
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "initializeConceptsFromDatamart");
+		
+		/**
+		try{
+			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
+			Database.beginTransaction();
+			Concepts.LGUPLUS.VODINFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/VODINFO", "select * from VODINFO", true);
+			for(int i=0; i < items@length;i++){
+				Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "VodItem[%s] %s %s %d", items[i].VID, items[i].TITLE, DateTime.format(items[i].CREATED, "yyyyMMddHHmmss"), items[i].EPISODE@length);
+//				Database.assertDBInstance(items[i], true);
+			}
+
+//			Concepts.LGUPLUS.USERINFO[] userInfo= Database.queryUsingSQL("/Concepts/LGUPLUS/USERINFO", "select * from USERINFO", false); 
+//			for(int i=0; i < userInfo@length;i++){
+//			}
+		}catch(Exception e){
+			Database.rollback();
+		}finally{
+			Database.unsetConnection();
+		}
+		**/
+		
+	}
+}

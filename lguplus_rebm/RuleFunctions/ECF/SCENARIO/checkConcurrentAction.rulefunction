@@ -1,0 +1,18 @@
+/**
+ * @description ActionEvent 기준으로 생성한 사용자및 이력정보
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.checkConcurrentAction {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		String actionId;
+	}
+	body {
+		if((actionEvent.ThreadId == SystemUtil.getCurrentThreadId() && actionEvent.SeqId == customerBasicInfo.SEQ_ID) 
+			&& (actionId == null || actionEvent.ActionTargetDtl == actionId)) return true;
+		return false;
+	}
+}

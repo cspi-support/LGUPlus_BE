@@ -1,0 +1,22 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.UTIL.convertJsonToMap {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object jsonObject;	
+	}
+	body {
+		Object map = Collections.Map.createHashMap();
+		Object jsonKeyIterator = JSON.getFieldNames(jsonObject);
+		
+		while(Collections.Iterator.hasNext(jsonKeyIterator)){
+			Object jsonKey = Collections.Iterator.next(jsonKeyIterator);	
+			String jsonValue = getStringValueFromJSON(jsonObject, jsonKey, "");
+			Collections.Map.put(map, jsonKey, jsonValue);
+		}
+		return map;
+	}
+}

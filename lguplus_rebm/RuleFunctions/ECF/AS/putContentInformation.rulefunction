@@ -1,0 +1,29 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.putContentInformation {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putContentInformation");
+		
+		if(contentInfo == null) return;
+		try{
+			Object tuple = Metaspace.Tuple.create();
+
+			Metaspace.Tuple.putString(tuple, "contentId", contentInfo.CID);
+			Metaspace.Tuple.putString(tuple, "version", "");
+			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(DateTime.now()));
+			Metaspace.Tuple.putString(tuple, "contentData", convertCIToString(contentInfo));
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put(System.getGlobalVariableAsString("AS/SPACE_CONTENT_INFORMATION", "LGUPLUS_METASPACE.ContentInformation"), tuple, putOption);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

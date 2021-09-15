@@ -1,0 +1,48 @@
+/**
+ * @description 사용자 행동 이력을 IMDG및 DB 에 저장한다.
+ */
+Concepts.ECF.SCENARIO.UserActionHistory rulefunction RuleFunctions.ECF.SCENARIO.saveUserActionHistory {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		Events.Internal.ActionEvent actionEvent;
+		Events.SYSTEM.sessionLock historyLock;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":saveUserActionHistory");
+
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("save");
+		String extId = userActivityTrace.SID + ":" + actionEvent.SeqId + ":forUAH";
+		Concepts.ECF.SCENARIO.UserActionHistory userActionHistory = Concepts.ECF.SCENARIO.UserActionHistory.UserActionHistory(
+			extId/*extId String */,
+			userActivityTrace.SID/*SID String */,
+			actionEvent.SeqId/*SEQ_ID String */,
+			userActivityTrace.C_SVC_NAME/*SVC_NAME String */,
+			userActivityTrace.C_ACT_START/*ACT_START String */,
+			userActivityTrace.C_ACT_TGT/*ACT_TGT String */,
+			userActivityTrace.C_ACT_TGT_DTL/*ACT_TGT_DTL String */,
+			userActivityTrace.C_VW_CURR/*VW_CURR String */,
+			userActivityTrace.C_VW_CURR_DTL/*VW_CURR_DTL String */,
+			userActivityTrace.C_ACTION_ID/*ACTION_ID String */,
+			userActivityTrace.C_MENU_ID/*MENU_ID String */,
+			userActivityTrace.C_ALBUM_ID/*ALBUM_ID String */,
+			userActivityTrace.C_CAT_ID/*CAT_ID String */,
+			userActivityTrace.C_ACTIVITY_TIME/*ACTIVITY_TIME DateTime */,
+			userActivityTrace.C_RECEIVED_TIME/*RECEIVED_TIME DateTime */);
+
+		RuleFunctions.ECF.AS.putUserActionHistory(userActionHistory);
+		RuleFunctions.ECF.AS.updateUserActionStats(userActionHistory);
+		
+		releaseGlobalSessionLock(historyLock);
+		
+		RuleFunctions.ECF.MART.insertUserActionHistoryToMart(userActionHistory);
+		
+		EBMUtil.addConceptExtId(userActionHistory@extId);
+		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "saveUserActionHistory:%s", userActionHistory.SEQ_ID);
+		
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("rule");
+		return userActionHistory;
+	}
+}

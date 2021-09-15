@@ -1,0 +1,64 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SYSTEM.updatePerformanceCheck {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String type;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":updatePerformanceData");
+
+		SystemUtil.addTimeData(type, DateTime.getTimeInMillis(DateTime.now()));
+		
+		/*
+		try{
+			long startTime = DateTime.getTimeInMillis(DateTime.now());
+			Object res = getPerformanceCheck();
+
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putLong(tuple, "threadId", SystemUtil.getCurrentThreadId());
+			if(type == "prepro"){
+				Metaspace.Tuple.putLong(tuple, type, DateTime.getTimeInMillis(DateTime.now()));
+			}else{
+				Metaspace.Tuple.putLong(tuple, "prepro", Metaspace.Tuple.getLong(res, "prepro"));
+			}
+			if(type == "prerule"){
+				Metaspace.Tuple.putLong(tuple, type, DateTime.getTimeInMillis(DateTime.now()));
+			}else{
+				Metaspace.Tuple.putLong(tuple, "prerule", Metaspace.Tuple.getLong(res, "prerule"));
+			}
+			if(type == "content"){
+				Metaspace.Tuple.putLong(tuple, type, DateTime.getTimeInMillis(DateTime.now()));
+			}else{
+				Metaspace.Tuple.putLong(tuple, "content", Metaspace.Tuple.getLong(res, "content"));
+			}
+			if(type == "save"){
+				Metaspace.Tuple.putLong(tuple, type, DateTime.getTimeInMillis(DateTime.now()));
+			}else{
+				Metaspace.Tuple.putLong(tuple, "save", Metaspace.Tuple.getLong(res, "save"));
+			}
+			if(type == "rule"){
+				Metaspace.Tuple.putLong(tuple, type, DateTime.getTimeInMillis(DateTime.now()));
+			}else{
+				Metaspace.Tuple.putLong(tuple, "rule", Metaspace.Tuple.getLong(res, "rule"));
+			}
+			if(type == "post"){
+				Metaspace.Tuple.putLong(tuple, type, DateTime.getTimeInMillis(DateTime.now()));
+			}else{
+				Metaspace.Tuple.putLong(tuple, "post", Metaspace.Tuple.getLong(res, "post"));
+			}
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put("LGUPLUS_METASPACE.PerformanceCheck", tuple, putOption);
+			long endTime = DateTime.getTimeInMillis(DateTime.now());
+			Log.log(logger, "info", "elapsed Time : %d", (endTime - startTime));
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		*/
+	}
+}

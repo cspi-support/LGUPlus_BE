@@ -1,0 +1,60 @@
+/**
+ * @description 사용자 행동 통계정보 업데이트
+ */
+void rulefunction RuleFunctions.ECF.AS.updateUserActionStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActionHistory userActionHistory;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserActionStatus");
+		
+		/* don't use regular expression because of performance issue */
+		String uasId = userActionHistory.SID;
+		try{
+			DateTime currentTime = DateTime.now();
+			Object[] tupleList = getUserActionStats(userActionHistory.SID, userActionHistory.ACTION_ID, currentTime, null, null);
+
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "uasId", uasId);
+			if(tupleList != null && tupleList@length > 0){
+				Long dateId = getValueAsNumber("dateId", tupleList[0]);
+				String actionId = getValueAsString("actionId", tupleList[0]);
+				Long lastActionTime = getValueAsNumber("lastActionTime", tupleList[0]);
+				Long count = getValueAsNumber("count", tupleList[0]);
+				
+				if(System.getGlobalVariableAsString("COMMON/OP_MODE", "real") == "real") {
+					if(lastActionTime < DateTime.getTimeInMillis(userActionHistory.ACTIVITY_TIME)){
+						lastActionTime = DateTime.getTimeInMillis(userActionHistory.ACTIVITY_TIME);
+					}
+				}else{
+					if(lastActionTime < DateTime.getTimeInMillis(userActionHistory.RECEIVED_TIME)){
+						lastActionTime = DateTime.getTimeInMillis(userActionHistory.RECEIVED_TIME);
+					}
+				}
+				
+				Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+				Metaspace.Tuple.putString(tuple, "actionId", actionId);
+				Metaspace.Tuple.putLong(tuple, "lastActionTime", lastActionTime);
+				Metaspace.Tuple.putLong(tuple, "count", (count + 1));
+			}else{
+				long dateId = Number.longValue(DateTime.format(currentTime, "yyyyMMdd"), 10);
+				Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+				Metaspace.Tuple.putString(tuple, "actionId", userActionHistory.ACTION_ID);
+				if(System.getGlobalVariableAsString("COMMON/OP_MODE", "real") == "real") {
+					Metaspace.Tuple.putLong(tuple, "lastActionTime", DateTime.getTimeInMillis(userActionHistory.ACTIVITY_TIME));
+				}else{
+					Metaspace.Tuple.putLong(tuple, "lastActionTime", DateTime.getTimeInMillis(userActionHistory.RECEIVED_TIME));
+				}
+				Metaspace.Tuple.putLong(tuple, "count", 1);
+			}
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put("LGUPLUS_METASPACE.UserActionStats", tuple, putOption);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

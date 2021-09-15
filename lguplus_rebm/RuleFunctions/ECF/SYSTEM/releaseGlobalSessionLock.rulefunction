@@ -1,0 +1,17 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.SYSTEM.sessionLock sessionLock;
+	}
+	body {
+		Object logger = Log.getLogger("releaseGlobalSessionLock");
+		AS.unlockEvent("/Channels/legacyASChannel/GlobalSessionLock", sessionLock);
+		Event.consumeEvent(sessionLock);
+		Log.log(logger,"debug","** lock(%s) is unreleased", sessionLock.sessionKey);
+	}
+}

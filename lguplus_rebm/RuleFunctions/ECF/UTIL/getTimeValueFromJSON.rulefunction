@@ -1,0 +1,32 @@
+/**
+ * @description 
+ */
+DateTime rulefunction RuleFunctions.ECF.UTIL.getTimeValueFromJSON {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object jsonNode;
+		String nodeKey;
+		String format;
+	}
+	body {
+		Object object = JSON.findNode(jsonNode, nodeKey);
+		if(object == null) return DateTime.now();
+
+		String value = JSON.getTextValue(object);
+		if(StringUtil.isEmpty(value)) return DateTime.now();
+		else {
+			try{
+				if(format == null){
+					return DateTime.parseString(value, "yyyy-MM-dd HH:mm:ss");
+				}else{
+					return DateTime.parseString(value, format);
+				}
+			}catch(Exception e){
+				Event.assertAdvisoryEvent("parseTime", "error", "parsingError:" + value);
+				return DateTime.now();
+			}
+		}
+	}
+}

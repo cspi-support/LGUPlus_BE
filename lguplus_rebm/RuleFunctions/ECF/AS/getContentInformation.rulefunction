@@ -1,0 +1,31 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.AS.getContentInformation {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String contentId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getContentInformation");
+		
+		try{
+			Object tuple = Metaspace.Tuple.create();
+
+			Metaspace.Tuple.putString(tuple, "contentId", contentId);
+			Object object = Metaspace.Space.get(System.getGlobalVariableAsString("AS/SPACE_CONTENT_INFORMATION", "LGUPLUS_METASPACE.ContentInformation"), tuple);
+			if(object == null) return null;
+			
+			String data = Metaspace.Tuple.getString(object, "contentData");
+			Log.log(logger, ScoreCard.log_control.IMDG_LEVEL, "ContentInformation(%s)", data);
+			if(data == null || data == "") return null;
+			return data;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

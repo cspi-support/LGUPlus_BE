@@ -1,0 +1,44 @@
+/**
+ * @description 
+ * 사용자의 모든 히스토리를 filter 를 기준으로 가져온다.
+ */
+Object[] rulefunction RuleFunctions.ECF.AS.getUserActionHistory {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		String actionId;
+		DateTime startTime;
+		DateTime endTime;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserActionHistory");
+		
+		try{
+			if(userId == null || userId == "") return null;
+
+/* CHECK : Don't use regular expression         
+			String filters = "uahId LIKE \"" + userId + ".*\"";
+			if(actionId != null && actionId != "") {
+				filters = filters + " AND "  + "actionId = \"" + actionId + "\"";
+			}
+*/
+
+			String filters = "uahId = \"" + userId + "\" AND actionId = \"" + actionId + "\"";
+			if(startTime != null) {
+				filters = filters + " AND " + " timeStamp >= " + DateTime.getTimeInMillis(startTime);
+			}
+			if(endTime != null) {
+				filters = filters + " AND " + " timeStamp <= " + DateTime.getTimeInMillis(endTime);
+			}
+
+			Object[] results = AS.query("/Channels/legacyASChannel/UserActionHistory", null, "get", "snapshot", "all", 0, 1000, filters);
+			return results;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

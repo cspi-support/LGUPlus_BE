@@ -1,0 +1,18 @@
+/**
+ * @description Datatime 객체를 시리얼 라이즈 한다.
+ */
+String rulefunction RuleFunctions.ECF.UTIL.getSerializedFromDatetime {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		DateTime datetime;	
+		String format;
+	}
+	body {
+		if(datetime == null) return "";
+		String timeFormat = format;
+		if(format == null || format == "") timeFormat = "yyyyMMddHHmmssSSS";
+		return DateTime.format(datetime, timeFormat);
+	}
+}

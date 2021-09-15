@@ -1,0 +1,21 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.AS.UTIL.getValueAsString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String findKey;	
+		Object[] srcObject;
+	}
+	body {
+		for(int i=0; i < srcObject@length; i++){
+			Object[] keyValue = srcObject[i];	
+			if(String.equals(keyValue[0], findKey)){
+				return keyValue[1];
+			}
+		}
+		return null;
+	}
+}

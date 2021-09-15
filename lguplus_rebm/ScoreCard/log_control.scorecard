@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><element:Scorecard xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/ScoreCard/" name="log_control" description="" GUID="316D47D2-E41B-CE8D-AF5B-E215CDF545EF" ownerProjectName="lguplus_rebm" scorecard="true">
+    <properties name="RULE_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="RULE_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="INIT_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="INIT_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="DB_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="DB_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="DEFAULT_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="GEN_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="GEN_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="IMDG_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="IMDG_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="PREPROCESS_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="PREPROCESS_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="LOCAL_OFFER_TAG" ownerProjectName="lguplus_rebm"/>
+    <properties name="LOCAL_OFFER_LEVEL" ownerProjectName="lguplus_rebm"/>
+    <properties name="ERROR_LEVEL" ownerProjectName="lguplus_rebm"/>
+</element:Scorecard>

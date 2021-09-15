@@ -1,0 +1,42 @@
+/**
+ * @description 
+ * ContentInfo 정보를 String 타입으로 serializing 을 한다.
+ */
+String rulefunction RuleFunctions.ECF.CONCEPT.convertCIToString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+	}
+	body {
+		Object logger = Log.getLogger("convertCIToString");
+		
+		Object spaceValue = String.createBuffer(2048);
+
+		if(spaceValue != null){
+			try{
+				String.append(spaceValue, contentInfo.CID);
+				String.append(spaceValue, "," + getSerializedFromString(contentInfo.TITLE));
+				String.append(spaceValue, "," + getSerializedFromDatetime(contentInfo.CREATED, null));
+				String.append(spaceValue, "," + getSerializedFromString(contentInfo.GENRE));
+				String.append(spaceValue, "," + getSerializedFromString(contentInfo.CATEGORY));
+				String.append(spaceValue, "," + getSerializedFromString(contentInfo.CODE));
+				String.append(spaceValue, "," + getSerializedFromInt(contentInfo.PRICE));
+				String.append(spaceValue, "," + getSerializedFromString(contentInfo.SERIES_MODE));
+				String.append(spaceValue, "," + getSerializedFromInt(contentInfo.EPISODE_NUM));
+				String.append(spaceValue, "," + getSerializedFromString(contentInfo.SVC_NAME));
+				String.append(spaceValue, "," + getSerializedFromDatetime(contentInfo.AVAIL_ET, "yyyyMMdd"));
+				
+				String convertedString = String.convertBufferToString(spaceValue);
+				return convertedString;
+			}catch(Exception: e){
+				Log.log(logger, "Error", "Exception" + e);
+				return null;
+			}finally{
+				String.clearBuffer(spaceValue);
+			}
+		}
+		return null;
+	}
+}

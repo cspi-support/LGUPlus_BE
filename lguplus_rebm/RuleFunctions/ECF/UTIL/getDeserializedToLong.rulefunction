@@ -1,0 +1,15 @@
+/**
+ * @description Long 타입으로 변환한다.
+ */
+long rulefunction RuleFunctions.ECF.UTIL.getDeserializedToLong {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+	}
+	body {
+		if(data == null || data == "") return 0;
+		return Number.longValue(data, 10);
+	}
+}

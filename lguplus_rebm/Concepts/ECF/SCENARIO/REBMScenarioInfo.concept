@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="REBMScenarioInfo" description="시나리오 정의및 활성화 여부를 정의하고 데이터는 cms 테이블로 부터 가져온다." GUID="7445222C-CFB8-2EA3-C7CF-90C4AA9EC429" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+    <extendedProperties/>
+    <properties name="SCNR_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_CAT" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_TYPE" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_NM" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_DESC" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_START_DT" ownerProjectName="lguplus_rebm" type="DateTime"/>
+    <properties name="SCNR_END_DT" ownerProjectName="lguplus_rebm" type="DateTime"/>
+    <properties name="SCNR_TARGET_SYS" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_STATUS" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_MODE" ownerProjectName="lguplus_rebm"/>
+    <properties name="USE_YN" ownerProjectName="lguplus_rebm" type="boolean"/>
+    <properties name="CREATE_DT" ownerProjectName="lguplus_rebm" type="DateTime"/>
+    <properties name="UPDATE_DT" ownerProjectName="lguplus_rebm" type="DateTime"/>
+    <properties name="EMPLOYEE_ID" ownerProjectName="lguplus_rebm"/>
+</element:Concept>

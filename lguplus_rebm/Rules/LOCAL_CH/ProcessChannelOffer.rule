@@ -1,0 +1,33 @@
+/**
+ * @description 
+ * @author EdwardMini
+ */
+rule Rules.LOCAL_CH.ProcessChannelOffer {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.LOCAL_CH.ChannelOffer channelOffer;
+		Concepts.CMS.SCNR_CAMP_MAP campaignMap;
+	}
+	when {
+		channelOffer.SCNR_ID == campaignMap.SCNR_ID;
+	}
+	then {
+		/* Check working memory */
+		Event.consumeEvent(channelOffer);
+		Object logger = Log.getLogger(ScoreCard.log_control.LOCAL_OFFER_TAG + "ProcessChannelOffer");
+		Log.log(logger, "INFO", "Processing Campaign:" + campaignMap.CAMP_ID + " channelId" + campaignMap.CHNL_ID);
+		
+		if(campaignMap.CHNL_ID == "CH001"){
+			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending push");
+		}else if(campaignMap.CHNL_ID == "CH002"){
+			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending coupon");
+		}else if(campaignMap.CHNL_ID == "CH003"){
+			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending mms");
+		}else if(campaignMap.CHNL_ID == "CH004"){
+			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending fc");
+		}
+	}
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><event:SimpleEvent xmlns:event="http:///com/tibco/cep/designtime/core/model/event" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Events/AS/" name="Control" description="" GUID="764DFE95-DBF0-8060-22A9-40437336189B" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
+    <properties name="controlId" ownerProjectName="lguplus_rebm" ownerPath="/Events/AS/Control"/>
+    <properties name="version" ownerProjectName="lguplus_rebm" ownerPath="/Events/AS/Control"/>
+    <properties name="module" ownerProjectName="lguplus_rebm" ownerPath="/Events/AS/Control"/>
+    <properties name="timeStamp" ownerProjectName="lguplus_rebm" type="DateTime" ownerPath="/Events/AS/Control"/>
+    <properties name="controlValue" ownerProjectName="lguplus_rebm" ownerPath="/Events/AS/Control"/>
+    <expiryAction name="Control_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
+        <symbols>
+            <symbolList idName="control" type="/Events/AS/Control"/>
+        </symbols>
+    </expiryAction>
+</event:SimpleEvent>

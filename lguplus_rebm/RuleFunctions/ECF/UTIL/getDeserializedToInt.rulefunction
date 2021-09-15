@@ -1,0 +1,15 @@
+/**
+ * @description Int 타입으로 변환한다.
+ */
+int rulefunction RuleFunctions.ECF.UTIL.getDeserializedToInt {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+	}
+	body {
+		if(data == null || data == "") return 0;
+		return Number.intValue(data, 10);
+	}
+}

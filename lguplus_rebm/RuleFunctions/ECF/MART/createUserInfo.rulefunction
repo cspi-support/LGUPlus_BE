@@ -1,0 +1,46 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.MART.createUserInfo {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		Events.Internal.ActionEvent viewevent;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":createUserInfo");
+
+		try{
+			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
+			Database.beginTransaction();
+			double value = Math.random();
+			String tvalue = "" + System.currentTimeMillis();
+			String query = "INSERT into LGUPLUS.CUSTOMER_BASIC_INFO(SID, CID, NAME, SUBSCRIBE_INFO, UNSUB_CANDI) Values (?,?,?,?,?)";
+			String subscribeInfo = "미가입";
+			if(value > 0.5){
+				subscribeInfo = "가입";
+			}
+			Object[] insObj = {viewevent.SID, tvalue, "아무개", subscribeInfo, "N"};
+			int insertCON = Database.executePreparedStmt(query, insObj);
+
+			return Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
+				extId/*extId String */,
+				viewevent.SID/*SID String */,
+				tvalue/*CID String */,
+				subscribeInfo/*SUBSCRIBE_INFO String */,
+				getDeserializedToBoolean("N")/*UNSUB_CANDI boolean */,
+				"아무개"/*NAME String */,
+				null/*AVAIL_ET DateTime */
+				, viewevent.SeqId); //for concurrent-rtc
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:"+ e);
+			Database.rollback();
+			return null;
+		}finally{
+			Database.unsetConnection();
+		}
+	}
+}

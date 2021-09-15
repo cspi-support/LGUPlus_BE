@@ -1,0 +1,28 @@
+/**
+ * @description 
+ * @author EdwardMini
+ */
+rule Rules.CAMPAIGN_RULE.CAMPAIGN_TEST_1 {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActionTrace;	
+//		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+	}
+	when {
+		checkConcurrentAction(actionEvent, customerBasicInfo, "T014");
+		actionEvent.SeqId == userActionTrace.SEQ_ID;
+		actionEvent.ActionTargetDtl == userActionTrace.C_ACTION_ID;
+//		actionEvent.SID == customerBasicInfo.SID && actionEvent.SID == userActionTrace.SID;
+//		userActionTrace.C_ALBUM_ID == contentInfo.CID;
+	}
+	then {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "CAMPAIGN_TEST_1");
+		Log.log(logger, "Info", "Matched(%d): SID(%s) : SEQ_ID:%s, customerBasicInfo:%s, userActionTrace:%s", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId, customerBasicInfo@id, userActionTrace@id);
+//		completeCampaign(actionEvent);
+	}
+}

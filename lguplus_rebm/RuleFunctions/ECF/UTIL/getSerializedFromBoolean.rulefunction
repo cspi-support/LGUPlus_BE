@@ -1,0 +1,18 @@
+/**
+ * @description Boolean 타입에 대한 Serializing
+ */
+String rulefunction RuleFunctions.ECF.UTIL.getSerializedFromBoolean {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		boolean data;	
+	}
+	body {
+		if(data == true){
+			return "Y";
+		}else{
+			return "N";
+		}
+	}
+}

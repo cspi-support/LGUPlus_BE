@@ -1,0 +1,15 @@
+/**
+ * @description Boolean 타입으로 변환한다.
+ */
+boolean rulefunction RuleFunctions.ECF.UTIL.getDeserializedToBoolean {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+	}
+	body {
+		if(data == null || data == "" || data == "N" || data == "n") return false;
+		return true;
+	}
+}

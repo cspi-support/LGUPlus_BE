@@ -1,0 +1,32 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.putControl {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String keyName;
+		String version;
+		DateTime timeStamp;
+		String value;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putData");
+		
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "controlId", keyName);
+			Metaspace.Tuple.putString(tuple, "module", "LogAgent");
+			Metaspace.Tuple.putString(tuple, "version", version);
+			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(timeStamp));
+			Metaspace.Tuple.putString(tuple, "controlValue", value);
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put(System.getGlobalVariableAsString("AS/SPACE_CONTROL", "LGUPLUS_METASPACE.Control"), tuple, putOption);
+			Log.log(logger, ScoreCard.log_control.IMDG_LEVEL, "putControl key:" + keyName + " value:" + value);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}
+	}
+}

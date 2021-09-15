@@ -1,0 +1,38 @@
+/**
+ * @description 
+ * @author EdwardMini
+ */
+rule Rules.PRE_RULE.IPTV_OK_T022 {
+	attribute {
+		priority = 2;
+		forwardChain = true;
+	}
+	declare {
+		Events.Internal.ActionEvent actionEvent;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+	}
+	when {
+		checkConcurrentAction(actionEvent, customerBasicInfo, "T022");
+	}
+	then {
+		Events.SYSTEM.sessionLock historyLock = acquireGlobalSessionLock(actionEvent.SID, 3, 3000);
+		/* 1. UserActivityTrace 컨셉에 정보를 저장한다. */
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace = initializeUserActivityTrace(actionEvent.SID, actionEvent);
+		
+		/* actionId 마다 변경이 필요한 사항들 */
+		userActivityTrace.C_ACT_DESC = "설정값 변경";
+		
+		/* 해당 action 에 대한 count 를 항상 구한다. */
+		/* 만약 시간정보를 추가로 filter 로 적용할 수 있다. */
+		userActivityTrace.COUNT = getUserActionCount(actionEvent.SID, userActivityTrace.C_ACTION_ID, null, null);
+		
+		/* 2. ALBUM 정보가 있는 경우에는 컨텐츠에 대한 마스터 데이터를 로드한다. */
+		if(userActivityTrace.C_ALBUM_ID != null){
+			Concepts.ECF.SCENARIO.ContentInfo contentInfo = loadContentData(userActivityTrace.C_ALBUM_ID);
+			userActivityTrace.C_CAT_ID = contentInfo.CATEGORY;
+		}
+		
+		/* 3. rebm 사용자 이력 데이터를 저장한다. */
+		Concepts.ECF.SCENARIO.UserActionHistory userActionHistory = saveUserActionHistory(userActivityTrace, actionEvent, historyLock);
+	}
+}

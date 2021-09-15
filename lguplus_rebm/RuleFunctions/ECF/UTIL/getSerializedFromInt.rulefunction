@@ -1,0 +1,14 @@
+/**
+ * @description Integer 정보를 String 으로 변환한다.
+ */
+String rulefunction RuleFunctions.ECF.UTIL.getSerializedFromInt {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		int data;
+	}
+	body {
+		return String.valueOfInt(data);
+	}
+}

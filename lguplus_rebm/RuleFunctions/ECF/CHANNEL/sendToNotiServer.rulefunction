@@ -1,0 +1,17 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.CHANNEL.sendToNotiServer {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String testValue;
+	}
+	body {
+		Events.Kafka.Outbound outbound = Events.Kafka.Outbound.Outbound(
+											null/*extId String */,
+											testValue/*payload String */);
+		Event.sendEvent(outbound);	
+	}
+}

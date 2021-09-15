@@ -1,0 +1,44 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SYSTEM.printPerformanceCheck {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+	}
+	body {
+		Object logger = Log.getLogger("printPerformanceCheck");
+		
+		/*
+		Object tuple = getPerformanceCheck();
+		Long start = Metaspace.Tuple.getLong(tuple, "prepro");
+		Long prerule = Metaspace.Tuple.getLong(tuple, "prerule");
+		Long content = Metaspace.Tuple.getLong(tuple, "content");
+		Long save = Metaspace.Tuple.getLong(tuple, "save");
+		Long ruletime = Metaspace.Tuple.getLong(tuple, "rule");
+		Long post = Metaspace.Tuple.getLong(tuple, "post");
+		*/
+
+		String[] timedata = SystemUtil.takeTimeDatas();
+		long startTime = DateTime.getTimeInMillis(actionEvent.ReceivedTime);
+		long endTime;
+		String printTime = "action[" + actionEvent.ActionTargetDtl + "]:";
+		String timeString = "s(" + startTime + ")";
+
+		long beforeTime = startTime;
+		for(int i=0; i < timedata@length; i++){
+			String before = String.substringBefore(timedata[i], "=");
+			String after = String.substringAfter(timedata[i], "=");
+			endTime = Number.longValue(after, 10);
+			long elapsed = endTime - beforeTime;
+			timeString = timeString + ", [" + before + "](" + elapsed + ")";
+			beforeTime = endTime;
+		}
+		long total = endTime - startTime;
+		printTime = printTime + "perf(" + total + ")-" + timeString;
+
+		Log.log(logger, "Info", printTime);
+	}
+}

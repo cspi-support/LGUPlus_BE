@@ -1,0 +1,32 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.UserActivityTrace rulefunction RuleFunctions.ECF.AS.getUserActivityTrace {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		String userId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserActivityTrace");
+		
+		String userActId = userId;
+		
+		try{
+			Object tuple = Metaspace.Tuple.create();
+
+			Metaspace.Tuple.putString(tuple, "userActId", userActId);
+			Object object = Metaspace.Space.get(System.getGlobalVariableAsString("AS/SPACE_USER_ACTIVITY_TRACE", "LGUPLUS_METASPACE.UserActivityTrace"), tuple);
+			if(object == null) return null;
+			String data = Metaspace.Tuple.getString(object, "userActData");
+			Log.log(logger, ScoreCard.log_control.IMDG_LEVEL, "userActData(%s)", data);
+			if(data == null || data == "") return null;
+			return convertStringToUAT(extId, data); 
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

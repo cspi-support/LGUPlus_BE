@@ -1,0 +1,32 @@
+/**
+ * @description 고객 정보를 MART 로 부터 가져온다.
+ */
+Concepts.LGUPLUS.CUSTOMER_BASIC_INFO rulefunction RuleFunctions.ECF.MART.getCustomerBasicInfoFromMart {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userKey;
+	}
+	body {
+		
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getCustomerBasicInfo");
+		
+		try{
+			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
+			Database.beginTransaction();
+
+			Concepts.LGUPLUS.CUSTOMER_BASIC_INFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/CUSTOMER_BASIC_INFO", "select * from CUSTOMER_BASIC_INFO WHERE SID = " + "'" + userKey + "'", true);
+			if(items@length > 0){
+				return items[0];
+			}
+			else return null;
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:"+ e);
+			Database.rollback();
+			return null;
+		}finally{
+			Database.unsetConnection();
+		}
+	}
+}

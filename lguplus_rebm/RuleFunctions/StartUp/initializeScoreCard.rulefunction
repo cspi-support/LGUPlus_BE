@@ -1,0 +1,33 @@
+/**
+ * @description
+ */
+void rulefunction RuleFunctions.StartUp.initializeScoreCard {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+
+	}
+	body {
+		ScoreCard.lguplus_scenario_control.HistoryCount = 9;
+		ScoreCard.lguplus_scenario_control.StayPeriod = 1000 * 90;
+		ScoreCard.lguplus_scenario_control.MSVersion = "0.1";
+
+		ScoreCard.log_control.DEFAULT_LEVEL = System.getGlobalVariableAsString("COMMON/LOG_DEFAULT_LEVEL", "DEBUG");
+		ScoreCard.log_control.ERROR_LEVEL = System.getGlobalVariableAsString("COMMON/LOG_ERROR_LEVEL", "Info");
+		ScoreCard.log_control.DB_TAG = "[DB]";
+		ScoreCard.log_control.DB_LEVEL = "DEBUG";
+		ScoreCard.log_control.IMDG_TAG = "[IMDG]";
+		ScoreCard.log_control.IMDG_LEVEL = "DEBUG";
+		ScoreCard.log_control.INIT_TAG = "[INIT]";
+		ScoreCard.log_control.INIT_LEVEL = "DEBUG";
+		ScoreCard.log_control.RULE_TAG = "[RULE]";
+		ScoreCard.log_control.RULE_LEVEL = "DEBUG";
+		ScoreCard.log_control.GEN_TAG = "[GEN]";
+		ScoreCard.log_control.GEN_LEVEL = "DEBUG";
+		ScoreCard.log_control.PREPROCESS_TAG = "[PREP]";
+		ScoreCard.log_control.PREPROCESS_LEVEL = "DEBUG";
+		ScoreCard.log_control.LOCAL_OFFER_TAG = "[OFFER]";
+		ScoreCard.log_control.LOCAL_OFFER_LEVEL = "DEBUG";
+	}
+}

@@ -1,0 +1,43 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.UTIL.convertMapToJsonString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object mapObject;	
+	}
+	body {
+		// check max size;
+		if(mapObject == null) return null;
+
+		Object jsonBuffer = String.createBuffer(2048);
+		String.append(jsonBuffer, "{");
+		boolean isAdded = false;
+
+		Object keySet = Collections.Map.keySet(mapObject);
+		Object iterator = Collections.iterator(keySet);
+		while(Collections.Iterator.hasNext(iterator)){
+			String pairKey = Collections.Iterator.next(iterator);
+			String pairValue = Collections.Map.get(mapObject, pairKey);
+			if(isAdded){
+				String.append(jsonBuffer, ",");
+			}else{
+				isAdded=true;
+			}
+			
+			String.append(jsonBuffer, "\"" + pairKey + "\":\""  + pairValue + "\"");
+		}
+		
+		if(isAdded){
+			String.append(jsonBuffer, "}");
+			String jsonContent = String.convertBufferToString(jsonBuffer);
+			String.clearBuffer(jsonBuffer);
+			return jsonContent;
+		}
+
+		String.clearBuffer(jsonBuffer);
+		return null;	
+	}
+}

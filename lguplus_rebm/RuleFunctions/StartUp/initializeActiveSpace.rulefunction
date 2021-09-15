@@ -1,0 +1,38 @@
+/**
+ * @description Legacy ActiveSpace 초기화 모듈
+ */
+void rulefunction RuleFunctions.StartUp.initializeActiveSpace {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		
+		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + "initializeActiveSpace");
+		
+		String memberName = System.getGlobalVariableAsString("AS/MEMBER_NAME", "");
+		String metaSpaceName = System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE");
+		String discoveryURL = System.getGlobalVariableAsString("AS/DISCOVERY_URL", "tcp://localhost:50001");
+		String listenURL = System.getGlobalVariableAsString("AS/LISTEN_URL", "tcp");
+		
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "memberName:%s", memberName);
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "metaSpaceName:%s", metaSpaceName);
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "discoveryURL:%s", discoveryURL);
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "listenURL:%s", listenURL);
+		
+		try{
+			Object memberDef = Metaspace.MemberDef.create();
+		
+			Metaspace.MemberDef.setDiscovery(memberDef, discoveryURL);
+			Metaspace.MemberDef.setListen(memberDef, listenURL);
+			Metaspace.MemberDef.setMemberName(memberDef, memberName);
+			Metaspace.MemberDef.setConnectTimeout(memberDef, 60000);
+			Metaspace.connect(metaSpaceName, memberDef);
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:%s", e@message);
+		}
+		
+	}
+}

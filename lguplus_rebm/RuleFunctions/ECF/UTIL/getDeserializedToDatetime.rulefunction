@@ -1,0 +1,18 @@
+/**
+ * @description DateTime 객체로 변환한다.
+ */
+DateTime rulefunction RuleFunctions.ECF.UTIL.getDeserializedToDatetime {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+		String format;
+	}
+	body {
+		if(data == null || data == "") return null;
+		String timeFormat = format;
+		if(format == null || format == "") timeFormat = "yyyyMMddHHmmssSSS";
+		return DateTime.parseString(data, timeFormat);
+	}
+}

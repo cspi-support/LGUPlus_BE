@@ -1,0 +1,15 @@
+/**
+ * @description Null String 타입에 대한 처리
+ */
+String rulefunction RuleFunctions.ECF.UTIL.getSerializedFromString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;	
+	}
+	body {
+		if(data == null || data == "") return "";
+		return data;	
+	}
+}

@@ -1,0 +1,36 @@
+/**
+ * @description Object
+ */
+Object[] rulefunction RuleFunctions.ECF.AS.getDetectedEventHistoryByFilter {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String filter;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getDetectedEventHistoryByFilter");
+		
+		try{
+			if(filter == null || filter == "") return null;
+
+			Object[] result = AS.query("/Channels/legacyASChannel/DetectedEventHistory", null, "get", "snapshot", "all", 0, 1000, filter);
+			return result;
+
+			/*
+			Concepts.ECF.SCENARIO.DetectedScenario[] detectedHistory = Concepts.ECF.SCENARIO.DetectedScenario[result@length]{};
+			for(int i = 0; i < result@length; i++) {
+				Object[] tuple = result[i];
+				String detectedEvent = getValueAsString("detectedEventHistory", tuple);
+				detectedHistory[i] = convertStringToDS(detectedEvent);
+			}
+			Log.log(logger, ScoreCard.log_control.IMDG_TAG, "filter:%s, detectedHistory Count:%d", filter, result@length);
+			return detectedHistory;
+			*/
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

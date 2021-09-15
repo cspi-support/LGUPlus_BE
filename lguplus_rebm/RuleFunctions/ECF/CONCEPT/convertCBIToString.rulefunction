@@ -1,0 +1,38 @@
+/**
+ * @description 
+ * CustomerBasicInformation를 String 으로 변환한다.
+ */
+String rulefunction RuleFunctions.ECF.CONCEPT.convertCBIToString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+	}
+	body {
+		Object logger = Log.getLogger("convertCBIToString");
+		
+		Object spaceValue = String.createBuffer(2048);
+
+		if(spaceValue != null){
+			try{
+				String.append(spaceValue, customerBasicInfo.SID);
+				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CID));
+				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.SUBSCRIBE_INFO));
+				String.append(spaceValue, "," + getSerializedFromBoolean(customerBasicInfo.UNSUB_CANDI));
+				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.NAME));
+				String.append(spaceValue, "," + getSerializedFromDatetime(customerBasicInfo.AVAIL_ET, null));
+
+				String convertedString = String.convertBufferToString(spaceValue);
+				return convertedString;
+			}catch(Exception: e){
+				Log.log(logger, "Error", "Exception" + e);
+				return null;
+			}finally{
+				String.clearBuffer(spaceValue);
+			}
+		}
+		
+		return null;
+	}
+}

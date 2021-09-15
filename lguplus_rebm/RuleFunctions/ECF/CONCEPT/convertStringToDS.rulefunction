@@ -1,0 +1,33 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.DetectedScenario rulefunction RuleFunctions.ECF.CONCEPT.convertStringToDS {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		String data;	
+	}
+	body {
+		if(data == null || data == "") return null;
+		
+		String[] tokens = String.split2(data, "[,]", -1);
+		return Concepts.ECF.SCENARIO.DetectedScenario.DetectedScenario(
+				extId/*extId String */,
+				tokens[0]/*SID String */,
+				tokens[1]/*SEQ_ID String */,
+				tokens[2]/*SCNR_ID String */,
+				tokens[3]/*CAMP_ID String */,
+				tokens[4]/*FLOW_ID String */,
+				tokens[5]/*SEG_ID String */,
+				tokens[6]/*EVENT_ID String */,
+				tokens[7]/*CAMP_NAME String */,
+				tokens[8]/*CAMP_TYPE_CD String */,
+				tokens[9]/*CAMP_MODE String */,
+				getDeserializedToDatetime(tokens[10], null)/*LOG_TIMESTAMP DateTime */,
+				tokens[11]/*FILTERING_CD String */,
+				tokens[12]/*FILTERING_RSN String */,
+				tokens[13]/*TARGETING_MODE */);
+	}
+}

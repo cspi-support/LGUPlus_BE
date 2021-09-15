@@ -1,0 +1,30 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.Preprocessor.controlProcessing {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Kafka.ControlInbound controlInbound;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + "controlProcessing");
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "preprocessing:%s", controlInbound@payload);
+
+		Event.consumeEvent(controlInbound);
+		
+		Object jsonNode = JSON.parseJSON(controlInbound@payload);
+		String module = RuleFunctions.ECF.UTIL.getStringValueFromJSON(jsonNode, "module", "");
+		String control = RuleFunctions.ECF.UTIL.getStringValueFromJSON(jsonNode, "Control", "");
+	  	if(!StringUtil.isEmpty(module) && String.compareToIgnoreCase(module, "REBM")==0){
+	  		if(!StringUtil.isEmpty(control)){
+	  			String controlId = RuleFunctions.ECF.UTIL.getStringValueFromJSON(jsonNode, "controlId", "");
+	  			String param =  RuleFunctions.ECF.UTIL.getStringValueFromJSON(jsonNode, "param", "");
+	  			if(!StringUtil.isEmpty(controlId)){
+					  RuleFunctions.ECF.AS.putControl(controlId, "", DateTime.now(), param);
+	  			}
+	  		}	
+	  	}
+	}
+}

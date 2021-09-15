@@ -1,0 +1,23 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.StartUp.startUp {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		initializeScoreCard();
+
+		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + ":startUp");
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "startUp REBM");
+//		RuleFunctions.StartUp.testFunction();
+//		RuleFunctions.ECF.UTIL.testJson();
+
+		initializeActiveSpace();
+		initializeDatasource();
+		initializeDefaultConcepts();
+	}
+}

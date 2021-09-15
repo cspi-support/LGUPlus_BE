@@ -1,0 +1,14 @@
+/**
+ * @description Long 타입의 데이터를 String 으로 변환한다.
+ */
+String rulefunction RuleFunctions.ECF.UTIL.getSerializedFromLong {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long data;	
+	}
+	body {
+		return String.valueOfLong(data);
+	}
+}

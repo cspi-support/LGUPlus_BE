@@ -1,0 +1,43 @@
+/**
+ * @description 사용자 행동 통계정보
+ */
+Object[] rulefunction RuleFunctions.ECF.AS.getUserActionStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		String actionId;
+		DateTime specialDate; 
+		DateTime startDate; 
+		DateTime endDate; 
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserActionStats");
+		
+		try{
+			if(userId == null || userId == "") return null;
+
+			String filters = "uasId = \"" + userId + "\" AND actionId = \"" + actionId + "\"";
+			if(specialDate != null){
+				String date = DateTime.format(specialDate, "yyyyMMdd");
+				filters = filters + " AND " + " dateId = " + date;
+			}else{
+				if(startDate!= null) {
+					String date = DateTime.format(startDate, "yyyyMMdd");
+					filters = filters + " AND " + " dateId >= " + date;
+				}
+				if(endDate!= null) {
+					String date = DateTime.format(endDate, "yyyyMMdd");
+					filters = filters + " AND " + " dateId <= " + date;
+				}
+			}
+			Object[] results = AS.query("/Channels/legacyASChannel/UserActionStats", null, "get", "snapshot", "all", 0, 1000, filters);
+			return results;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

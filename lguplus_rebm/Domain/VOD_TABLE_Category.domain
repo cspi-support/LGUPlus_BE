@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dm:Domain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" xmlns:dm="http:///com/tibco/cep/designtime/core/model/domain" folder="/Domain/" name="VOD_TABLE_Category" description="" ownerProjectName="lguplus_rebm">
+  <extendedProperties>
+    <properties xsi:type="designtime:SimpleProperty" name="JDBC_RESOURCE" value="/SharedResources/OracleConn.sharedjdbc"/>
+    <properties xsi:type="designtime:SimpleProperty" name="DOMAIN_RELOAD_DB_QUERY" value="SELECT DISTINCT Category FROM C##FULLIPSORI.VOD_TABLE WHERE Category IS NOT NULL ORDER BY Category"/>
+    <properties xsi:type="designtime:SimpleProperty" name="DOMAIN_IMPORT_SOURCE" value="DATABASE_CONCEPT"/>
+  </extendedProperties>
+  <entries xsi:type="dm:Single" description="" value="comic"/>
+  <entries xsi:type="dm:Single" description="" value="drama"/>
+  <entries xsi:type="dm:Single" description="" value="history"/>
+  <entries xsi:type="dm:Single" description="" value="love"/>
+  <entries xsi:type="dm:Single" description="" value="sf"/>
+</dm:Domain>

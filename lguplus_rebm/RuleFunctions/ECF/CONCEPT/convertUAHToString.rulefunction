@@ -1,0 +1,45 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.CONCEPT.convertUAHToString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActionHistory userActionHistory;	
+	}
+	body {
+		Object logger = Log.getLogger("convertUAHToString");
+		
+		Object spaceValue = String.createBuffer(2048);
+		if(spaceValue != null){
+			try{
+				String.append(spaceValue, userActionHistory.SID);
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.SEQ_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.SVC_NAME));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACT_START));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACT_TGT));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACT_TGT_DTL));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.VW_CURR));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.VW_CURR_DTL));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACTION_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.MENU_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ALBUM_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.CAT_ID));
+				String.append(spaceValue, "," + getSerializedFromDatetime(userActionHistory.ACTIVITY_TIME, null));
+				String.append(spaceValue, "," + getSerializedFromDatetime(userActionHistory.RECEIVED_TIME, null));
+
+				String convertedString = String.convertBufferToString(spaceValue);
+				return convertedString;
+			}catch(Exception: e){
+				Log.log(logger, "Error", "Exception" + e);
+				return null;
+			}finally{
+				String.clearBuffer(spaceValue);
+			}
+		}else{
+			Log.log(logger, ScoreCard.log_control.ERROR_LEVEL, "spaceValue buffer error");
+		}	
+		return null;
+	}
+}

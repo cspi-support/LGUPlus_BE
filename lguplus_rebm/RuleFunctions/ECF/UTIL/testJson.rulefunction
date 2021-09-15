@@ -1,0 +1,27 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.UTIL.testJson {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("testJson");
+		String a = "{\"cust_id\": \"1234\", \"action\": \"view\"}";
+		Object json_a = JSON.parseJSON(a);
+		Log.log(logger,"INFO",  "cust_id:" + getStringValueFromJSON(json_a, "cust_id", ""));
+		
+		String b = "{\"cust_id\": 1234, \"action\": \"out\"}";
+		Object json_b = JSON.parseJSON(b);
+		Log.log(logger,"INFO",  "cust_id:" + getStringValueFromJSON(json_b, "action", ""));
+		
+		Object mapObject = RuleFunctions.ECF.UTIL.convertJsonToMap(json_b);
+		Log.log(logger, "INFO", "mapObject:%s", Collections.Map.get(mapObject, "cust_id"));
+		
+		String jsonString = RuleFunctions.ECF.UTIL.convertMapToJsonString(mapObject);
+		Log.log(logger, "INFO", "jsonString:%s", jsonString);
+	}
+}

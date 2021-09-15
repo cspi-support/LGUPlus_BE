@@ -1,0 +1,18 @@
+/**
+ * @description 이력성 마트로 부터 사용자 이력 정보를 가져온다.
+ */
+Object[] rulefunction RuleFunctions.ECF.MART.getUserActionHistoryFromMart {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		String actionId;
+		DateTime startTime;
+		DateTime endTime;
+	}
+	body {		
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getUserActionHistoryFromMart");
+		return null;	
+	}
+}

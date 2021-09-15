@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="WatchHistory" description="사용자 시청이력에 대한 정보로서 1차 버전에서는 사용하지 않는다." GUID="C1D970F2-61F8-6426-E67F-C491B08DF9E2" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+    <extendedProperties/>
+    <properties name="VID" ownerProjectName="lguplus_rebm"/>
+    <properties name="Title" ownerProjectName="lguplus_rebm"/>
+    <properties name="SeriesMode" ownerProjectName="lguplus_rebm" type="boolean"/>
+    <properties name="ChannelName" ownerProjectName="lguplus_rebm"/>
+    <properties name="CategoryName" ownerProjectName="lguplus_rebm"/>
+    <properties name="PayType" ownerProjectName="lguplus_rebm"/>
+    <properties name="BroadcastType" ownerProjectName="lguplus_rebm"/>
+    <properties name="BroadcastTypeChanged" ownerProjectName="lguplus_rebm" type="DateTime"/>
+    <properties name="EpisodeCount" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="Exposure" ownerProjectName="lguplus_rebm"/>
+    <properties name="WatchStatus" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="EpisodeNumber" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="PAID" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="Price" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="PublicMode" ownerProjectName="lguplus_rebm"/>
+    <properties name="EpisodeTitle" ownerProjectName="lguplus_rebm"/>
+</element:Concept>

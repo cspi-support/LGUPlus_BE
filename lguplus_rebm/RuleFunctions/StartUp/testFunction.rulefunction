@@ -1,0 +1,25 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.StartUp.testFunction {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("testLogger");
+		
+		try{
+			String value = "abc|def";
+			String value2 = "abc||";
+			String[] s = String.split(value, "[|]");
+			String[] s2 = String.split2(value2, "[|]", -1);
+			Log.log(logger, "INFO", "Test Start: %d, %d", s@length, s2@length);
+		}catch(Exception e){
+			Log.log(logger, "INFO", "Test Exception:" + e);
+		}finally{
+		}
+	}
+}

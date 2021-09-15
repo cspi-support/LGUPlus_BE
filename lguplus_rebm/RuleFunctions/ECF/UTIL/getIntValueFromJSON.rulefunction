@@ -1,0 +1,21 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.UTIL.getIntValueFromJSON {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object jsonNode;
+		String nodeKey;
+		int defaultValue;
+	}
+	body {
+		Object object = JSON.findNode(jsonNode, nodeKey);
+		if(object == null) return defaultValue;
+
+		String value = JSON.getTextValue(object);
+		if(StringUtil.isEmpty(value)) return defaultValue;
+		else return Number.intValue(value, 10);
+	}
+}

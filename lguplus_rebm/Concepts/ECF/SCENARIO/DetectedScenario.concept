@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="DetectedScenario" description="검출된 시나리오 정보" GUID="9F9E2178-40BC-7DDE-F7F6-CBEACE053CA5" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+    <extendedProperties/>
+    <properties name="SID" ownerProjectName="lguplus_rebm"/>
+    <properties name="SEQ_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="SCNR_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="CAMP_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="FLOW_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="SEG_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="EVENT_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="CAMP_NAME" ownerProjectName="lguplus_rebm"/>
+    <properties name="CAMP_TYPE_CD" ownerProjectName="lguplus_rebm"/>
+    <properties name="CAMP_MODE" ownerProjectName="lguplus_rebm"/>
+    <properties name="LOG_TIMESTAMP" ownerProjectName="lguplus_rebm" type="DateTime"/>
+    <properties name="FILTERING_CD" ownerProjectName="lguplus_rebm"/>
+    <properties name="FILTERING_RSN" ownerProjectName="lguplus_rebm"/>
+    <properties name="TARGETING_MODE" ownerProjectName="lguplus_rebm"/>
+</element:Concept>

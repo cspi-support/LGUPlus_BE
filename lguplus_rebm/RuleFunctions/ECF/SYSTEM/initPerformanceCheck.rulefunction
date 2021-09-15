@@ -1,0 +1,33 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SYSTEM.initPerformanceCheck {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":initPerformanceData");
+		
+		SystemUtil.addTimeData("init", DateTime.getTimeInMillis(DateTime.now()));
+		/*
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			long currentTime = DateTime.getTimeInMillis(DateTime.now());
+			Metaspace.Tuple.putLong(tuple, "threadId", SystemUtil.getCurrentThreadId());
+			Metaspace.Tuple.putLong(tuple, "prepro", currentTime);
+			Metaspace.Tuple.putLong(tuple, "prerule", 0);
+			Metaspace.Tuple.putLong(tuple, "content", 0);
+			Metaspace.Tuple.putLong(tuple, "save", 0);
+			Metaspace.Tuple.putLong(tuple, "rule", 0);
+			Metaspace.Tuple.putLong(tuple, "post", 0);
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put("LGUPLUS_METASPACE.PerformanceCheck", tuple, putOption);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		*/
+	}
+}

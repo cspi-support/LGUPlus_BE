@@ -1,0 +1,31 @@
+/**
+ * @description 컨텐트 정보를 MART 로 부터 가져온다.
+ */
+Concepts.LGUPLUS.CONTENT_INFO rulefunction RuleFunctions.ECF.MART.getContentInfoFromMart {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String vodKey;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getContentInfo");
+		
+		Log.log(logger, ScoreCard.log_control.DB_LEVEL, "Content loading:%s", vodKey);
+		
+		try{
+			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
+			Database.beginTransaction();
+
+			Concepts.LGUPLUS.CONTENT_INFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/CONTENT_INFO", "select * from CONTENT_INFO WHERE CID = " + "'" + vodKey + "'", true);
+			if(items@length > 0) return items[0];
+			else return null;
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:"+ e);
+			Database.rollback();
+			return null;
+		}finally{
+			Database.unsetConnection();
+		}	
+	}
+}

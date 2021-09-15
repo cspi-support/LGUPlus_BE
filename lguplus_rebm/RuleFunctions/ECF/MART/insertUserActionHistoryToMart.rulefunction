@@ -1,0 +1,17 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.MART.insertUserActionHistoryToMart {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActionHistory userActionHistory;
+	}
+	body {
+		
+		if(userActionHistory == null) return;
+		/* action */
+		return;
+	}
+}

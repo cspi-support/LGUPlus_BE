@@ -1,0 +1,25 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.AS.getData {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String spaceName;
+		String keyValue;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getData");
+		
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "key", keyValue);
+//			return Collections.List.get(EBMAS.getItems("LGUPLUS_METASPACE", spaceName, tuple), 0);
+			return Metaspace.Space.get(System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE") + "." + spaceName, tuple);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

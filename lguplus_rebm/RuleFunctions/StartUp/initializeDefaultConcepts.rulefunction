@@ -1,0 +1,15 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.StartUp.initializeDefaultConcepts {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + ":initializeDefaultConcepts");
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "initializeDefaultConcepts");
+	}
+}

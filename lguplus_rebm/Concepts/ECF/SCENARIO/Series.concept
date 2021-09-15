@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="Series" description="시리즈 컨텐츠에 사용되는 정보로서 1차 버전에서는 사용되지 않는다." GUID="4A89B3A1-3E8B-2327-0DCD-E184F5829698" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+    <extendedProperties/>
+    <properties name="Paid" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="WatchStatus" ownerProjectName="lguplus_rebm"/>
+    <properties name="Title" ownerProjectName="lguplus_rebm"/>
+    <properties name="episodeNumber" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="Price" ownerProjectName="lguplus_rebm" type="int"/>
+    <properties name="PublicMode" ownerProjectName="lguplus_rebm"/>
+</element:Concept>

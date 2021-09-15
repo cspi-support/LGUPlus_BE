@@ -1,0 +1,39 @@
+/**
+ * @description String 을 UserActivityHistory 타입으로 변환한다.
+ */
+Concepts.ECF.SCENARIO.UserActionHistory rulefunction RuleFunctions.ECF.CONCEPT.convertStringToUAH {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		String data;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":convertStringToUAH");
+		if(data == null || data == "") return null;
+		
+		try{
+			String[] tokens = String.split2(data, "[,]", -1);
+			return Concepts.ECF.SCENARIO.UserActionHistory.UserActionHistory(
+					extId/*extId String */,
+					tokens[0]/*SID String */,
+					tokens[1]/*SEQ_ID String */,
+					tokens[2]/*SVC_NAME String */,
+					tokens[3]/*ACT_START String */,
+					tokens[4]/*ACT_TGT String */,
+					tokens[5]/*ACT_TGT_DTL String */,
+					tokens[6]/*VW_CURR String */,
+					tokens[7]/*VW_CURR_DTL String */,
+					tokens[8]/*ACTION_ID String */,
+					tokens[9]/*MENU_ID String */,
+					tokens[10]/*ALBUM_ID String */,
+					tokens[11]/*CAT_ID String */,
+					getDeserializedToDatetime(tokens[12], null)/*ACTIVITY_TIME DateTime */,
+					getDeserializedToDatetime(tokens[13], null)/*RECEIVED_TIME DateTime */);
+		}catch(Exception e){
+			Log.log(logger, "info", "exception:" + e);
+			return null;
+		}
+	}
+}

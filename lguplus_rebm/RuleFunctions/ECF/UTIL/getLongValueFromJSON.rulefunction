@@ -1,0 +1,21 @@
+/**
+ * @description 
+ */
+long rulefunction RuleFunctions.ECF.UTIL.getLongValueFromJSON {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object jsonNode;
+		String nodeKey;
+		long defaultValue;
+	}
+	body {
+		Object object = JSON.findNode(jsonNode, nodeKey);
+		if(object == null) return defaultValue; 
+
+		String value = JSON.getTextValue(object);
+		if(StringUtil.isEmpty(value)) return defaultValue;
+		else return Number.longValue(value, 10);
+	}
+}

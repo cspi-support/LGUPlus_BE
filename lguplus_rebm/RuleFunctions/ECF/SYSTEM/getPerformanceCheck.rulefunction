@@ -1,0 +1,25 @@
+/**
+ * @description 
+ */
+Object[] rulefunction RuleFunctions.ECF.SYSTEM.getPerformanceCheck {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+	}
+	body {
+		/*
+		try{
+			Object tuple = Metaspace.Tuple.create();
+
+			Metaspace.Tuple.putLong(tuple, "threadId", SystemUtil.getCurrentThreadId());
+			Object object = Metaspace.Space.get("LGUPLUS_METASPACE.PerformanceCheck", tuple);
+			return object;
+
+		}catch(Exception e){
+		}	
+		*/
+		String[] object = SystemUtil.takeTimeDatas();
+		return object;
+	}
+}

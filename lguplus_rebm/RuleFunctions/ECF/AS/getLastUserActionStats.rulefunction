@@ -1,0 +1,78 @@
+/**
+ * @description action 에 대한 마지막 아이템을 구한다.
+ */
+Object rulefunction RuleFunctions.ECF.AS.getLastUserActionStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		String[] actionList;
+		DateTime specialDate;
+		DateTime startDate;
+		DateTime endDate;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getLastUserActionStats");
+		
+		try{
+			if(userId == null || userId == "") return null;
+			
+			String filters = "uasId = " + "\"" + userId + "\"";
+			if(actionList != null){
+				filters = filters + " AND ";
+				if(actionList@length >= 2) {
+					filters = filters + "(";
+				}
+				for(int i=0; i<actionList@length; i++){
+					if(i != 0) {
+						filters = filters + " or ";
+					}
+					filters = filters + "actionId =" + "\"" + actionList[i] + "\"";
+				}
+				if(actionList@length >= 2){
+					filters = filters + ")";
+				}
+			}
+
+			if(specialDate == null && startDate == null && endDate == null){
+				String date = DateTime.format(DateTime.now(), "yyyyMMdd");
+				filters = filters + " AND " + " dateId = " + date;
+			}else{
+				if(specialDate != null){
+					String date = DateTime.format(specialDate, "yyyyMMdd");
+					filters = filters + " AND " + " dateId = " + date;
+				}else{
+					if(startDate!= null) {
+						String date = DateTime.format(startDate, "yyyyMMdd");
+						filters = filters + " AND " + " dateId >= " + date;
+					}
+					if(endDate!= null) {
+						String date = DateTime.format(endDate, "yyyyMMdd");
+						filters = filters + " AND " + " dateId <= " + date;
+					}
+				}
+			}	
+
+			Object[] items = AS.query("/Channels/legacyASChannel/UserActionStats", null, "get", "snapshot", "all", 0, 1000, filters);
+			if(items == null || items@length == 0) return null;
+			
+			/* need timeStamp ordering */
+			int lastIndex = 0;
+			long maxValue = 0;
+			for(int i = 0; i < items@length; i++){
+				Long value = getValueAsNumber("lastActionTime", items[i]);
+				if(value > maxValue) {
+					lastIndex = i;
+					maxValue = value;
+				}
+			}
+
+			return items[lastIndex];
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

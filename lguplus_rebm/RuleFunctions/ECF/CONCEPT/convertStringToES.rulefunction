@@ -1,0 +1,39 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.ExecutedScenario rulefunction RuleFunctions.ECF.CONCEPT.convertStringToES {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		String data;	
+	}
+	body {
+		if(data == null || data == "") return null;
+		
+		String[] tokens = String.split2(data, "[,]", -1);
+		return Concepts.ECF.SCENARIO.ExecutedScenario.ExecutedScenario(
+				extId/*extId String */,
+				tokens[0]/*SID String */,
+				tokens[1]/*SEQ_ID String */,
+				tokens[2]/*SCNR_ID String */,
+				tokens[3]/*CAMP_ID String */,
+				tokens[4]/*FLOW_ID String */,
+				tokens[5]/*SEG_ID String */,
+				tokens[6]/*EVENT_ID String */,
+				tokens[7]/*CAMP_NAME String */,
+				tokens[8]/*CAMP_TYPE_CD String */,
+				tokens[9]/*CAMP_MODE String */,
+				tokens[10]/*PARAM1 String */,
+				tokens[11]/*PARAM2 String */,
+				tokens[12]/*PARAM3 String */,
+				tokens[13]/*PARAM4 String */,
+				tokens[14]/*PAYLOAD String */,
+				tokens[15]/*TARGETING_MODE String */,
+				getDeserializedToDatetime(tokens[16], null)/*LOG_TIMESTAMP DateTime */,
+				false/*SUCCESS boolean */,
+				null/*FAIL_REASON String */,
+				null/*ACTIVITY_DT DateTime */);
+	}
+}

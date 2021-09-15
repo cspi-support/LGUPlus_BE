@@ -1,0 +1,15 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.StartUp.LOCAL_CH.startOfferAgent {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		RuleFunctions.StartUp.initializeScoreCard();
+		RuleFunctions.ECF.MART.loadScnrCampMap();
+	}
+}

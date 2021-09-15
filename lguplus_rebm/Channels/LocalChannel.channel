@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channel:Channel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:channel="http:///com/tibco/cep/designtime/core/model/service/channel" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" folder="/Channels/" name="LocalChannel" description="채널발송용 로컬채널" GUID="CD0894F4-514B-F1B7-E759-B30A34E4C4A8" ownerProjectName="lguplus_rebm">
+  <driver configMethod="REFERENCE" label="LOCAL" channel="/">
+    <destinations name="OfferChannel" description="" GUID="34BB5FA1-5C24-8FD2-A1F7-C4682549E861" ownerProjectName="lguplus_rebm" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Size" value="0"/>
+        <properties xsi:type="designtime:SimpleProperty" name="TimeOut" value="-1"/>
+      </properties>
+    </destinations>
+    <driverType xsi:type="channel:DriverTypeInfo" driverTypeName="Local"/>
+  </driver>
+</channel:Channel>

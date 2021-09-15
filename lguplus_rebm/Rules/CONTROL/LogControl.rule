@@ -1,0 +1,37 @@
+rule Rules.CONTROL.LogControl {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.AS.Control controlEvent;
+	}
+	when {
+		String.compareToIgnoreCase(controlEvent.module, "rebm") == 0 && String.compareToIgnoreCase(controlEvent.controlId, "logLevel") == 0;
+	}
+	then {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG+ "LogControl");
+
+		Event.consumeEvent(controlEvent);
+		
+		String[] value = String.split2(controlEvent.controlValue, "[,]", -1);
+		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "controlId:" + controlEvent.controlId + " value:" + controlEvent.controlValue);
+
+		if(value@length >= 2){
+			String mode = String.trim(value[0]);
+			if(String.compareToIgnoreCase(mode, "init") == 0) {
+				ScoreCard.log_control.INIT_LEVEL = String.trim(value[1]);
+			}else if(String.compareToIgnoreCase(mode, "preprocess") == 0){
+				ScoreCard.log_control.PREPROCESS_LEVEL = String.trim(value[1]);
+			}else if(String.compareToIgnoreCase(mode, "rule") == 0){
+				ScoreCard.log_control.RULE_LEVEL = String.trim(value[1]);
+			}else if(String.compareToIgnoreCase(mode, "db") == 0){
+				ScoreCard.log_control.DB_LEVEL= String.trim(value[1]);
+			}else if(String.compareToIgnoreCase(mode, "imdg") == 0){
+				ScoreCard.log_control.IMDG_LEVEL= String.trim(value[1]);
+			}else if(String.compareToIgnoreCase(mode, "gen") == 0){
+				ScoreCard.log_control.GEN_LEVEL= String.trim(value[1]);
+			}
+		}
+	}
+}

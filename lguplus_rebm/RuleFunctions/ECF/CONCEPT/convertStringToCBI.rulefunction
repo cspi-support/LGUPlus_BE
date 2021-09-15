@@ -1,0 +1,29 @@
+/**
+ * @description 
+ * 콤마로 구분된 string 을 CustomerBasicInfo 로 변환한다.
+ */
+Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.CONCEPT.convertStringToCBI {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		String data;
+		String seqId;
+	}
+	body {
+		Object logger = Log.getLogger(":convertStringToCBI");
+		if(data == null || data == "") return null;
+		
+		String[] tokens = String.split2(data, "[,]", -1);
+		return Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
+				extId/*extId String */,
+				tokens[0]/*SID String */,
+				tokens[1]/*CID String */,
+				tokens[2]/*SUBSCRIBE_INFO String */,
+				getDeserializedToBoolean(tokens[3])/*UNSUB_CANDI boolean */,
+				tokens[4]/*NAME String */,
+				getDeserializedToDatetime(tokens[5], null)/*AVAIL_ET DateTime */
+				,seqId); //for concurrent-rtc
+	}
+}

@@ -1,0 +1,85 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.UserDetail rulefunction RuleFunctions.ECF.CONCEPT.convertStringToUserDetail {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		String userDetailString;
+	}
+	body {
+		Object logger = Log.getLogger("convertStringToUserDetail");
+		
+		try{
+			String[] properties = String.split2(userDetailString, "[,]", -1);
+			String[] histories = null;
+			if(!StringUtil.isEmpty(properties[6])){
+				histories = String.split2(properties[6], "[&]", -1);
+			}
+
+			boolean SeamlessMode = false;
+			if(properties[2] == "Y") SeamlessMode = true;
+			boolean TermMarketingMode = false;
+			if(properties[3] == "Y") TermMarketingMode = true;
+			DateTime signup = null;
+			if(!StringUtil.isEmpty(properties[4])){
+				DateTime.parseString(properties[4], "yyyyMMddHHmmss");
+			}
+			DateTime birthday = null;
+			if(!StringUtil.isEmpty(properties[5])){
+				DateTime.parseString(properties[5], "yyyyMMdd");
+			}
+
+			Concepts.ECF.SCENARIO.UserDetail userDetail = Concepts.ECF.SCENARIO.UserDetail.UserDetail(
+				userId/*extId String */,
+				properties[0]/*SID String */,
+				properties[1]/*Grade String */,
+				SeamlessMode/*SeamlessMode boolean */,
+				TermMarketingMode/*TermMarketingMode boolean */,
+				signup/*SignUp DateTime */,
+				birthday/*Birthday DateTime */,
+				null/*WatchHistory Concepts.ECF.SCENARIO.WatchHistory[] */);
+
+			if(histories != null && histories@length == 16){
+				for(int i=0; i < histories@length; i++){
+					boolean SeriesMode = false;
+					String[] watchInfo = String.split2(histories[i], "[|]", -1);
+					if(watchInfo[2] == "Y") SeriesMode = true;
+					
+					DateTime broadcastChanged = null;
+					if(!StringUtil.isEmpty(watchInfo[7])){
+						DateTime.parseString(watchInfo[7], "yyyyMMddHHmmss");
+					}
+					
+					Concepts.ECF.SCENARIO.WatchHistory watch = Concepts.ECF.SCENARIO.WatchHistory.WatchHistory(
+						null/*extId String */,
+						watchInfo[0]/*VID String */,
+						watchInfo[1]/*Title String */,
+						SeriesMode/*SeriesMode boolean */,
+						watchInfo[3]/*ChannelName String */,
+						watchInfo[4]/*CategoryName String */,
+						watchInfo[5]/*PayType String */,
+						watchInfo[6]/*BroadcastType String */,
+						broadcastChanged/*BroadcastTypeChanged DateTime */,
+						Number.intValue(watchInfo[8], 10)/*EpisodeCount int */,
+						watchInfo[9]/*Exposure String */,
+						Number.intValue(watchInfo[10], 10)/*WatchStatus int */,
+						Number.intValue(watchInfo[11], 10)/*EpisodeNumber int */,
+						Number.intValue(watchInfo[12], 10)/*PAID int */,
+						Number.intValue(watchInfo[13], 10)/*Price int */,
+						watchInfo[14]/*PublicMode String */,
+						watchInfo[15]/*EpisodeTitle String */);
+					
+					userDetail.WatchHistory[i] = watch;
+				}
+			}
+			return userDetail;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:" + e);
+			return null;
+		}
+	}
+}

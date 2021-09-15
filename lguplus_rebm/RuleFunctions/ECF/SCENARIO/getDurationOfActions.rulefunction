@@ -1,0 +1,39 @@
+/**
+ * @description 액션간의 시간 정보(초)를 구한다.
+ * AS transaction 을 사용하는 방법을 찾아보도록 한다. 
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.getDurationOfActions {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String startAction;
+		String endAction;
+		Events.Internal.ActionEvent actionEvent;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":getDurationOfActions");
+		/* kafka 는 순서를 보장하지 않기 때문에 이를 감안하여 제일 마지막 액션을 기준으로 동작한다. */
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("durationOfActions");
+
+		try{
+			/* IMDG 로 부터 마지막 startAction 과 endAction 을 가져온다. */
+			String[] checkAction = {startAction, endAction};
+
+			Object lastTuple = getLastUserActionStats(actionEvent.SID, checkAction, null, null, null);
+			if(lastTuple == null) return 0;
+			String actionId = getValueAsString("actionId", lastTuple);
+			Long lastTime = getValueAsNumber("lastActionTime", lastTuple);
+			if(actionId != actionEvent.ActionTargetDtl){
+				long currentActionTimeMillis = DateTime.getTimeInMillis(actionEvent.ReqTime);
+				long diffTime = currentActionTimeMillis - lastTime;
+				if(diffTime > 0) return Number.valueOfLong(diffTime / 1000);
+			}
+			return 0;
+
+		}catch(Exception e){
+			Log.log(logger, ScoreCard.log_control.ERROR_LEVEL, "Exception:" + e);
+			return 0;
+		}
+	}
+}

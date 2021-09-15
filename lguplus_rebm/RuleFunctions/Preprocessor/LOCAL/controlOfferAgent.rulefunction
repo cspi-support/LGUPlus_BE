@@ -1,0 +1,34 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.Preprocessor.LOCAL.controlOfferAgent {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Kafka.ControlInbound controlInbound;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + "controlOfferAgent");
+		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "preprocessing:%s", controlInbound@payload);
+
+		Event.consumeEvent(controlInbound);
+		
+		/* 확장성을 위해서 json 형식을 취한다.
+		* {
+			"module": "rebm",
+			"control" : "log_level",
+			"param" : "preprocess,Error" // comma separated parameters
+		  }
+		*/
+		Object jsonNode = JSON.parseJSON(controlInbound@payload);
+		String fieldName = RuleFunctions.ECF.UTIL.getStringValueFromJSON(jsonNode, "module", "");
+		String control = RuleFunctions.ECF.UTIL.getStringValueFromJSON(jsonNode, "control", "");
+	  	if(!StringUtil.isEmpty(fieldName) && String.compareToIgnoreCase(fieldName, "OFFER")==0 && !StringUtil.isEmpty(control)){
+	  		Event.assertEvent(Events.Internal.Control.Control(
+	  							null/*extId String */,
+	  							controlInbound@payload/*payload String */,
+	  							control/*name String */));
+	  	}
+	}
+}

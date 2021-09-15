@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.1">
     <revision>
-        <version>7</version>
-        <author>jwlee</author>
-        <date>2021/08/05 15:44:57</date>
+        <version>30</version>
+        <author>shkim</author>
+        <date>2021/09/10 15:47:15</date>
         <comment/>
     </revision>
-    <name>MyMarketing</name>
+    <name>lguplus_rebm</name>
     <message-encoding>UTF-8</message-encoding>
     <provider/>
     <object-management>
         <memory-manager/>
         <db-concepts>
-            <db-uris/>
+            <db-uris>
+                <uri>/SharedResources/OracleConn.sharedjdbc</uri>
+                <uri>/SharedResources/CMS.sharedjdbc</uri>
+            </db-uris>
             <check-interval>60</check-interval>
             <inactivity-timeout>0</inactivity-timeout>
             <initial-size>5</initial-size>
@@ -38,7 +41,7 @@
     <log-configs>
         <log-config id="logConfig">
             <enabled>true</enabled>
-            <roles>*:debug</roles>
+            <roles>*:info</roles>
             <files>
                 <enabled>true</enabled>
                 <dir>logs</dir>
@@ -66,24 +69,26 @@
                 <ref>all-rules</ref>
             </rules>
             <destinations>
-                <destination id="Use_6B6F1C7D">
-                    <pre-processor>/RuleFunctions/PreProcessorForUsePoint</pre-processor>
+                <destination id="KafkaInbound_7FDFE6FC">
+                    <pre-processor>/RuleFunctions/Preprocessor/PreprocessorForKafka</pre-processor>
                     <queue-size/>
                     <thread-count/>
                     <threading-model>shared-queue</threading-model>
                     <thread-affinity-rule-function/>
-                    <uri>/Channels/Http/Use</uri>
+                    <uri>/Channels/Kafka/KafkaInbound</uri>
                 </destination>
-                <destination id="Save_1782783">
-                    <pre-processor>/RuleFunctions/PreProcessorForSavePoint</pre-processor>
+                <destination id="ControlKafkaInbound_22CAB72E">
+                    <pre-processor>/RuleFunctions/Preprocessor/controlProcessing</pre-processor>
                     <queue-size/>
                     <thread-count/>
                     <threading-model>shared-queue</threading-model>
                     <thread-affinity-rule-function/>
-                    <uri>/Channels/Http/Save</uri>
+                    <uri>/Channels/Kafka/ControlKafkaInbound</uri>
                 </destination>
             </destinations>
-            <startup/>
+            <startup>
+                <uri>/RuleFunctions/StartUp/startUp</uri>
+            </startup>
             <shutdown/>
             <local-cache>
                 <eviction>
@@ -92,8 +97,56 @@
                 </eviction>
             </local-cache>
             <shared-queue>
-                <size>1024</size>
-                <workers>10</workers>
+                <size>%%AGENT/REBM_QUEUE_SIZE%%</size>
+                <workers>%%AGENT/REBM_THREAD_COUNT%%</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group/>
+        </inference-agent-class>
+        <inference-agent-class id="LocalOfferAgent">
+            <rules>
+                <uri>/Rules/LOCAL_CH/ProcessChannelOffer</uri>
+                <uri>/Rules/CONTROL/CampaignControl</uri>
+                <uri>/Rules/CONTROL/LogControl</uri>
+            </rules>
+            <destinations>
+                <destination id="OfferChannel_196FE8D">
+                    <pre-processor/>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/LocalChannel/OfferChannel</uri>
+                </destination>
+                <destination id="ControlKafkaInbound_20BEBC46">
+                    <pre-processor>/RuleFunctions/Preprocessor/controlProcessing</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/Kafka/ControlKafkaInbound</uri>
+                </destination>
+            </destinations>
+            <startup>
+                <uri>/RuleFunctions/StartUp/LOCAL_CH/startOfferAgent</uri>
+            </startup>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>%%AGENT/OFFER_QUEUE_SIZE%%</size>
+                <workers>%%AGENT/OFFER_THREAD_COUNT%%</workers>
             </shared-queue>
             <load>
                 <max-active/>
@@ -107,10 +160,15 @@
         </inference-agent-class>
     </agent-classes>
     <processing-units>
-        <processing-unit id="default">
+        <processing-unit id="lguplus.engine">
             <agents>
                 <agent>
                     <ref>inference-class</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+                <agent>
+                    <ref>LocalOfferAgent</ref>
                     <key/>
                     <priority/>
                 </agent>
@@ -118,8 +176,10 @@
             <logs>logConfig</logs>
             <hot-deploy>true</hot-deploy>
             <cache-storage-enabled>false</cache-storage-enabled>
-            <db-concepts>false</db-concepts>
-            <property-group/>
+            <db-concepts>true</db-concepts>
+            <property-group>
+                <property name="be.dbconcepts.dburi.query.reuserefs" value="true"/>
+            </property-group>
         </processing-unit>
     </processing-units>
     <load-balancer-configs>
@@ -133,6 +193,12 @@
                 <property name="be.mm.auth.file.location" value="C:/tibco/be/6.1/mm/config/users.pwd"/>
                 <property name="java.security.auth.login.config" value="C:/tibco/be/6.1/mm/config/jaas-config.config"/>
             </property-group>
+        </property-group>
+        <property name="be.dbconcepts.connections.checkall" value="false"/>
+        <property-group comment="" name="auth">
+            <property name="be.mm.auth.type" value="file"/>
+            <property name="be.mm.auth.file.location" value="C:/tibco/be/6.1/mm/config/users.pwd"/>
+            <property name="java.security.auth.login.config" value="C:/tibco/be/6.1/mm/config/jaas-config.config"/>
         </property-group>
     </property-group>
 </cluster>

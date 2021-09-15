@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BWSharedResource>
+    <config>
+        <Description/>
+        <MetaspaceName>%%AS/METASPACE%%</MetaspaceName>
+        <MemberName>%%AS/MEMBER_NAME%%</MemberName>
+        <DiscoveryUrl>%%AS/DISCOVERY_URL%%</DiscoveryUrl>
+        <ListenUrl>%%AS/LISTEN_URL%%</ListenUrl>
+        <RemoteListenUrl>%%AS/REMOTE_LISTEN_URL%%</RemoteListenUrl>
+        <EnableSecurity>false</EnableSecurity>
+        <SecurityRole>Requester</SecurityRole>
+        <PolicyFile/>
+        <TokenFile/>
+        <IdentityPassword>#!vsPYLEfQvXyhxJ5L95FHaw==</IdentityPassword>
+        <Credential>USERPWD</Credential>
+        <Domain/>
+        <UserName/>
+        <Password>#!PieAKawOpauIy/VSMISYeA==</Password>
+        <KeyFile/>
+        <PrivateKey/>
+    </config>
+</BWSharedResource>

@@ -1,0 +1,29 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.putCustomerBasicInformation {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putCustomerBasicInformation");
+		
+		String custId = customerBasicInfo.SID;
+		try{
+			Object tuple = Metaspace.Tuple.create();
+
+			Metaspace.Tuple.putString(tuple, "custId", custId);
+			Metaspace.Tuple.putString(tuple, "version", "");
+			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(DateTime.now()));
+			Metaspace.Tuple.putString(tuple, "custData", convertCBIToString(customerBasicInfo));
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put(System.getGlobalVariableAsString("AS/SPACE_CUSTOMER_BASIC_INFORMATION", "LGUPLUS_METASPACE.CustomerBasicInformation"), tuple, putOption);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

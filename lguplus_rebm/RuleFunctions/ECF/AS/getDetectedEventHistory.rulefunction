@@ -1,0 +1,61 @@
+/**
+ * @description 검출된 Event 에 대한 이력들을 리턴한다.
+ */
+Object[] rulefunction RuleFunctions.ECF.AS.getDetectedEventHistory {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		DateTime startTime;
+		DateTime endTime;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getDetectedEventHistory");
+		
+		try{
+			if(userId == null || userId == "") return null;
+			String filters = "detectedEventId LIKE \"" + userId + ".*\"";
+
+			if(startTime != null) {
+				filters = filters + " AND " + " timeStamp >= " + DateTime.getTimeInMillis(startTime);
+			}
+			if(endTime != null) {
+				filters = filters + " AND " + " timeStamp <= " + DateTime.getTimeInMillis(endTime);
+			}
+
+			/* only for then statement
+			Object resultIterator = AS.queryIterator("/Channels/legacyASChannel/DetectedEventHistory", null, "get", "snapshot", "all", 0, 1000, filter);
+			int count = Collections.size(resultIterator);
+			Concepts.ECF.SCENARIO.DetectedScenario[] detectedHistory = Concepts.ECF.SCENARIO.DetectedScenario[count]{};
+			int i = 0;
+			while(Collections.Iterator.hasNext(resultIterator)){
+				Object tuple = Collections.Iterator.next(resultIterator);
+				if(tuple != null){
+					String data = Metaspace.Tuple.getString(tuple, "detectedEventHistory");
+					detectedHistory[i] = convertStringToDS(data);
+					i = i+1;
+				}
+			}
+			*/
+
+			
+			Object[] result = AS.query("/Channels/legacyASChannel/DetectedEventHistory", null, "get", "snapshot", "all", 0, 1000, filters);
+			/*
+			Concepts.ECF.SCENARIO.DetectedScenario[] detectedHistory = Concepts.ECF.SCENARIO.DetectedScenario[result@length]{};
+			for(int i = 0; i < result@length; i++) {
+				Object[] tuple = result[i];
+				String detectedEvent = getValueAsString("detectedEventHistory", tuple);
+				detectedHistory[i] = convertStringToDS(detectedEvent);
+			}
+			Log.log(logger, ScoreCard.log_control.IMDG_TAG, "filter:%s, detectedHistory Count:%d", filter, result@length);
+			return detectedHistory;
+			*/
+			return result;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

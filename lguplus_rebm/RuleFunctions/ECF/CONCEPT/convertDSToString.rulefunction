@@ -1,0 +1,45 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.CONCEPT.convertDSToString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.DetectedScenario detectedScenario;
+	}
+	body {
+		Object logger = Log.getLogger("convertDSToString");
+		
+		Object spaceValue = String.createBuffer(2048);
+
+		if(spaceValue != null){
+			try{
+				String.append(spaceValue, detectedScenario.SID);
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.SEQ_ID));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.SCNR_ID));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.CAMP_ID));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.FLOW_ID));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.SEG_ID));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.EVENT_ID));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.CAMP_NAME));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.CAMP_TYPE_CD));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.CAMP_MODE));
+				String.append(spaceValue, "," + getSerializedFromDatetime(detectedScenario.LOG_TIMESTAMP, null));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.FILTERING_CD));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.FILTERING_RSN));
+				String.append(spaceValue, "," + getSerializedFromString(detectedScenario.TARGETING_MODE));
+				
+				String convertedString = String.convertBufferToString(spaceValue);
+				return convertedString;
+			}catch(Exception: e){
+				Log.log(logger, "Error", "Exception" + e);
+				return null;
+			}finally{
+				String.clearBuffer(spaceValue);
+			}
+		}	
+		
+		return null;
+	}
+}

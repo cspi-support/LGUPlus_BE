@@ -1,0 +1,31 @@
+/**
+ * @description 
+ * @author EdwardMini
+ */
+rule Rules.CONTROL.CampaignControl {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.AS.Control controlEvent;
+	}
+	when {
+		String.compareToIgnoreCase(controlEvent.module, "rebm") == 0 && String.compareToIgnoreCase(controlEvent.controlId, "campaign") == 0;
+	}
+	then {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG+ "CampaignControl");
+		
+		Event.consumeEvent(controlEvent);
+		
+		String[] value = String.split2(controlEvent.controlValue, "[,]", -1);
+		
+		if(value@length >= 1){
+			if(String.compareToIgnoreCase(value[0], "reload_cms") == 0){
+				RuleFunctions.ECF.MART.loadScnrCampMap();
+			}
+			// 다른 action 들을 정의한다. 
+		}
+
+	}
+}

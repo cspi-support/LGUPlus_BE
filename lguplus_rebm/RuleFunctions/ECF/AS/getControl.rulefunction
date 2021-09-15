@@ -1,0 +1,22 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.AS.getControl {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String keyName;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getData");
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "controlId", keyName);
+			return Metaspace.Space.get(System.getGlobalVariableAsString("AS/SPACE_CONTROL", "LGUPLUS_METASPACE.Control"), tuple);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><event:SimpleEvent xmlns:event="http:///com/tibco/cep/designtime/core/model/event" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Events/Kafka/" name="Inbound" description="" GUID="6313D635-5F1C-0276-29E7-1B030E94BA55" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
+    <expiryAction name="Inbound_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
+        <symbols>
+            <symbolList idName="inbound" type="/Events/Kafka/Inbound"/>
+        </symbols>
+    </expiryAction>
+</event:SimpleEvent>

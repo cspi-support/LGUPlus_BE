@@ -1,0 +1,81 @@
+/**
+ * @description
+ */
+void rulefunction RuleFunctions.Preprocessor.PreprocessorForKafka {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+
+		Events.Kafka.Inbound inbound;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.PREPROCESS_TAG + ":PreprocessorForKafka");
+		Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "processing(%s)", inbound@payload);
+
+		Event.consumeEvent(inbound);
+		Object jsonEvent = JSON.parseJSON(inbound@payload);
+
+		String userId = getStringValueFromJSON(jsonEvent, "SID", "");
+		String actionId = getStringValueFromJSON(jsonEvent, "ACT_TARGET_DTL", "");
+		if(userId == "") return;
+
+		/* 1. global session lock */
+		/** using critical section
+		Events.SYSTEM.sessionLock acquireLock = RuleFunctions.ECF.SYSTEM.acquireGlobalSessionLock(userId, 3, 3000);
+		if(acquireLock == null) return;
+		**/
+
+		/* 2. Local Event 생성 */
+		String seqId;
+		if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+			seqId = getStringValueFromJSON(jsonEvent, "SEQ_ID", "");
+		}else{
+			/* test data 의 seq_id 필드의 마지막 8자리가 잘못되어 있슴 */
+			seqId = getStringValueFromJSON(jsonEvent, "SEQ_ID", "") + System.nanoTime();
+		}
+
+		Events.Internal.ActionEvent actionEvent = Events.Internal.ActionEvent.ActionEvent(
+			null/*extId String */,
+			null/*payload String */,
+			userId/*SID String */,
+//			getStringValueFromJSON(jsonEvent, "SEQ_ID", "")/*SeqId String */,
+			seqId/*SeqId String */,
+			getStringValueFromJSON(jsonEvent, "SVC_NAME", "")/*SvcName String */,
+			getStringValueFromJSON(jsonEvent, "ACT_START", "")/*ActionStart String */,
+			getStringValueFromJSON(jsonEvent, "ACT_TARGET", "")/*ActionTarget String */,
+			getStringValueFromJSON(jsonEvent, "ACT_TARGET_DTL", "")/*ActionTargetDtl String */,
+			getStringValueFromJSON(jsonEvent, "VIEW_CURR", "")/*ViewCurr String */,
+			getStringValueFromJSON(jsonEvent, "VIEW_CURR_DTL", "")/*ViewCurrDtl String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL1", "")/*ActionDTL1 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL2", "")/*ActionDTL2 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL3", "")/*ActionDTL3 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL4", "")/*ActionDTL4 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL5", "")/*ActionDTL5 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL6", "")/*ActionDTL6 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL7", "")/*ActionDTL7 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL8", "")/*ActionDTL8 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL9", "")/*ActionDTL9 String */,
+			getStringValueFromJSON(jsonEvent, "ACT_DTL10", "")/*ActionDTL10 String */,
+			getTimeValueFromJSON(jsonEvent, "REQ_TIME", "yyyyMMddHHmmssSSS")/*ReqTime DateTime */,
+			DateTime.now()
+			,SystemUtil.getCurrentThreadId()); //for concurrent-rtc
+
+
+		/* 3. 사용할 컨셉 데이터를 working memory 로 로드한다. */
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo = loadUserData(actionEvent);
+
+		if(customerBasicInfo != null){
+			/* event 를 working memory 로 전송한다. */
+			Event.assertEvent(actionEvent);
+			EBMUtil.addConceptExtId(customerBasicInfo@extId); //for concurrent-rtc
+			RuleFunctions.ECF.SYSTEM.initPerformanceCheck();
+			Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "asserted Event(%d): userId(%s), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
+		}else{
+			/** using critical section
+			RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock(acquireLock);
+			**/
+		}
+
+	}
+}

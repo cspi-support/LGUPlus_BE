@@ -1,0 +1,61 @@
+/**
+ * @description 
+ * UserActionTrace 을 String 으로 변환한다.
+ */
+String rulefunction RuleFunctions.ECF.CONCEPT.convertUATToString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+	}
+	body {
+		Object logger = Log.getLogger("convertUATToString");
+		
+		Object spaceValue = String.createBuffer(2048);
+		if(spaceValue != null){
+			try{
+				String.append(spaceValue, userActivityTrace.SID);
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_SVC_NAME));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_ACT_DESC));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_ACT_START));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_ACT_TGT));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_ACT_TGT_DTL));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_VW_CURR));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_VW_CURR_DTL));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_MENU_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_ALBUM_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_CAT_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.P_VW_STATUS));
+				String.append(spaceValue, "," + getSerializedFromDatetime(userActivityTrace.P_ACTIVITY_TIME, null));
+				String.append(spaceValue, "," + getSerializedFromDatetime(userActivityTrace.P_RECEIVED_TIME, null));
+				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.P_DURATION));
+				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.P_COUNT));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_SVC_NAME));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_ACT_DESC));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_ACT_START));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_ACT_TGT));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_ACT_TGT_DTL));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_VW_CURR));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_VW_CURR_DTL));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_MENU_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_ALBUM_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_CAT_ID));
+				String.append(spaceValue, "," + getSerializedFromDatetime(userActivityTrace.C_ACTIVITY_TIME, null));
+				String.append(spaceValue, "," + getSerializedFromDatetime(userActivityTrace.C_RECEIVED_TIME, null));
+				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.C_VW_STATUS));
+				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.DURATION));
+				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.COUNT));
+
+				String convertedString = String.convertBufferToString(spaceValue);
+				return convertedString;
+			}catch(Exception: e){
+				Log.log(logger, "Error", "Exception" + e);
+				return null;
+			}finally{
+				String.clearBuffer(spaceValue);
+			}
+		}		
+		return null;
+	}
+}

@@ -1,0 +1,38 @@
+/**
+ * @description 
+ * @author EdwardMini
+ */
+rule Rules.POST_RULE.POST_PROCESS {
+	attribute {
+		priority = 9;
+		forwardChain = true;
+	}
+	declare {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+//		Events.SYSTEM.sessionLock sessionLock; //using critical section in PRE-RULE
+	}
+	when {
+		checkConcurrentAction(actionEvent, customerBasicInfo, null);
+// 		sessionLock.sessionKey == customerBasicInfo.SID; //using critical section in PRE-RULE
+	}
+	then {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "PostProcess");
+		Event.consumeEvent(actionEvent);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("post");
+
+		/* using critical section in PRE-RULE */
+//		RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock(sessionLock);
+		String[] concepts = EBMUtil.getConceptExtIds();
+		
+		if(concepts != null){
+			for(int i=0; i< concepts@length; i++){
+				Instance.deleteInstance(Instance.getByExtId(concepts[i]));
+			}
+		}
+
+		RuleFunctions.ECF.SYSTEM.printPerformanceCheck(actionEvent);
+		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "SEQ_ID:%s (%s == %s) ended", actionEvent.SeqId, actionEvent.SID, customerBasicInfo.SID);
+	}
+
+}
