@@ -92,7 +92,7 @@ tibco.env.STD_EXT_CP %TERR_HOME%/library/terrJava/java%PSP%%ACTIVESPACES_HOME%/l
 #
 # TIBCO Standard Path (Applicable to all Platforms)
 #
-tibco.env.PATH %ACTIVESPACES_HOME%/bin%PSP%%FTL_HOME%/bin%PSP%%BE_HOME%/hotfix/bin%PSP%%BE_HOME%/bin%PSP%%AS_HOME%/lib%PSP%%RV_HOME%/bin%PSP%%HAWK_HOME%/bin%PSP%%TIB_JAVA_HOME%/bin%PSP%%TERR_HOME%/bin/x64%PSP%%BE_HOME%/lib/ext/tpcl%PSP%%PATH%
+tibco.env.PATH %ACTIVESPACES_HOME%/bin%PSP%%FTL_HOME%/bin%PSP%%BE_HOME%/hotfix/bin%PSP%%BE_HOME%/bin%PSP%%AS_HOME%/lib%PSP%%RV_HOME%/bin%PSP%%HAWK_HOME%/bin%PSP%%TIB_JAVA_HOME%/bin%PSP%%TERR_HOME%/bin/x64%PSP%%PATH%
 
 #
 # TIBCO Load Library Path
@@ -104,11 +104,11 @@ tibco.env.DYLD_LIBRARY_PATH %ACTIVESPACES_HOME%/lib%PSP%%FTL_HOME%/lib%PSP%%BE_H
 #tibco.env.LD_PRELOAD %JVM_LIB_DIR%/server%PSP%%FTL_HOME%/bin%PSP%%ACTIVESPACES_HOME%/bin
 
 #tibco.env.LD_LIBRARY_PATH %ACTIVESPACES_HOME%/lib%PSP%%FTL_HOME%/lib%PSP%%AS_HOME%/lib%PSP%%JVM_LIB_DIR%/server%PSP%%JVM_LIB_DIR%%PSP%%RV_HOME%/lib%PSP%%EMS_HOME%/clients/java%PSP%%TERR_HOME%/lib/x86_64%PSP%/opt/tibco/be/ext%PSP%%BE_HOME%/lib/ext/tpcl%PSP%%LD_LIBRARY_PATH%
-tibco.env.LD_LIBRARY_PATH %TIBCO_HOME%/lib:%BE_HOME%/lib/ext/tpcl:%LD_LIBRARY_PATH%
-tibco.env.CLASSPATH %BE_HOME%/lib/ext/tpcl/as-common.jar:%BE_HOME%/lib/ext/tpcl/antlr-3.2.jar:%CLASSPATH%
+tibco.env.LD_LIBRARY_PATH %ACTIVESPACES_HOME%/lib%PSP%%FTL_HOME%/lib%PSP%%AS_HOME%/lib%PSP%%JVM_LIB_DIR%/server%PSP%%JVM_LIB_DIR%%PSP%%RV_HOME%/lib%PSP%%EMS_HOME%/clients/java%PSP%%TERR_HOME%/lib/x86_64%PSP%%LD_LIBRARY_PATH%%PSP%/opt/tibco/be/ext%PSP%/opt/tibco/be/application
+
 tibco.env.SHLIB_PATH %ACTIVESPACES_HOME%/lib%PSP%%FTL_HOME%/lib%PSP%%BE_HOME%/hotfix/lib%PSP%%BE_HOME%/lib%PSP%%BE_HOME%/hotfix/lib/eclipse/plugins%PSP%%BE_HOME%/lib/eclipse/plugins%PSP%%BE_HOME%/hotfix/lib/ext/tpcl%PSP%%BE_HOME%/lib/ext/tpcl%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/emf%PSP%%BE_HOME%/lib/ext/tpcl/emf%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/apache%PSP%%BE_HOME%/lib/ext/tpcl/apache%PSP%%BE_HOME%/hotfix/lib/ext/tibco%PSP%%BE_HOME%/lib/ext/tibco%PSP%%BE_HOME%/hotfix/lib/ext%PSP%%BE_HOME%/lib/ext%PSP%%AS_HOME%/lib%PSP%%JVM_LIB_DIR%/server%PSP%%JVM_LIB_DIR%%PSP%%RV_HOME%/lib%PSP%%EMS_HOME%/clients/java%PSP%%SHLIB_PATH%%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/apache/ignite-indexing%PSP%%BE_HOME%/lib/ext/tpcl/apache/ignite-indexing
 
-tibco.env.LIBPATH %ACTIVESPACES_HOME%/lib%PSP%%FTL_HOME%/lib%PSP%%BE_HOME%/hotfix/lib%PSP%%BE_HOME%/lib%PSP%%BE_HOME%/hotfix/lib/eclipse/plugins%PSP%%BE_HOME%/lib/eclipse/plugins%PSP%%BE_HOME%/hotfix/lib/ext/tpcl%PSP%%BE_HOME%/lib/ext/tpcl%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/emf%PSP%%BE_HOME%/lib/ext/tpcl/emf%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/apache%PSP%%BE_HOME%/lib/ext/tpcl/apache%PSP%%BE_HOME%/hotfix/lib/ext/tibco%PSP%%BE_HOME%/lib/ext/tibco%PSP%%BE_HOME%/hotfix/lib/ext%PSP%%BE_HOME%/lib/ext%PSP%%AS_HOME%/lib%PSP%%JVM_LIB_DIR%/server%PSP%%JVM_LIB_DIR%%PSP%%RV_HOME%/lib%PSP%%EMS_HOME%/clients/java%PSP%%LIBPATH%%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/apache/ignite-indexing%PSP%%BE_HOME%/lib/ext/tpcl/apache/ignite-indexing%PSP%%BE_HOME%/lib/ext/tpcl
+tibco.env.LIBPATH %ACTIVESPACES_HOME%/lib%PSP%%FTL_HOME%/lib%PSP%%BE_HOME%/hotfix/lib%PSP%%BE_HOME%/lib%PSP%%BE_HOME%/hotfix/lib/eclipse/plugins%PSP%%BE_HOME%/lib/eclipse/plugins%PSP%%BE_HOME%/hotfix/lib/ext/tpcl%PSP%%BE_HOME%/lib/ext/tpcl%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/emf%PSP%%BE_HOME%/lib/ext/tpcl/emf%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/apache%PSP%%BE_HOME%/lib/ext/tpcl/apache%PSP%%BE_HOME%/hotfix/lib/ext/tibco%PSP%%BE_HOME%/lib/ext/tibco%PSP%%BE_HOME%/hotfix/lib/ext%PSP%%BE_HOME%/lib/ext%PSP%%AS_HOME%/lib%PSP%%JVM_LIB_DIR%/server%PSP%%JVM_LIB_DIR%%PSP%%RV_HOME%/lib%PSP%%EMS_HOME%/clients/java%PSP%%LIBPATH%%PSP%%BE_HOME%/hotfix/lib/ext/tpcl/apache/ignite-indexing%PSP%%BE_HOME%/lib/ext/tpcl/apache/ignite-indexing
 
 #
 # Specifies the JVM to be used to launch this application
