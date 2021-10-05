@@ -29,8 +29,9 @@ Concepts.ECF.SCENARIO.UserActionHistory rulefunction RuleFunctions.ECF.CONCEPT.c
 					tokens[9]/*MENU_ID String */,
 					tokens[10]/*ALBUM_ID String */,
 					tokens[11]/*CAT_ID String */,
-					getDeserializedToDatetime(tokens[12], null)/*ACTIVITY_TIME DateTime */,
-					getDeserializedToDatetime(tokens[13], null)/*RECEIVED_TIME DateTime */);
+					tokens[12]/*GENRE_ID String */,
+					getDeserializedToDatetime(tokens[13], null)/*ACTIVITY_TIME DateTime */,
+					getDeserializedToDatetime(tokens[14], null)/*RECEIVED_TIME DateTime */);
 		}catch(Exception e){
 			Log.log(logger, "info", "exception:" + e);
 			return null;

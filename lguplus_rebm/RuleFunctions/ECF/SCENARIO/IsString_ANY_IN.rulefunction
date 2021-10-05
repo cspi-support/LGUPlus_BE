@@ -1,0 +1,16 @@
+/**
+ * @description 
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.IsString_ANY_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		String AllSet;		
+		String paramSet;
+		String delimiter;
+	}
+	body {
+		return StringUtil.isContainAny(AllSet, paramSet, delimiter);
+	}
+}

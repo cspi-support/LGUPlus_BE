@@ -1,7 +1,9 @@
 /**
- * @description ActionEvent 기준으로 생성한 사용자및 이력정보
+ * @description ActionEvent 기준으로 다음을 체크하고 해당 함수는 Scenario 에서 제일 먼저 호출되어야 한다.
+ * 1. ActionEvent 가 concurrent 모드상에서 동일한 Thread 에서 생성및 수행을 보장한다.
+ * 2. ActionEvent 와 연관된 사용자 컨셉및 ActionId 를 체크한다.
  */
-boolean rulefunction RuleFunctions.ECF.SCENARIO.checkConcurrentAction {
+boolean rulefunction RuleFunctions.ECF.SCENARIO.CheckUserAction {
 	attribute {
 		validity = CONDITION;
 	}

@@ -3,7 +3,7 @@
  */
 Object rulefunction RuleFunctions.ECF.AS.UTIL.getValueAsNumber {
 	attribute {
-		validity = ACTION;
+		validity = CONDITION;
 	}
 	scope {
 		String findKey;	

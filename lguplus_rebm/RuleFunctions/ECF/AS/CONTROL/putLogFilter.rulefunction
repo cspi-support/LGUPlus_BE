@@ -1,0 +1,33 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.CONTROL.putLogFilter {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String keyName;
+		String version;
+		DateTime timeStamp;
+		String value;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putData");
+		
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "filterName", keyName);
+			Metaspace.Tuple.putString(tuple, "module", "LogAgent");
+			Metaspace.Tuple.putString(tuple, "version", version);
+			Metaspace.Tuple.putDateTime(tuple, "timeStamp", timeStamp);
+			Metaspace.Tuple.putString(tuple, "filterValue", value);
+
+			/* Lock 옵션을 사용할것인지 확인해야 한다. */
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put(System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE.LogFilter"), tuple, putOption);
+			Log.log(logger, ScoreCard.log_control.IMDG_TAG, "putLogFilter key:" + keyName + " value:" + value);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}
+	}
+}

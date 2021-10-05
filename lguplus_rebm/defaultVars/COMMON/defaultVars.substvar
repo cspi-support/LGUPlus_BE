@@ -51,5 +51,15 @@
             <constraint/>
             <modTime>1631240089716</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>REVISION</name>
+            <value>V2</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1631597711730</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

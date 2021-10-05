@@ -65,10 +65,10 @@
         <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
       </properties>
     </destinations>
-    <destinations name="UserActionHistory" description="" GUID="AF9E1E53-AC3B-1CFA-54C6-47EC8248523D" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
+    <destinations name="UserActionStats" description="" GUID="21280C01-23D1-86D6-D880-7BC3C08B7035" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
       <properties>
         <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
-        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="UserActionHistory"/>
+        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="UserActionStats"/>
         <properties xsi:type="designtime:SimpleProperty" name="DistributionRole" value="LEECH"/>
         <properties xsi:type="designtime:SimpleProperty" name="Filter" value=""/>
         <properties xsi:type="designtime:SimpleProperty" name="ConsumptionMode" value="EventListener"/>
@@ -81,9 +81,26 @@
         <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
       </properties>
     </destinations>
-    <destinations name="UserActionStats" description="" GUID="21280C01-23D1-86D6-D880-7BC3C08B7035" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
+    <destinations name="OfferSpace" description="" GUID="785B4692-B1F0-FEAB-3902-63FD2D54EF07" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
       <properties>
-        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="UserActionStats"/>
+        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="OfferSpace"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DistributionRole" value="LEECH"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Filter" value=""/>
+        <properties xsi:type="designtime:SimpleProperty" name="ConsumptionMode" value="EventListener"/>
+        <properties xsi:type="designtime:SimpleProperty" name="BrowserType" value="GET"/>
+        <properties xsi:type="designtime:SimpleProperty" name="DistributionScope" value="ALL"/>
+        <properties xsi:type="designtime:SimpleProperty" name="TimeScope" value="ALL"/>
+        <properties xsi:type="designtime:SimpleProperty" name="PutEvent" value="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="TakeEvent" value="false"/>
+        <properties xsi:type="designtime:SimpleProperty" name="ExpireEvent" value="false"/>
+        <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
+      </properties>
+    </destinations>
+    <destinations name="UserViewStats" description="" GUID="77870EC4-78F5-198E-1D95-1036A3AB2427" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
+      <properties>
+        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
+        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="UserViewStats"/>
         <properties xsi:type="designtime:SimpleProperty" name="DistributionRole" value="LEECH"/>
         <properties xsi:type="designtime:SimpleProperty" name="Filter" value=""/>
         <properties xsi:type="designtime:SimpleProperty" name="ConsumptionMode" value="EventListener"/>

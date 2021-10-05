@@ -22,59 +22,52 @@ Concepts.ECF.SCENARIO.UserActivityTrace rulefunction RuleFunctions.ECF.SCENARIO.
 		* preprocessor 에서는 Concept 의 업데이트가 불가능하고 생성만 가능하다.
 		* 확인 필요한 사항 : 이미 생성되어 있는 Concept 의 변경이 필요한 경우는 어떤식으로 진행해야 할지.
 		*/
-		Concepts.ECF.SCENARIO.UserActivityTrace uatInstance = Instance.getByExtId(cust_extId);
+		Concepts.ECF.SCENARIO.UserActivityTrace uatInstance;
+		
+		if(false){ //UAT는 신규로 생성한다.
+			uatInstance = Instance.getByExtId(cust_extId);
 
-		/* 2. workingMemory 아이템이 유효하다면 이를 사용한다. */
-		if(uatInstance != null){
-			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "UserActivityTrace: %s from WorkingMemory", cust_extId);
-			EBMUtil.addConceptExtId(uatInstance@extId);
-			return uatInstance;
-		}
+			/* 2. workingMemory 아이템이 유효하다면 이를 사용한다. */
+			if(uatInstance != null){
+				Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "UserActivityTrace: %s from WorkingMemory", cust_extId);
+				EBMUtil.addConceptExtId(uatInstance@extId);
+				return uatInstance;
+			}
 
-		/* 3. get UserData from ActiveSpace */
-		uatInstance = RuleFunctions.ECF.AS.getUserActivityTrace(cust_extId, userId);
-		if(uatInstance != null){
-			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "UserActivityTrace: %s from ActiveSpace", cust_extId);
-			EBMUtil.addConceptExtId(uatInstance@extId);
-			return uatInstance;
+			/* 3. get UserData from ActiveSpace */
+			uatInstance = RuleFunctions.ECF.AS.getUserActivityTrace(cust_extId, userId);
+			if(uatInstance != null){
+				Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "UserActivityTrace: %s from ActiveSpace", cust_extId);
+				EBMUtil.addConceptExtId(uatInstance@extId);
+				return uatInstance;
+			}
 		}
 
 		/* 4. making initial concept */
 		uatInstance = Concepts.ECF.SCENARIO.UserActivityTrace.UserActivityTrace(
 			cust_extId/*extId String */,
 			userId/*SID String */,
-			null/*P_SVC_NAME String */,
-			null/*P_ACT_DESC String */,
-			null/*P_ACT_START String */,
-			null/*P_ACT_TGT String */,
-			null/*P_ACT_TGT_DTL String */,
-			null/*P_VW_CURR String */,
-			null/*P_VW_CURR_DTL String */,
-			null/*P_ACTION_ID String */,
-			null/*P_MENU_ID String */,
-			null/*P_CAT_ID String */,
-			null/*P_ALBUM_ID String */,
-			null/*P_VW_STATUS String */,
-			null/*P_ACTIVITY_TIME DateTime */,
-			null/*P_RECEIVED_TIME DateTime */,
-			0/*P_DURATION int */,
-			0/*P_COUNT int */,
-			null/*C_SVC_NAME String */,
-			null/*C_ACT_DESC String */,
-			null/*C_ACT_START String */,
-			null/*C_ACT_TGT String */,
-			null/*C_ACT_TGT_DTL String */,
-			null/*C_VW_CURR String */,
-			null/*C_VW_CURR_DTL String */,
-			null/*C_ACTION_ID String */,
-			null/*C_MENU_ID String */,
-			null/*C_CAT_ID String */,
-			null/*C_ALBUM_ID String */,
-			null/*C_VW_STATUS String */,
-			null/*C_ACTIVITY_TIME DateTime */,
-			null/*C_RECEIVED_TIME DateTime */,
+			null/*SVC_NAME String */,
+			null/*ACT_DESC String */,
+			null/*ACT_START String */,
+			null/*ACT_TGT String */,
+			null/*ACT_TGT_DTL String */,
+			null/*VW_CURR String */,
+			null/*VW_CURR_DTL String */,
+			null/*ACTION_ID String */,
+			null/*MENU_ID String */,
+			null/*ALBUM_ID String */,
+			0/*ALBUM_COUNT int */,
+			null/*CAT_ID String */,
+			0/*CAT_COUNT int */,
+			null/*GENRE_ID String */,
+			0/*GENRE_COUNT int */,
+			null/*VW_STATUS String */,
+			null/*ACTIVITY_TIME DateTime */,
+			null/*RECEIVED_TIME DateTime */,
 			0/*DURATION int */,
-			0/*COUNT int */
+			0/*COUNT int */,
+			0/*LAST_ACTION_TIME */
 			,null); //xsemiyas_lock
 
 		if(uatInstance != null){

@@ -18,9 +18,12 @@ String rulefunction RuleFunctions.ECF.CONCEPT.convertCBIToString {
 			try{
 				String.append(spaceValue, customerBasicInfo.SID);
 				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CID));
+				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CTN));
+				String.append(spaceValue, "," + getSerializedFromBoolean(customerBasicInfo.MON_SUBS));
 				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.SUBSCRIBE_INFO));
 				String.append(spaceValue, "," + getSerializedFromBoolean(customerBasicInfo.UNSUB_CANDI));
 				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.NAME));
+				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CLASS));
 				String.append(spaceValue, "," + getSerializedFromDatetime(customerBasicInfo.AVAIL_ET, null));
 
 				String convertedString = String.convertBufferToString(spaceValue);

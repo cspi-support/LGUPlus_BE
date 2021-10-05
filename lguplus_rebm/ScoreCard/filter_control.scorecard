@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Scorecard xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/ScoreCard/" name="filter_control" description="" GUID="A4F158FC-611A-ABCE-4D56-8221736D396E" ownerProjectName="lguplus_rebm" scorecard="true">
+  <properties name="filter_control_iptv_in_action" ownerProjectName="lguplus_rebm"/>
+  <properties name="filter_control_applyMode" ownerProjectName="lguplus_rebm" type="boolean"/>
+  <properties name="filter_control_mobile_in_action" ownerProjectName="lguplus_rebm"/>
+</element:Scorecard>

@@ -1,0 +1,18 @@
+/**
+ * @description 
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.IsAlbumCategory_ANY_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		String CategorySet;		
+	}
+	body {
+		return StringUtil.isContainAny(CategorySet, userActivityTrace.CAT_ID, ",");
+	}
+}

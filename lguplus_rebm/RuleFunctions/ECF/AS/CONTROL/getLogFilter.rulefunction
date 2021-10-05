@@ -1,0 +1,22 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.AS.CONTROL.getLogFilter {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String keyValue;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getData");	
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "filterName", keyValue);
+			return Metaspace.Space.get(System.getGlobalVariableAsString("AS/SPACE_LOG_FILTER", "LGUPLUS_METASPACE.LogFilter"), tuple);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}
+		return null;
+	}
+}

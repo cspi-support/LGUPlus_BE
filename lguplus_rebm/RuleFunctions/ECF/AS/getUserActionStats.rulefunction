@@ -3,7 +3,7 @@
  */
 Object[] rulefunction RuleFunctions.ECF.AS.getUserActionStats {
 	attribute {
-		validity = ACTION;
+		validity = CONDITION;
 	}
 	scope {
 		String userId;

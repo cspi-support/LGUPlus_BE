@@ -12,6 +12,7 @@
     <properties name="MENU_ID" ownerProjectName="lguplus_rebm"/>
     <properties name="ALBUM_ID" ownerProjectName="lguplus_rebm"/>
     <properties name="CAT_ID" ownerProjectName="lguplus_rebm"/>
+    <properties name="GENRE_ID" ownerProjectName="lguplus_rebm"/>
     <properties name="ACTIVITY_TIME" ownerProjectName="lguplus_rebm" type="DateTime"/>
     <properties name="RECEIVED_TIME" ownerProjectName="lguplus_rebm" type="DateTime"/>
 </element:Concept>

@@ -1,0 +1,27 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.CHANNEL.RequestOffer {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		String scenarioId;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "RequestOffer");
+		String offerId = DateTime.format(DateTime.now(), "yyyyMMddHHmmssSSS") + Random() % 100;
+		String[] param = {scenarioId, customerBasicInfo.CID, customerBasicInfo.CTN};
+
+		if(String.compareToIgnoreCase(System.getGlobalVariableAsString("COMMON/REVISION", "V2"), "V2") == 0){
+			Log.log(logger, "info", "request offer ");
+			RuleFunctions.ECF.CHANNEL.AS.RequestOfferToAS(offerId, actionEvent.SID, param);
+		}else{
+			RuleFunctions.ECF.CHANNEL.LOCAL_CH.RequestOfferToLocal(offerId, actionEvent.SID, param);
+		}
+	}
+}

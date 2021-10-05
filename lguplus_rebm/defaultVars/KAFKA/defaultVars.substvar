@@ -33,13 +33,13 @@
         </globalVariable>
         <globalVariable>
             <name>TOPIC_INBOUND_3</name>
-            <value>iptv.common.storage</value>
+            <value>iptv.storage</value>
             <type>String</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1631245912989</modTime>
+            <modTime>1631838682198</modTime>
         </globalVariable>
         <globalVariable>
             <name>TOPIC_INTERCOMM</name>
@@ -100,6 +100,26 @@
             <description/>
             <constraint/>
             <modTime>1631248368159</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>TOPIC_INBOUND_GROUP_ID</name>
+            <value>logagent_group</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1631513351483</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>TOPIC_INBOUND_CONSUMER_COUNT</name>
+            <value>1</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1631513549711</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

@@ -19,5 +19,9 @@ void rulefunction RuleFunctions.StartUp.startUp {
 		initializeActiveSpace();
 		initializeDatasource();
 		initializeDefaultConcepts();
+
+		if(String.compareToIgnoreCase(System.getGlobalVariableAsString("COMMON/REVISION", "v1"), "v2") == 0){
+			RuleFunctions.ECF.CONTROL.initializeFilterMap(true);
+		} 
 	}
 }

@@ -1,0 +1,115 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.Preprocessor.PreProcessorForKafka_v2 {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Kafka.Inbound inboundLog;	
+	}
+	body {
+		
+		Object logger = Log.getLogger(ScoreCard.log_control.PREPROCESS_TAG + "Rebm:preprocessorForKafka");
+		Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "preprocessingForKafka:" + inboundLog@payload);
+//		Log.log(logger, "info", "preprocessingForKafka:" + inboundLog@payload);
+		
+		/** Kafka 메세지의 앞쪽이 깨져서 들어오는 경우가 있을 수 있기 때문에 이의 workaround 로서 SEQ_ID 이후의 문자열로 다시 재조합한다. 
+		String inputData = String.trim(inboundLog@payload);
+		*/
+		String inputData = "SEQ_ID" + String.substringAfter(inboundLog@payload, "SEQ_ID");
+
+		Event.consumeEvent(inboundLog);
+		
+		/* construct json string and put to topic  */
+		/* need try-catch */
+		if(inputData != null) {
+			String[] pair = String.split2(inputData, "[|]", -1);
+			Object map = Collections.Map.createHashMap();
+
+			/* Message 를 filterColumn 기반으로  Collections Map 을 구성한다. */
+			for(int i=0;i<pair@length;i++){
+				if(!StringUtil.isEmpty(pair[i])) {
+					String pairKey = String.substringBefore(pair[i], "=");
+					String pairValue = String.substringAfter(pair[i], "=");
+					if(!StringUtil.isEmpty(pairKey) && !StringUtil.isEmpty(pairValue) ){
+						Collections.Map.put(map, pairKey, pairValue);
+					}
+				}
+			}
+			
+			/* 사용되지 않은 Action 은 filter-out 한다. */
+			if(Collections.Map.size(map) > 0) {
+				String sid = Collections.Map.get(map, "SID");
+				String sid_typ_cd = Collections.Map.get(map, "SID_TYP_CD");
+				String actionId = Collections.Map.get(map, "ACT_TARGET_DTL");
+				if(sid != null && sid != "" && sid_typ_cd != null && sid_typ_cd == "ENTR_NO" && actionId != null && actionId != "" 
+				  && String.indexOfString(ScoreCard.filter_control.filter_control_iptv_in_action, 0,String.toUpperCase(actionId)) > -1 ){
+
+					/* 1. changed to Critical Section : global session lock */
+					/** using critical section
+					Events.SYSTEM.sessionLock acquireLock = RuleFunctions.ECF.SYSTEM.acquireGlobalSessionLock(userId, 3, 3000);
+					if(acquireLock == null) return;
+					**/
+
+					/* 2. Local Event 생성 */
+					String seqId;
+					if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+						seqId = Collections.Map.get(map, "SEQ_ID");
+					}else{
+						/* test data 의 seq_id 필드의 마지막 8자리가 잘못되어 있슴 */
+						seqId = Collections.Map.get(map, "SEQ_ID");
+						seqId = seqId + System.nanoTime();
+					}
+
+					String timeValue = Collections.Map.get(map, "REQ_TIME");
+					DateTime reqTime = DateTime.parseString(timeValue, "yyyyMMddHHmmssSSS");
+					Events.Internal.ActionEvent actionEvent = Events.Internal.ActionEvent.ActionEvent(
+						null/*extId String */,
+						null/*payload String */,
+						sid/*SID String */,
+						seqId/*SeqId String */,
+						Collections.Map.get(map, "SVC_NAME")/*SvcName String */,
+						Collections.Map.get(map, "ACT_START")/*ActionStart String */,
+						Collections.Map.get(map, "ACT_TARGET")/*ActionTarget String */,
+						actionId,//Collections.Map.get(map, "ACT_TARGET_DTL")/*ActionTargetDtl String */,
+						Collections.Map.get(map, "VIEW_CURR")/*ViewCurr String */,
+						Collections.Map.get(map, "VIEW_CURR_DTL")/*ViewCurrDtl String */,
+						Collections.Map.get(map, "ACT_DTL1")/*ActionDTL1 String */,
+						Collections.Map.get(map, "ACT_DTL2")/*ActionDTL2 String */,
+						Collections.Map.get(map, "ACT_DTL3")/*ActionDTL3 String */,
+						Collections.Map.get(map, "ACT_DTL4")/*ActionDTL4 String */,
+						Collections.Map.get(map, "ACT_DTL5")/*ActionDTL5 String */,
+						Collections.Map.get(map, "ACT_DTL6")/*ActionDTL6 String */,
+						Collections.Map.get(map, "ACT_DTL7")/*ActionDTL7 String */,
+						Collections.Map.get(map, "ACT_DTL8")/*ActionDTL8 String */,
+						Collections.Map.get(map, "ACT_DTL9")/*ActionDTL9 String */,
+						Collections.Map.get(map, "ACT_DTL10")/*ActionDTL10 String */,
+						reqTime/*ReqTime DateTime */,
+						DateTime.now()
+						,SystemUtil.getCurrentThreadId()); //for concurrent-rtc
+
+					/* 3. 사용할 컨셉 데이터를 working memory 로 로드한다. */
+					Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo = loadUserData(actionEvent);
+
+					if(customerBasicInfo != null){
+						/* event 를 working memory 로 전송한다. */
+						Event.assertEvent(actionEvent);
+						EBMUtil.addConceptExtId(customerBasicInfo@extId); //for concurrent-rtc
+						RuleFunctions.ECF.SYSTEM.initPerformanceCheck();
+//						Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "asserted Event(%d): userId(%s), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
+//						Log.log(logger, "info", "asserted Event(%d): userId(%s), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
+					}else{
+						/* Unknown-user */
+
+						/** using critical section
+						RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock(acquireLock);
+						**/
+					}
+						
+				}
+			}
+			
+		}
+	}
+}

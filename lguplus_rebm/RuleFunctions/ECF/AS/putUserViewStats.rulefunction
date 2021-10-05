@@ -1,0 +1,36 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.putUserViewStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		String[] jsonOrgStats;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserViewStats");
+
+		if(userActivityTrace.ALBUM_ID == null || userActivityTrace.ALBUM_ID == "" || jsonOrgStats == null)
+			return;
+
+		try{
+			DateTime currentTime = DateTime.now();
+			Object tuple = Metaspace.Tuple.create();
+			
+			Metaspace.Tuple.putString(tuple, "uvsId", userActivityTrace.SID);
+			long dateId = Number.longValue(DateTime.format(currentTime, "yyyyMMdd"), 10);
+			Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+			Metaspace.Tuple.putString(tuple, "actionId", userActivityTrace.ACTION_ID);
+			Metaspace.Tuple.putString(tuple, "albumStats", GsonUtil.setValue(jsonOrgStats[0], userActivityTrace.ALBUM_ID, "" + userActivityTrace.ALBUM_COUNT));
+			Metaspace.Tuple.putString(tuple, "categoryStats", GsonUtil.setValue(jsonOrgStats[1], userActivityTrace.CAT_ID, "" + userActivityTrace.CAT_COUNT));
+			Metaspace.Tuple.putString(tuple, "genreStats", GsonUtil.setValue(jsonOrgStats[2], userActivityTrace.GENRE_ID, "" + userActivityTrace.GENRE_COUNT));
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put("LGUPLUS_METASPACE.UserViewStats", tuple, putOption);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

@@ -26,6 +26,7 @@ String rulefunction RuleFunctions.ECF.CONCEPT.convertUAHToString {
 				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.MENU_ID));
 				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ALBUM_ID));
 				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.CAT_ID));
+				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.GENRE_ID));
 				String.append(spaceValue, "," + getSerializedFromDatetime(userActionHistory.ACTIVITY_TIME, null));
 				String.append(spaceValue, "," + getSerializedFromDatetime(userActionHistory.RECEIVED_TIME, null));
 

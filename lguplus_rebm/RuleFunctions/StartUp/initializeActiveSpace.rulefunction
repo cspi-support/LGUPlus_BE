@@ -16,6 +16,7 @@ void rulefunction RuleFunctions.StartUp.initializeActiveSpace {
 		String metaSpaceName = System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE");
 		String discoveryURL = System.getGlobalVariableAsString("AS/DISCOVERY_URL", "tcp://localhost:50001");
 		String listenURL = System.getGlobalVariableAsString("AS/LISTEN_URL", "tcp");
+		String remoteListenURL = System.getGlobalVariableAsString("AS/REMOTE_LISTEN_URL", "tcp");
 		
 		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "memberName:%s", memberName);
 		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "metaSpaceName:%s", metaSpaceName);
@@ -27,6 +28,7 @@ void rulefunction RuleFunctions.StartUp.initializeActiveSpace {
 		
 			Metaspace.MemberDef.setDiscovery(memberDef, discoveryURL);
 			Metaspace.MemberDef.setListen(memberDef, listenURL);
+			Metaspace.MemberDef.setRemoteListen(memberDef, remoteListenURL);
 			Metaspace.MemberDef.setMemberName(memberDef, memberName);
 			Metaspace.MemberDef.setConnectTimeout(memberDef, 60000);
 			Metaspace.connect(metaSpaceName, memberDef);

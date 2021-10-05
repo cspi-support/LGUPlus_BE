@@ -1,0 +1,19 @@
+/**
+ * @description 고객의 가입정보가 특정 Set(월정액 코드정보들)에 포함되어 있는지 확인한다.
+ * CodeSet : 월정액 코드 정보들
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.IsUserSubscribed_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		String CodeSet;
+	}
+	body {
+		return StringUtil.isContainAny(CodeSet, customerBasicInfo.SUBSCRIBE_INFO, ",");
+	}
+}

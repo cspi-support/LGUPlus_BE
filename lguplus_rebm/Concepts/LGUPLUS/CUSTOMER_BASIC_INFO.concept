@@ -1,73 +1,98 @@
-<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" xmi:version="2.0" folder="/Concepts/LGUPLUS/" name="CUSTOMER_BASIC_INFO" description="" GUID="874A7565-E78A-B675-45E4-278ABA826880" ownerProjectName="lguplus_rebm">
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Concepts/LGUPLUS/" name="CUSTOMER_BASIC_INFO" description="" GUID="25F53229-7B33-2513-5DD4-19303ABCB4E8" ownerProjectName="lguplus_rebm">
+  <extendedProperties>
+    <properties xsi:type="designtime:SimpleProperty" name="SCHEMA_NAME" value="LGUPLUS"/>
+    <properties xsi:type="designtime:SimpleProperty" name="OBJECT_NAME" value="CUSTOMER_BASIC_INFO"/>
+    <properties xsi:type="designtime:SimpleProperty" name="OBJECT_TYPE" value="T"/>
+    <properties xsi:type="designtime:SimpleProperty" name="PRIMARY_KEY_PROPS" value="[ID]"/>
+    <properties xsi:type="designtime:SimpleProperty" name="JDBC_RESOURCE" value="/SharedResources/OracleConn.sharedjdbc"/>
+  </extendedProperties>
+  <properties name="ID" ownerProjectName="lguplus_rebm" type="double" defaultValue="&quot;LGUPLUS&quot;.&quot;ISEQ$$_80109&quot;.nextval">
     <extendedProperties>
-        <properties xsi:type="designtime:SimpleProperty" name="SCHEMA_NAME" value="LGUPLUS"/>
-        <properties xsi:type="designtime:SimpleProperty" name="OBJECT_NAME" value="CUSTOMER_BASIC_INFO"/>
-        <properties xsi:type="designtime:SimpleProperty" name="OBJECT_TYPE" value="T"/>
-        <properties xsi:type="designtime:SimpleProperty" name="PRIMARY_KEY_PROPS" value="[ID]"/>
-        <properties xsi:type="designtime:SimpleProperty" name="JDBC_RESOURCE" value="/SharedResources/OracleConn.sharedjdbc"/>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="ID"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="NUMBER"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="0"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="0"/>
     </extendedProperties>
-    <properties name="ID" ownerProjectName="lguplus_rebm" type="double" defaultValue="&quot;LGUPLUS&quot;.&quot;ISEQ$$_80704&quot;.nextval">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="ID"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="NUMBER"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="0"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="0"/>
-        </extendedProperties>
-    </properties>
-    <properties name="SID" ownerProjectName="lguplus_rebm">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="SID"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="50"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="50"/>
-        </extendedProperties>
-    </properties>
-    <properties name="CID" ownerProjectName="lguplus_rebm">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CID"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="50"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="50"/>
-        </extendedProperties>
-    </properties>
-    <properties name="CREATED" ownerProjectName="lguplus_rebm" type="DateTime" defaultValue="sysdate">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CREATED"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="DATE"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="7"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="7"/>
-        </extendedProperties>
-    </properties>
-    <properties name="NAME" ownerProjectName="lguplus_rebm">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="NAME"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="20"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="20"/>
-        </extendedProperties>
-    </properties>
-    <properties name="SUBSCRIBE_INFO" ownerProjectName="lguplus_rebm">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="SUBSCRIBE_INFO"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="50"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="50"/>
-        </extendedProperties>
-    </properties>
-    <properties name="UNSUB_CANDI" ownerProjectName="lguplus_rebm" defaultValue="'N'">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="UNSUB_CANDI"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="1"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="1"/>
-        </extendedProperties>
-    </properties>
-    <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime" defaultValue="NULL">
-        <extendedProperties>
-            <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="AVAIL_ET"/>
-            <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="DATE"/>
-            <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="7"/>
-            <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="7"/>
-        </extendedProperties>
-    </properties>
+  </properties>
+  <properties name="ENTR_NO" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="ENTR_NO"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="50"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="50"/>
+    </extendedProperties>
+  </properties>
+  <properties name="CUST_NO" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CUST_NO"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="50"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="50"/>
+    </extendedProperties>
+  </properties>
+  <properties name="CTN" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CTN"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="12"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="12"/>
+    </extendedProperties>
+  </properties>
+  <properties name="NAME" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="NAME"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="20"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="20"/>
+    </extendedProperties>
+  </properties>
+  <properties name="MON_SUBS" ownerProjectName="lguplus_rebm" defaultValue="'N'">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="MON_SUBS"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="1"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="1"/>
+    </extendedProperties>
+  </properties>
+  <properties name="SUBSCRIBE_INFO" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="SUBSCRIBE_INFO"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="50"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="50"/>
+    </extendedProperties>
+  </properties>
+  <properties name="CLASS" ownerProjectName="lguplus_rebm" defaultValue="'I'">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CLASS"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="1"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="1"/>
+    </extendedProperties>
+  </properties>
+  <properties name="UNSUB_CANDI" ownerProjectName="lguplus_rebm" defaultValue="'N'">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="UNSUB_CANDI"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="1"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="1"/>
+    </extendedProperties>
+  </properties>
+  <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime" defaultValue="NULL">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="AVAIL_ET"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="DATE"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="7"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="7"/>
+    </extendedProperties>
+  </properties>
+  <properties name="CREATED" ownerProjectName="lguplus_rebm" type="DateTime" defaultValue="sysdate">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CREATED"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="DATE"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="7"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="7"/>
+    </extendedProperties>
+  </properties>
 </element:Concept>

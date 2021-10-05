@@ -1,0 +1,22 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.CHANNEL.LOCAL_CH.RequestOfferToLocal {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String offerId;	
+		String userId;
+		String[] param;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "RequestOfferToLocal");
+
+		Event.routeTo(
+		Events.LOCAL_CH.ChannelOffer.ChannelOffer(null/*extId String */,null/*payload String */,userId/*SID String */,param[0]/*CAMP_ID String */),
+		"/Channels/LocalChannel/OfferChannel", "");	
+		
+		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "routeTo ChannelOffer:" + offerId);
+	}
+}

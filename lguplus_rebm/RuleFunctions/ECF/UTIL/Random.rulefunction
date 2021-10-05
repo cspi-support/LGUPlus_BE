@@ -1,0 +1,14 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.UTIL.Random {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		return Math.round(Math.random() * 10);
+	}
+}

@@ -1,0 +1,34 @@
+/**
+ * @description OfferAgent 와 통신을 위해 사용한다.
+ */
+void rulefunction RuleFunctions.ECF.AS.putOfferSpace {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String offerId;	
+		String userId;
+		String[] param;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putOfferSpace");
+		
+		String paramString = "";
+		if(param@length > 0) {
+			paramString = StringUtil.join(param, ",");
+		}
+		try{
+			Object tuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(tuple, "offerId", offerId);
+			Metaspace.Tuple.putString(tuple, "userId", userId);
+			Metaspace.Tuple.putString(tuple, "param", paramString);
+			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(DateTime.now()));
+
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put(System.getGlobalVariableAsString("AS/SPACE_OFFER_SPACE", "LGUPLUS_METASPACE.OfferSpace"), tuple, putOption);
+			Log.log(logger, "Info", "offer to Space");
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

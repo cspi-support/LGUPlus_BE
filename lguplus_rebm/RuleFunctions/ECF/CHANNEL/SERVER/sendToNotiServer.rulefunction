@@ -1,7 +1,7 @@
 /**
  * @description 
  */
-void rulefunction RuleFunctions.ECF.CHANNEL.sendToCouponServer {
+void rulefunction RuleFunctions.ECF.CHANNEL.SERVER.sendToNotiServer {
 	attribute {
 		validity = ACTION;
 	}

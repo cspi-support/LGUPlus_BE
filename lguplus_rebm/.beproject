@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration:StudioProjectConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:configuration="http:///com/tibco/cep/studio/common/configuration/model/project_configuration.ecore" name="lguplus_rebm" version="6.1.1" build="050" xpathVersion="2.0">
-  <thirdpartyLibEntries entryType="Third Party" path="C:\TIBCO\be\6.1\lib\ext\tpcl\ebm.jar" timestamp="1631185975000">
+  <thirdpartyLibEntries entryType="Third Party" path="C:\tibco\be\6.1\lib\ext\tpcl\ebm.jar" timestamp="1631258704194">
     <nativeLibraryLocation/>
   </thirdpartyLibEntries>
   <javaSourceFolderEntries entryType="JAVA_SOURCE_FOLDER" path="/lguplus_rebm/JavaSrc" readOnly="true"/>
-  <enterpriseArchiveConfiguration name="lguplus_rebm" author="shkim" version="231" path="D:\cspi\30.project\31.site\02.LGUPLUS REBM\50.project\workspaces\lguplus_rebm\Deployments\lguplus_rebm.ear" overwrite="true"/>
+  <enterpriseArchiveConfiguration name="lguplus_rebm" author="shkim" version="260" path="D:\devel\project\lguplus_rebm_branch\lguplus_rebm\output\lguplus_rebm.ear" overwrite="true"/>
   <bpmnProcessSettings/>
 </configuration:StudioProjectConfiguration>

@@ -21,13 +21,13 @@ rule Rules.LOCAL_CH.ProcessChannelOffer {
 		Log.log(logger, "INFO", "Processing Campaign:" + campaignMap.CAMP_ID + " channelId" + campaignMap.CHNL_ID);
 		
 		if(campaignMap.CHNL_ID == "CH001"){
-			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending push");
+			RuleFunctions.ECF.CHANNEL.SERVER.sendToCouponServer(channelOffer.SCNR_ID + ":sending push");
 		}else if(campaignMap.CHNL_ID == "CH002"){
-			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending coupon");
+			RuleFunctions.ECF.CHANNEL.SERVER.sendToCouponServer(channelOffer.SCNR_ID + ":sending coupon");
 		}else if(campaignMap.CHNL_ID == "CH003"){
-			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending mms");
+			RuleFunctions.ECF.CHANNEL.SERVER.sendToCouponServer(channelOffer.SCNR_ID + ":sending mms");
 		}else if(campaignMap.CHNL_ID == "CH004"){
-			RuleFunctions.ECF.CHANNEL.sendToCouponServer(channelOffer.SCNR_ID + ":sending fc");
+			RuleFunctions.ECF.CHANNEL.SERVER.sendToCouponServer(channelOffer.SCNR_ID + ":sending fc");
 		}
 	}
 }

@@ -1,0 +1,76 @@
+/**
+ * @description 
+ */
+
+String[] rulefunction RuleFunctions.ECF.SCENARIO.initializeUserViewStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		DateTime startDate;
+		DateTime endDate;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":initializeUserViewStats");
+		long currentDateId = Number.longValue(DateTime.format(DateTime.now(), "yyyyMMdd"), 10);
+		String[] nowStats = String[]{null,null,null};
+
+		int albumCount = 0;
+		int categoryCount = 0;
+		int genreCount = 0;
+
+		if(userActivityTrace.ALBUM_ID == null || userActivityTrace.ALBUM_ID == "") return nowStats;
+
+		try{
+			Object[] tuples = RuleFunctions.ECF.AS.getUserViewStats(userActivityTrace.SID, userActivityTrace.ACTION_ID, null, startDate, endDate);
+			
+			if(tuples != null){
+				for(int i=0; i < tuples@length; i++){
+					Long dateId = getValueAsNumber("dateId", tuples[i]);
+					if(dateId == currentDateId) {
+						String albumStats = getValueAsString("albumStats", tuples[i]);
+						String categoryStats = getValueAsString("categoryStats", tuples[i]);
+						String genreStats = getValueAsString("genreStats", tuples[i]);
+						nowStats = String[3]{};
+						nowStats[0] = albumStats;
+						nowStats[1] = categoryStats;
+						nowStats[2] = genreStats;
+						albumCount += Number.intValue(GsonUtil.getValue(albumStats, userActivityTrace.ALBUM_ID), 10) + 1;
+						categoryCount += Number.intValue(GsonUtil.getValue(categoryStats, userActivityTrace.CAT_ID), 10) + 1;
+						genreCount += Number.intValue(GsonUtil.getValue(genreStats, userActivityTrace.GENRE_ID), 10) + 1;
+
+					}else{
+						String albumStats = getValueAsString("albumStats", tuples[i]);
+						String categoryStats = getValueAsString("categoryStats", tuples[i]);
+						String genreStats = getValueAsString("genreStats", tuples[i]);
+						albumCount += Number.intValue(GsonUtil.getValue(albumStats, userActivityTrace.ALBUM_ID), 10);
+						categoryCount += Number.intValue(GsonUtil.getValue(categoryStats, userActivityTrace.CAT_ID), 10);
+						genreCount += Number.intValue(GsonUtil.getValue(genreStats, userActivityTrace.GENRE_ID), 10);
+					}
+				}
+			}else{
+				albumCount = 1;
+				categoryCount = 1;
+				genreCount = 1;
+			}
+
+			/* 이력성 마트로 부터 데이터를 구한다. */
+			/** check mart
+			Object[] items = RuleFunctions.ECF.MART.getUserActionHistoryFromMart(userId, userActivityTrace.ACTION_ID, startDate, endDate);
+			if(items != null) {
+				actionCount += items@length;
+			}		
+			**/
+
+			userActivityTrace.ALBUM_COUNT = albumCount;
+			userActivityTrace.CAT_COUNT = categoryCount;
+			userActivityTrace.GENRE_COUNT = genreCount;
+			
+			return nowStats;
+		}catch(Exception e){
+			Log.log(logger, "info", "Exception:" + e);
+			return nowStats;
+		}
+	}
+}

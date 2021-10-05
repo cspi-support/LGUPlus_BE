@@ -1,0 +1,18 @@
+/**
+ * @description 
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.IsAlbum_ANY_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		String AlbumSet;		
+	}
+	body {
+		return StringUtil.isContainAny(AlbumSet, userActivityTrace.ALBUM_ID, ",");
+	}
+}

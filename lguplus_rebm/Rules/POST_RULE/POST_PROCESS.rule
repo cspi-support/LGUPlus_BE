@@ -13,7 +13,7 @@ rule Rules.POST_RULE.POST_PROCESS {
 //		Events.SYSTEM.sessionLock sessionLock; //using critical section in PRE-RULE
 	}
 	when {
-		checkConcurrentAction(actionEvent, customerBasicInfo, null);
+		CheckUserAction(actionEvent, customerBasicInfo, null);
 // 		sessionLock.sessionKey == customerBasicInfo.SID; //using critical section in PRE-RULE
 	}
 	then {

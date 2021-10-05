@@ -9,20 +9,28 @@ rule Rules.CAMPAIGN_RULE.CAMPAIGN_TEST_1 {
 	}
 	declare {
 		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
-		Concepts.ECF.SCENARIO.UserActivityTrace userActionTrace;	
-//		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
 	}
 	when {
-		checkConcurrentAction(actionEvent, customerBasicInfo, "T014");
-		actionEvent.SeqId == userActionTrace.SEQ_ID;
-		actionEvent.ActionTargetDtl == userActionTrace.C_ACTION_ID;
-//		actionEvent.SID == customerBasicInfo.SID && actionEvent.SID == userActionTrace.SID;
-//		userActionTrace.C_ALBUM_ID == contentInfo.CID;
+		MatchPreCondition(actionEvent, userActivityTrace, customerBasicInfo, contentInfo, "T014");
+
+		/** Matching 예제 
+		userActivityTrace.DURATION > 20; // 진입/이탈 사이의 duration(sec)
+		IsAlbumCategory_ANY_IN(actionEvent, userActivityTrace, customerBasicInfo, contentInfo, "다시보고싶은 영화,산책용 영화"); // 앨범의 카테고리가 특정 카테고리셋에 포함되는지
+		userActivityTrace.CAT_COUNT > 5; //카테고리 매칭 횟수
+		userActivityTrace.COUNT > 2; //행동의 횟수
+		**/
 	}
 	then {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "CAMPAIGN_TEST_1");
-		Log.log(logger, "Info", "Matched(%d): SID(%s) : SEQ_ID:%s, customerBasicInfo:%s, userActionTrace:%s", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId, customerBasicInfo@id, userActionTrace@id);
+		Log.log(logger, "Info", "Matched(%d): SID(%s) : SEQ_ID:%s, customerBasicInfo:%s, userActionTrace:%s, count:%d", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId, customerBasicInfo@id, userActivityTrace@id, userActivityTrace.COUNT);
+		
+		/* 발송 테스트 */
+		String scenarioId = "scenario_1234";
+		RequestOffer(actionEvent, userActivityTrace, customerBasicInfo, contentInfo, scenarioId);
+
 //		completeCampaign(actionEvent);
 	}
 }

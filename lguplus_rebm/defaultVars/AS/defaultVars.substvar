@@ -29,7 +29,7 @@
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1625719731203</modTime>
+            <modTime>1632362385611</modTime>
         </globalVariable>
         <globalVariable>
             <name>LISTEN_URL</name>
@@ -150,6 +150,16 @@
             <description/>
             <constraint/>
             <modTime>1631237648376</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>SPACE_OFFER_SPACE</name>
+            <value>LGUPLUS_METASPACE.OfferSpace</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1631668793833</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

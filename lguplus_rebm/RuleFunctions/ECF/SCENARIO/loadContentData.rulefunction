@@ -45,7 +45,7 @@ Concepts.ECF.SCENARIO.ContentInfo rulefunction RuleFunctions.ECF.SCENARIO.loadCo
 				if(item == null) return null;
 				ciInstance = Concepts.ECF.SCENARIO.ContentInfo.ContentInfo(
 					album_extId/*extId String */,
-					item.CID/*CID String */,
+					item.ALBUM_ID/*CID String */,
 					item.TITLE/*TITLE String */,
 					item.CREATED/*CREATED DateTime */,
 					item.GENRE/*GENRE String */,

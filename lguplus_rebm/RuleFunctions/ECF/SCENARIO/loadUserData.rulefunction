@@ -40,16 +40,19 @@ Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.SCENARIO.
 		/* 4. get data from DataMart */
 		Concepts.LGUPLUS.CUSTOMER_BASIC_INFO item = RuleFunctions.ECF.MART.getCustomerBasicInfoFromMart(actionEvent.SID); 
 		if(item != null){
-			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "loaded User(%s) from Mart", item.SID);
+			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "loaded User(%s) from Mart", item.ENTR_NO);
 			cbiInstance = Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
 						cust_extId/*extId String */,
-						item.SID/*SID String */,
-						item.CID/*CID String */,
+						item.ENTR_NO/*SID String */,
+						item.CUST_NO/*CID String */,
+						item.CTN/*CTN String */,
+						getDeserializedToBoolean(item.MON_SUBS)/*MON_SUBS boolean */,
 						item.SUBSCRIBE_INFO/*SUBSCRIBE_INFO String */,
 						getDeserializedToBoolean(item.UNSUB_CANDI)/*UNSUB_CANDI boolean */,
 						item.NAME/*NAME String */,
-						item.AVAIL_ET/*AVAIL_ET DateTime */
-						, actionEvent.SeqId); //for concurrent-rtc
+						item.CLASS/*CLASS String */,
+						item.AVAIL_ET/*AVAIL_ET DateTime */,
+						actionEvent.SeqId/*SEQ_ID String */);
 		}
 		if(cbiInstance == null){
 			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "unknown User: %s from Mart", actionEvent.SID);

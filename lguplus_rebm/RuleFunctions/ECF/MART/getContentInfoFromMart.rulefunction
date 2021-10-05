@@ -17,7 +17,7 @@ Concepts.LGUPLUS.CONTENT_INFO rulefunction RuleFunctions.ECF.MART.getContentInfo
 			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
 			Database.beginTransaction();
 
-			Concepts.LGUPLUS.CONTENT_INFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/CONTENT_INFO", "select * from CONTENT_INFO WHERE CID = " + "'" + vodKey + "'", true);
+			Concepts.LGUPLUS.CONTENT_INFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/CONTENT_INFO", "select * from CONTENT_INFO WHERE ALBUM_ID = " + "'" + vodKey + "'", true);
 			if(items@length > 0) return items[0];
 			else return null;
 		}catch(Exception e){

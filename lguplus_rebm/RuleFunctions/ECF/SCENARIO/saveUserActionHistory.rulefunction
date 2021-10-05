@@ -1,7 +1,8 @@
 /**
  * @description 사용자 행동 이력을 IMDG및 DB 에 저장한다.
  */
-Concepts.ECF.SCENARIO.UserActionHistory rulefunction RuleFunctions.ECF.SCENARIO.saveUserActionHistory {
+
+void rulefunction RuleFunctions.ECF.SCENARIO.saveUserActionHistory {
 	attribute {
 		validity = ACTION;
 	}
@@ -9,40 +10,49 @@ Concepts.ECF.SCENARIO.UserActionHistory rulefunction RuleFunctions.ECF.SCENARIO.
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
 		Events.Internal.ActionEvent actionEvent;
 		Events.SYSTEM.sessionLock historyLock;
+		String[] orgStats;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":saveUserActionHistory");
 
 		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("save");
-		String extId = userActivityTrace.SID + ":" + actionEvent.SeqId + ":forUAH";
-		Concepts.ECF.SCENARIO.UserActionHistory userActionHistory = Concepts.ECF.SCENARIO.UserActionHistory.UserActionHistory(
-			extId/*extId String */,
-			userActivityTrace.SID/*SID String */,
-			actionEvent.SeqId/*SEQ_ID String */,
-			userActivityTrace.C_SVC_NAME/*SVC_NAME String */,
-			userActivityTrace.C_ACT_START/*ACT_START String */,
-			userActivityTrace.C_ACT_TGT/*ACT_TGT String */,
-			userActivityTrace.C_ACT_TGT_DTL/*ACT_TGT_DTL String */,
-			userActivityTrace.C_VW_CURR/*VW_CURR String */,
-			userActivityTrace.C_VW_CURR_DTL/*VW_CURR_DTL String */,
-			userActivityTrace.C_ACTION_ID/*ACTION_ID String */,
-			userActivityTrace.C_MENU_ID/*MENU_ID String */,
-			userActivityTrace.C_ALBUM_ID/*ALBUM_ID String */,
-			userActivityTrace.C_CAT_ID/*CAT_ID String */,
-			userActivityTrace.C_ACTIVITY_TIME/*ACTIVITY_TIME DateTime */,
-			userActivityTrace.C_RECEIVED_TIME/*RECEIVED_TIME DateTime */);
 
-		RuleFunctions.ECF.AS.putUserActionHistory(userActionHistory);
-		RuleFunctions.ECF.AS.updateUserActionStats(userActionHistory);
+		if(false){ // don't save 
+			String extId = userActivityTrace.SID + ":" + actionEvent.SeqId + ":forUAH";
+			Concepts.ECF.SCENARIO.UserActionHistory userActionHistory = Concepts.ECF.SCENARIO.UserActionHistory.UserActionHistory(
+				extId/*extId String */,
+				userActivityTrace.SID/*SID String */,
+				actionEvent.SeqId/*SEQ_ID String */,
+				userActivityTrace.SVC_NAME/*SVC_NAME String */,
+				userActivityTrace.ACT_START/*ACT_START String */,
+				userActivityTrace.ACT_TGT/*ACT_TGT String */,
+				userActivityTrace.ACT_TGT_DTL/*ACT_TGT_DTL String */,
+				userActivityTrace.VW_CURR/*VW_CURR String */,
+				userActivityTrace.VW_CURR_DTL/*VW_CURR_DTL String */,
+				userActivityTrace.ACTION_ID/*ACTION_ID String */,
+				userActivityTrace.MENU_ID/*MENU_ID String */,
+				userActivityTrace.ALBUM_ID/*ALBUM_ID String */,
+				userActivityTrace.CAT_ID/*CAT_ID String */,
+				userActivityTrace.GENRE_ID/*GENRE_ID String */,
+				userActivityTrace.ACTIVITY_TIME/*ACTIVITY_TIME DateTime */,
+				userActivityTrace.RECEIVED_TIME/*RECEIVED_TIME DateTime */);
+
+			RuleFunctions.ECF.AS.putUserActionHistory(userActionHistory);
+			RuleFunctions.ECF.AS.putUserActivityTrace(userActivityTrace);
+
+			EBMUtil.addConceptExtId(userActionHistory@extId);
+			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "saveUserActionHistory:%s", userActionHistory.SEQ_ID);
+		}
+		
+		RuleFunctions.ECF.AS.putUserActionStats(userActivityTrace);
+		RuleFunctions.ECF.AS.putUserViewStats(userActivityTrace, orgStats);
 		
 		releaseGlobalSessionLock(historyLock);
 		
+		/** history 를 db 에 저장하는 부분은 고려하지 않는다. 
 		RuleFunctions.ECF.MART.insertUserActionHistoryToMart(userActionHistory);
-		
-		EBMUtil.addConceptExtId(userActionHistory@extId);
-		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "saveUserActionHistory:%s", userActionHistory.SEQ_ID);
+		**/
 		
 		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("rule");
-		return userActionHistory;
 	}
 }

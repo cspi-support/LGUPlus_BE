@@ -3,7 +3,7 @@
  */
 void rulefunction RuleFunctions.ECF.SYSTEM.updatePerformanceCheck {
 	attribute {
-		validity = ACTION;
+		validity = CONDITION;
 	}
 	scope {
 		String type;

@@ -3,7 +3,7 @@
  */
 Object[] rulefunction RuleFunctions.ECF.MART.getUserActionHistoryFromMart {
 	attribute {
-		validity = ACTION;
+		validity = CONDITION;
 	}
 	scope {
 		String userId;

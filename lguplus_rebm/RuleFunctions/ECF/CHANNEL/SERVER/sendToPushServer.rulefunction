@@ -1,17 +1,19 @@
 /**
  * @description 
  */
-void rulefunction RuleFunctions.ECF.CHANNEL.sendToNotiServer {
+void rulefunction RuleFunctions.ECF.CHANNEL.SERVER.sendToPushServer {
 	attribute {
 		validity = ACTION;
 	}
 	scope {
-		String testValue;
+		String userId;
+		String pushString;
 	}
 	body {
+		
 		Events.Kafka.Outbound outbound = Events.Kafka.Outbound.Outbound(
-											null/*extId String */,
-											testValue/*payload String */);
+									null/*extId String */,
+									pushString/*payload String */);
 		Event.sendEvent(outbound);	
 	}
 }

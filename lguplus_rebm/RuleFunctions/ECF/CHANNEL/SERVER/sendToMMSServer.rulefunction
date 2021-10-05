@@ -1,7 +1,7 @@
 /**
  * @description 
  */
-void rulefunction RuleFunctions.ECF.CHANNEL.sendToMMSServer {
+void rulefunction RuleFunctions.ECF.CHANNEL.SERVER.sendToMMSServer {
 	attribute {
 		validity = ACTION;
 	}

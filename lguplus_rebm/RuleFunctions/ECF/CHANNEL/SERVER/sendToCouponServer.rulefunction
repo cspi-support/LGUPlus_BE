@@ -1,19 +1,17 @@
 /**
  * @description 
  */
-void rulefunction RuleFunctions.ECF.CHANNEL.sendToPushServer {
+void rulefunction RuleFunctions.ECF.CHANNEL.SERVER.sendToCouponServer {
 	attribute {
 		validity = ACTION;
 	}
 	scope {
-		String userId;
-		String pushString;
+		String testValue;
 	}
 	body {
-		
 		Events.Kafka.Outbound outbound = Events.Kafka.Outbound.Outbound(
-									null/*extId String */,
-									pushString/*payload String */);
+											null/*extId String */,
+											testValue/*payload String */);
 		Event.sendEvent(outbound);	
 	}
 }

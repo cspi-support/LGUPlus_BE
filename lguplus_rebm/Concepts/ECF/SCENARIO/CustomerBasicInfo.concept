@@ -2,9 +2,12 @@
     <extendedProperties/>
     <properties name="SID" ownerProjectName="lguplus_rebm"/>
     <properties name="CID" ownerProjectName="lguplus_rebm"/>
+    <properties name="CTN" ownerProjectName="lguplus_rebm"/>
+	<properties name="MON_SUBS" ownerProjectName="lguplus_rebm" type="boolean"/>
     <properties name="SUBSCRIBE_INFO" ownerProjectName="lguplus_rebm"/>
     <properties name="UNSUB_CANDI" ownerProjectName="lguplus_rebm" type="boolean"/>
     <properties name="NAME" ownerProjectName="lguplus_rebm"/>
+    <properties name="CLASS" ownerProjectName="lguplus_rebm"/>	
     <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime"/>
     <properties name="SEQ_ID" ownerProjectName="lguplus_rebm"/>
 </element:Concept>

@@ -1,0 +1,44 @@
+/**
+ * @description  AS 로 부터 사용자 이력정보(앨범id, 장르, 카테고리) 를 가져온다.
+ */
+
+Object[] rulefunction RuleFunctions.ECF.AS.getUserViewStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String userId;
+		String actionId;
+		DateTime specialDate; 
+		DateTime startDate; 
+		DateTime endDate; 
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserViewStats");
+		
+		try{
+			if(userId == null || userId == "") return null;
+
+			String filters = "uvsId = \"" + userId + "\" AND actionId = \"" + actionId + "\"";
+			if(specialDate != null){
+				String date = DateTime.format(specialDate, "yyyyMMdd");
+				filters = filters + " AND " + " dateId = " + date;
+			}else{
+				if(startDate!= null) {
+					String date = DateTime.format(startDate, "yyyyMMdd");
+					filters = filters + " AND " + " dateId >= " + date;
+				}
+				if(endDate!= null) {
+					String date = DateTime.format(endDate, "yyyyMMdd");
+					filters = filters + " AND " + " dateId <= " + date;
+				}
+			}
+			Object[] results = AS.query("/Channels/legacyASChannel/UserViewStats", null, "get", "snapshot", "all", 0, 1000, filters);
+			return results;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}
