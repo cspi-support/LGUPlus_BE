@@ -1,0 +1,31 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.AS.PERF.getGenreNameFromAS {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long code;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getGenreNameFromAS");
+		
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+
+		try{
+			String filters = "genreCode = " + code;
+			Object[] tuples = AS.query("/Channels/legacyASChannel/GenreCode", null, "get", "snapshot", "all", 0, 1, filters);
+
+			if(tuples != null){
+				String genreName = getValueAsString("genreName", tuples[0]);
+				return genreName;
+			}else{
+				return null;
+			}
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+			return null;
+		}	
+	}
+}

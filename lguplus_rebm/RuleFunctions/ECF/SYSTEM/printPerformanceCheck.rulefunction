@@ -3,10 +3,10 @@
  */
 void rulefunction RuleFunctions.ECF.SYSTEM.printPerformanceCheck {
 	attribute {
-		validity = ACTION;
+		validity = CONDITION;
 	}
 	scope {
-		Events.Internal.ActionEvent actionEvent;
+		Events.Internal.DetectEvent detectEvent;
 	}
 	body {
 		Object logger = Log.getLogger("printPerformanceCheck");
@@ -21,11 +21,11 @@ void rulefunction RuleFunctions.ECF.SYSTEM.printPerformanceCheck {
 		Long post = Metaspace.Tuple.getLong(tuple, "post");
 		*/
 
-		String[] timedata = SystemUtil.takeTimeDatas();
-		long startTime = DateTime.getTimeInMillis(actionEvent.ReceivedTime);
+		String[] timedata = PERFUtil.takeTimeDatasByKey(detectEvent.SeqId);
+		long startTime = DateTime.getTimeInMillis(detectEvent.ReceivedTime);
 		long endTime;
-		String printTime = "action[" + actionEvent.ActionTargetDtl + "]:";
-		String timeString = "s(" + startTime + ")";
+		String printTime = "action[" + detectEvent.ActionTargetDtl + "]";
+		String timeString = "s(" + detectEvent.SeqId + ")";
 
 		long beforeTime = startTime;
 		for(int i=0; i < timedata@length; i++){
@@ -33,11 +33,11 @@ void rulefunction RuleFunctions.ECF.SYSTEM.printPerformanceCheck {
 			String after = String.substringAfter(timedata[i], "=");
 			endTime = Number.longValue(after, 10);
 			long elapsed = endTime - beforeTime;
-			timeString = timeString + ", [" + before + "](" + elapsed + ")";
+			timeString = timeString + "-" + elapsed +  "-[" + before + "]";
 			beforeTime = endTime;
 		}
 		long total = endTime - startTime;
-		printTime = printTime + "perf(" + total + ")-" + timeString;
+		printTime = printTime + "perf(" + total + "):" + timeString;
 
 		Log.log(logger, "Info", printTime);
 	}

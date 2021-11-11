@@ -161,5 +161,55 @@
             <constraint/>
             <modTime>1631668793833</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>USE_HASH_CODE</name>
+            <value>true</value>
+            <type>Boolean</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1633925937164</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>VIEW_SPACE_VERSION</name>
+            <value>V4</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634258969310</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>MAX_CONTENT_SIZE</name>
+            <value>4096</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634259646462</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>MAX_CONTENT_COUNT</name>
+            <value>67</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634259620541</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>SAVE_DAY_COUNT</name>
+            <value>7</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634259637289</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

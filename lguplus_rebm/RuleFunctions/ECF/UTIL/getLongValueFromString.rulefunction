@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+long rulefunction RuleFunctions.ECF.UTIL.getLongValueFromString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+		long defaultValue;
+	}
+	body {
+		try{
+			return Number.longValue(data, 10);
+		}catch (Exception e){
+			return defaultValue;
+		}
+	}
+}

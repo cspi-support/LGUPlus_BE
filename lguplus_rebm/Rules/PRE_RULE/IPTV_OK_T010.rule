@@ -12,9 +12,11 @@ rule Rules.PRE_RULE.IPTV_OK_T010 {
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
 	}
 	when {
-		CheckUserAction(actionEvent, customerBasicInfo, "T010");
+		MatchUserAction(actionEvent, customerBasicInfo, "T010");
 	}
 	then {
+		Event.consumeEvent(actionEvent);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "prerule");
 		Events.SYSTEM.sessionLock historyLock = acquireGlobalSessionLock(actionEvent.SID, 3, 3000);
 		/* 1. UserActivityTrace 컨셉에 정보를 저장한다. */
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace = initializeUserActivityTrace(actionEvent.SID, actionEvent);
@@ -25,18 +27,21 @@ rule Rules.PRE_RULE.IPTV_OK_T010 {
 		
 		/* 해당 action 에 대한 count 를 항상 구한다. */
 		/* 만약 시간정보를 추가로 filter 로 적용할 수 있다. */
-		userActivityTrace.COUNT = GetUserActionCount(actionEvent.SID, userActivityTrace.ACTION_ID, null, null) + 1;
+		updateUserActionStats(userActivityTrace, false, null, false);
 		
 		/* 2. ALBUM 정보가 있는 경우에는 컨텐츠에 대한 마스터 데이터를 로드한다. */
 		if(userActivityTrace.ALBUM_ID != null){
 			Concepts.ECF.SCENARIO.ContentInfo contentInfo = loadContentData(userActivityTrace.ALBUM_ID);
-			userActivityTrace.CAT_ID = contentInfo.CATEGORY; userActivityTrace.GENRE_ID = contentInfo.GENRE;
+			incrementUserViewStats(userActivityTrace, contentInfo, null, null);
 		}
 
-		String[] orgStats = initializeUserViewStats(userActivityTrace, null, null);
+		
 		
 		/* 3. rebm 사용자 이력 데이터를 저장한다. */
-		saveUserActionHistory(userActivityTrace, actionEvent, historyLock, orgStats);
+		saveUserActionHistoryToAS(userActivityTrace, actionEvent);
+		releaseGlobalSessionLock(historyLock);
+		assertDetectEvent(actionEvent);
+		
 		
 	}
 }

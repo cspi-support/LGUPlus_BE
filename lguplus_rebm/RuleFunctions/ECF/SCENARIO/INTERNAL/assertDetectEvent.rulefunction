@@ -1,0 +1,40 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.assertDetectEvent {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+	}
+	body {
+		if(actionEvent !=  null) {
+			Events.Internal.DetectEvent detectEvent = Events.Internal.DetectEvent.DetectEvent(
+			null/*extId String */,null/*payload String */,
+			actionEvent.SID/*SID long */,
+			actionEvent.SeqId/*SeqId String */,
+			actionEvent.SvcName/*SvcName String */,
+			actionEvent.ActionStart/*ActionStart String */,
+			actionEvent.ActionTarget/*ActionTarget String */,
+			actionEvent.ActionTargetDtl/*ActionTargetDtl String */,
+			actionEvent.ViewCurr/*ViewCurr String */,
+			actionEvent.ViewCurrDtl/*ViewCurrDtl String */,
+			actionEvent.ActionDTL1/*ActionDTL1 String */,
+			actionEvent.ActionDTL2/*ActionDTL2 String */,
+			actionEvent.ActionDTL3/*ActionDTL3 String */,
+			actionEvent.ActionDTL4/*ActionDTL4 String */,
+			actionEvent.ActionDTL5/*ActionDTL5 String */,
+			actionEvent.ActionDTL6/*ActionDTL6 String */,
+			actionEvent.ActionDTL7/*ActionDTL7 String */,
+			actionEvent.ActionDTL8/*ActionDTL8 String */,
+			actionEvent.ActionDTL9/*ActionDTL9 String */,
+			actionEvent.ActionDTL10/*ActionDTL10 String */,
+			actionEvent.ReqTime/*ReqTime DateTime */,
+			actionEvent.ReceivedTime/*ReceivedTime DateTime */,
+			actionEvent.ThreadId/*ThreadId long */);
+			Event.assertEvent(detectEvent);
+		}
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "detectEvent");
+	}
+}

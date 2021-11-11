@@ -1,0 +1,61 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.ContentInfo rulefunction RuleFunctions.ECF.FAKE.createContentInfo {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String albumId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":createContentInfo");
+		String[] g_class_1 = String[]{"방송","해외시리즈","애니","다큐","키즈"};
+		String[] g_class_2 = String[]{"노래율동","드라마","스포츠","연예오락","시사교양","미국","한국","TV만화","코미디","중국","SF/판타지","애니","성인","놀이교실","대만","시리즈","MCN"};
+		String[] g_class_3 = String[]{"","범죄수사","MBC","KBS","SBS","TVN","사극","액션/모험","캐치온","중화TV","창의학습","드라마","어린이/가족","장난감놀이","추리/미스터리","MBC PLUS","로맨스","사랑"};
+		String[] c_class_1 = String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		String[] c_class_2 = String[]{"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		String[] c_class_3 = String[]{"0","1","2","3","4","5","6","7","8","9"};
+		String[] c_class_4 = String[]{"","0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
+		Object res = null;
+		Object conn = null;
+		try{
+			conn = Oracle.getConnection("MasterContent");
+			long[] number = long[] {Random(10000),Random(10000),Random(10000),Random(10000),Random(10000),Random(10000),Random(10000),Random(10000),Random(10000)};
+			long[] mfa_number = long[] {Random(10000000), Random(10000000), Random(10000000)};
+			String genre = String.format("%s,%s,%s", g_class_1[number[0]%g_class_1@length], g_class_2[number[1]%g_class_2@length], g_class_3[number[2]%g_class_3@length]);
+			String cat = String.format("%s%s%s%s%s,%s%s%s%s%s,%s%s%s%s%s", c_class_1[number[0]%c_class_1@length], c_class_2[number[1]%c_class_2@length],c_class_3[number[2]%c_class_3@length], c_class_2[number[3]%c_class_2@length], c_class_4[number[4]%c_class_4@length],
+						c_class_1[number[5]%c_class_1@length] , c_class_2[number[6]%c_class_2@length] , c_class_3[number[7]%c_class_3@length] , c_class_2[number[8]%c_class_2@length] , c_class_4[number[0]%c_class_4@length],
+						c_class_1[number[1]%c_class_1@length] , c_class_2[number[2]%c_class_2@length] , c_class_3[number[3]%c_class_3@length] , c_class_2[number[4]%c_class_2@length] , c_class_4[number[5]%c_class_4@length]);
+			String mfa = String.format("LRZ%07d,LRZ%07d,LRZ%07d", mfa_number[0], mfa_number[1], mfa_number[2]);
+			int price = number[0];
+
+			String query = "INSERT INTO TB_CMCE_REBM_BRD_CNTS_M_T(ALBM_ID, CNTS_GNRE_NM_LIST_CNTN, CNTS_CATG_ID_LIST_CNTN, MFA_PROD_LIST_CNTN, PROD_PRC) VALUES(?,?,?,?,?)";
+			Object[] insObj = {albumId, genre, cat, mfa, price};
+			res = Oracle.executeQuery(conn, query, insObj);
+			Oracle.commit(conn);
+
+			return Concepts.ECF.SCENARIO.ContentInfo.ContentInfo(
+				albumId/*extId String */,
+				albumId/*CID String */,
+				null/*TITLE String */,
+				null/*CREATED DateTime */,
+				genre/*GENRE String */,
+				cat/*CATEGORY String */,
+				mfa/*CODE String */,
+				price/*PRICE int */,
+				null/*SERIES_MODE String */,
+				0/*EPISODE_NUM int */,
+				null/*SVC_NAME String */,
+				null/*AVAIL_ET DateTime */);
+		}catch(Exception e){
+//			Log.log(logger, "Error", "Exception:"+ e);
+			if(conn != null) Oracle.rollback(conn);
+			return null;
+		}finally{
+			if(res != null) Oracle.closeResultSet(res);
+			if(conn != null) Oracle.releaseConnection(conn);
+		}
+	}
+}

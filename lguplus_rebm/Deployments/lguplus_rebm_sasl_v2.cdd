@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<cluster xmlns="http://tibco.com/businessevents/configuration/6.1">
+    <revision>
+        <version>25</version>
+        <author>shkim</author>
+        <date>2021/10/29 14:48:39</date>
+        <comment/>
+    </revision>
+    <name>lguplus_rebm_v2</name>
+    <message-encoding>UTF-8</message-encoding>
+    <provider/>
+    <object-management>
+        <memory-manager/>
+        <db-concepts>
+            <db-uris>
+                <uri>/SharedResources/MasterContent.sharedjdbc</uri>
+                <uri>/SharedResources/MasterUser.sharedjdbc</uri>
+            </db-uris>
+            <check-interval>60</check-interval>
+            <inactivity-timeout>0</inactivity-timeout>
+            <initial-size>5</initial-size>
+            <max-size>5</max-size>
+            <min-size>5</min-size>
+            <property-check-interval>900</property-check-interval>
+            <retry-count>-1</retry-count>
+            <wait-timeout>1</wait-timeout>
+        </db-concepts>
+    </object-management>
+    <rulesets>
+        <rules id="all-rules">
+            <uri>/</uri>
+        </rules>
+    </rulesets>
+    <function-groups>
+        <functions id="all-functions">
+            <uri>/</uri>
+        </functions>
+    </function-groups>
+    <destination-groups/>
+    <process-groups/>
+    <log-configs>
+        <log-config id="logConfig">
+            <enabled>true</enabled>
+            <roles>*:info</roles>
+            <files>
+                <enabled>true</enabled>
+                <dir>logs</dir>
+                <name/>
+                <max-number>10</max-number>
+                <max-size>5000000</max-size>
+                <append>true</append>
+            </files>
+            <terminal>
+                <enabled/>
+                <sys-out-redirect>false</sys-out-redirect>
+                <sys-err-redirect>false</sys-err-redirect>
+                <encoding/>
+            </terminal>
+            <line-layout>
+                <enabled>false</enabled>
+                <class/>
+                <arg/>
+            </line-layout>
+        </log-config>
+    </log-configs>
+    <agent-classes>
+        <inference-agent-class id="inference-class">
+            <rules>
+                <ref>all-rules</ref>
+            </rules>
+            <destinations>
+                <destination id="LogKafka_Inbound_2_4BED9206">
+                    <pre-processor>/RuleFunctions/Preprocessor/PreProcessorForKafka_v2</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/Kafka_v2/LogKafka_Inbound_2</uri>
+                </destination>
+                <destination id="LogKafka_Inbound_1_4BDBF63F">
+                    <pre-processor>/RuleFunctions/Preprocessor/PreProcessorForKafka_v2</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/Kafka_v2/LogKafka_Inbound_1</uri>
+                </destination>
+                <destination id="LogKafka_Inbound_3_4BE1D32C">
+                    <pre-processor>/RuleFunctions/Preprocessor/PreProcessorForKafka_v2</pre-processor>
+                    <queue-size/>
+                    <thread-count/>
+                    <threading-model>shared-queue</threading-model>
+                    <thread-affinity-rule-function/>
+                    <uri>/Channels/Kafka_v2/LogKafka_Inbound_3</uri>
+                </destination>
+            </destinations>
+            <startup>
+                <uri>/RuleFunctions/StartUp/startUp</uri>
+            </startup>
+            <shutdown/>
+            <local-cache>
+                <eviction>
+                    <max-size>1024</max-size>
+                    <max-time>900</max-time>
+                </eviction>
+            </local-cache>
+            <shared-queue>
+                <size>%%AGENT/REBM_QUEUE_SIZE%%</size>
+                <workers>%%AGENT/REBM_THREAD_COUNT%%</workers>
+            </shared-queue>
+            <load>
+                <max-active/>
+            </load>
+            <concurrent-rtc>true</concurrent-rtc>
+            <check-for-duplicates>false</check-for-duplicates>
+            <businessworks>
+                <uri/>
+            </businessworks>
+            <property-group/>
+        </inference-agent-class>
+    </agent-classes>
+    <processing-units>
+        <processing-unit id="lguplus_v2.engine">
+            <agents>
+                <agent>
+                    <ref>inference-class</ref>
+                    <key/>
+                    <priority/>
+                </agent>
+            </agents>
+            <logs>logConfig</logs>
+            <hot-deploy>true</hot-deploy>
+            <cache-storage-enabled>false</cache-storage-enabled>
+            <db-concepts>true</db-concepts>
+            <property-group>
+                <property name="be.dbconcepts.dburi.query.reuserefs" value="true"/>
+                <property name="java.security.auth.login.config" value="./kafka_client_jaas.conf"/>
+            </property-group>
+        </processing-unit>
+    </processing-units>
+    <load-balancer-configs>
+        <pair-configs/>
+        <adhoc-configs/>
+    </load-balancer-configs>
+    <property-group>
+        <property-group comment="" name="cluster-level properties">
+            <property-group comment="" name="auth">
+                <property name="be.mm.auth.type" value="file"/>
+                <property name="be.mm.auth.file.location" value="C:/tibco/be/6.1/mm/config/users.pwd"/>
+                <property name="java.security.auth.login.config" value="C:/tibco/be/6.1/mm/config/jaas-config.config"/>
+            </property-group>
+        </property-group>
+        <property-group comment="" name="auth">
+            <property name="be.mm.auth.type" value="file"/>
+            <property name="be.mm.auth.file.location" value="C:/tibco/be/6.1/mm/config/users.pwd"/>
+            <property name="java.security.auth.login.config" value="C:/tibco/be/6.1/mm/config/jaas-config.config"/>
+        </property-group>
+    </property-group>
+</cluster>

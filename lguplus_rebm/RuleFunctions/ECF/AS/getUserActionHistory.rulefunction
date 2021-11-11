@@ -7,7 +7,7 @@ Object[] rulefunction RuleFunctions.ECF.AS.getUserActionHistory {
 		validity = ACTION;
 	}
 	scope {
-		String userId;
+		long userId;
 		String actionId;
 		DateTime startTime;
 		DateTime endTime;
@@ -16,7 +16,7 @@ Object[] rulefunction RuleFunctions.ECF.AS.getUserActionHistory {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserActionHistory");
 		
 		try{
-			if(userId == null || userId == "") return null;
+			if(userId < 0) return null;
 
 /* CHECK : Don't use regular expression         
 			String filters = "uahId LIKE \"" + userId + ".*\"";
@@ -25,7 +25,7 @@ Object[] rulefunction RuleFunctions.ECF.AS.getUserActionHistory {
 			}
 */
 
-			String filters = "uahId = \"" + userId + "\" AND actionId = \"" + actionId + "\"";
+			String filters = "uahId = " + userId + " AND actionId = \"" + actionId + "\"";
 			if(startTime != null) {
 				filters = filters + " AND " + " timeStamp >= " + DateTime.getTimeInMillis(startTime);
 			}

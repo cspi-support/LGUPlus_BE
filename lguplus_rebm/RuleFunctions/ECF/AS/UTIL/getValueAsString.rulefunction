@@ -10,6 +10,7 @@ String rulefunction RuleFunctions.ECF.AS.UTIL.getValueAsString {
 		Object[] srcObject;
 	}
 	body {
+		if(srcObject == null) return null;
 		for(int i=0; i < srcObject@length; i++){
 			Object[] keyValue = srcObject[i];	
 			if(String.equals(keyValue[0], findKey)){

@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><event:SimpleEvent xmlns:event="http:///com/tibco/cep/designtime/core/model/event" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Events/LOCAL_CH/" name="ChannelOffer" description="캠페인 발송을 위한 Event" GUID="811264E2-2056-F1ED-0828-806D75C65C6C" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
-    <properties name="SID" ownerProjectName="lguplus_rebm" ownerPath="/Events/LOCAL_CH/ChannelOffer"/>
-    <properties name="SCNR_ID" ownerProjectName="lguplus_rebm" ownerPath="/Events/LOCAL_CH/ChannelOffer"/>
-    <expiryAction folder="/Events/LOCAL_CH/ChannelOffer" name="ChannelOffer_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
-        <symbols>
-            <symbolList idName="channeloffer" type="/Events/LOCAL_CH/ChannelOffer"/>
-        </symbols>
-    </expiryAction>
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/LOCAL_CH/" name="ChannelOffer" description="캠페인 발송을 위한 Event" GUID="811264E2-2056-F1ED-0828-806D75C65C6C" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
+  <properties name="SID" ownerProjectName="lguplus_rebm" type="long"/>
+  <properties name="SCNR_ID" ownerProjectName="lguplus_rebm"/>
+  <expiryAction folder="/Events/LOCAL_CH/ChannelOffer" name="ChannelOffer_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="channeloffer" type="/Events/LOCAL_CH/ChannelOffer"/>
+    </symbols>
+  </expiryAction>
 </event:SimpleEvent>

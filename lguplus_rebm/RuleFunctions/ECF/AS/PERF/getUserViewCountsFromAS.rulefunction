@@ -1,0 +1,86 @@
+/**
+ * @description 
+ * genre 및 카테고리 정보는 hash 모드에 따라서 데이터를 가져온다.
+ */
+Object[] rulefunction RuleFunctions.ECF.AS.PERF.getUserViewCountsFromAS {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long userId;
+		String actionId;
+		String albumId;
+		String[] genreArray;
+		String[] categoryArray;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserViewCountsFromAS");
+		
+		if(actionId == null || actionId == "") return null;
+
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+		String fieldHead = String.format("%d:%s:", userId,actionId);
+		String keyValue = "";
+		
+		if(albumId != null && albumId != ""){
+			keyValue = String.format("\"%s%s\"", fieldHead , albumId );
+		}
+
+		if(genreArray != null && genreArray@length > 0) {
+			for(int i=0; i < genreArray@length; i++){
+				if(keyValue != "") keyValue = keyValue + ",";
+				if(useHash){
+					keyValue = keyValue + "\"" + fieldHead + String.hashCode(genreArray[i]) + "\"";
+				}else{
+					keyValue = keyValue + "\"" + fieldHead + genreArray[i] + "\"";
+				}
+			}
+		}
+
+		if(categoryArray != null && categoryArray@length > 0) {
+			for(int i=0; i < categoryArray@length; i++){
+				if(keyValue != "") keyValue = keyValue + ",";
+				keyValue = keyValue + "\"" + fieldHead + categoryArray[i] + "\"";
+			}
+		}
+
+		try{
+			String filters = "userView IN (" + keyValue + ")";
+			Object[] tuples = AS.query("/Channels/legacyASChannel/UserViewCounts", null, "get", "snapshot", "all", 0, 100, filters);
+			return tuples;
+
+			/*** scheme was changed
+			if(tuples != null){
+				Object map = Collections.Map.createHashMap();
+				Object albumMap = Collections.Map.createHashMap();
+				Object genreMap = Collections.Map.createHashMap();
+				Object categoryMap = Collections.Map.createHashMap();
+
+				for(int i=0; i < tuples@length; i++){
+					String userView = getValueAsString("userView", tuples[i]);
+					Long dateId = getValueAsNumber("dateId", tuples[i]);
+					String fieldName = String.substringAfter(userView, fieldHead);
+					Long count = getValueAsNumber("count", tuples[i]);
+					if(fieldName == albumId){
+						Collections.Map.put(albumMap, fieldName, count);
+					}else if(IsString_IN(fieldName, categoryArray) >= 0) { //bug string == hashcode
+						Collections.Map.put(categoryMap, fieldName, count);
+					}else{
+						Collections.Map.put(genreMap, fieldName, count);
+					}
+				}
+				Collections.Map.put(map, "album", albumMap);
+				Collections.Map.put(map, "genre", genreMap);
+				Collections.Map.put(map, "catetory", categoryMap);
+				return map;
+			}else{
+				return null;
+			}
+			*/
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+			return null;
+		}
+	}
+}

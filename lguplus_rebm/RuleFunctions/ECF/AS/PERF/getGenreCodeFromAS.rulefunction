@@ -1,0 +1,53 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.AS.PERF.getGenreCodeFromAS {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String genreSet;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getGenreCodeFromAS");
+		
+		if(genreSet == null || genreSet == "") return null;
+
+		
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+		boolean isExactMatch = true;
+
+		String keyValue = "";
+		
+		String[] genreArray = getGenresFromSet(genreSet, isExactMatch, ",");
+		
+		for(int i=0; i<genreArray@length;i++){
+			if(i != 0) {
+				keyValue += ",";
+			}
+			keyValue = keyValue + "\"" + genreArray[i] + "\"";
+		}
+		
+		try{
+			String filters = "genreName IN (" + keyValue + ")";
+			Object[] tuples = AS.query("/Channels/legacyASChannel/GenreCode", null, "get", "snapshot", "all", 0, genreArray@length, filters);
+
+			if(tuples != null){
+				Object genreMap = Collections.Map.createHashMap();
+
+				for(int i=0; i < tuples@length; i++){
+					String genreName = getValueAsString("genreName", tuples[i]);
+					Long code = getValueAsNumber("genreCode", tuples[i]);
+					Collections.Map.put(genreMap, genreName, code);
+				}
+				return genreMap;
+			}else{
+				return null;
+			}
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+			return null;
+		}
+	}
+}

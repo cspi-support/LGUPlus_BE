@@ -7,7 +7,7 @@ void rulefunction RuleFunctions.ECF.CHANNEL.AS.RequestOfferToAS {
 	}
 	scope {
 		String offerId;	
-		String userId;
+		long userId;
 		String[] param;
 	}
 	body {

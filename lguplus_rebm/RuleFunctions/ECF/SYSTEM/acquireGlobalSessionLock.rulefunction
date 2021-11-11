@@ -6,14 +6,14 @@ Events.SYSTEM.sessionLock rulefunction RuleFunctions.ECF.SYSTEM.acquireGlobalSes
 		validity = ACTION;
 	}
 	scope {
-		String lockWith;
+		long lockWith;
 		int retryCount;
 		int maxWaitTime;
 	}
 	body {
 		Object logger = Log.getLogger("acquireGlobalSessionLock");
 		int waitCount = 0;
-		String extId = String.format("%s:%d", lockWith, System.currentTimeMillis());
+		String extId = String.format("%d:%d", lockWith, System.currentTimeMillis());
 				
 		Events.SYSTEM.sessionLock lockEvent =Events.SYSTEM.sessionLock.sessionLock( extId /*extId String */, null /*payload String */, lockWith/*sessionKey String */) ;
 		
@@ -26,14 +26,14 @@ Events.SYSTEM.sessionLock rulefunction RuleFunctions.ECF.SYSTEM.acquireGlobalSes
 				Log.log(logger,"DEBUG","** total waiting lock count [%d]", waitCount);
 				break;
 			} catch(Exception e) {
-				Log.log(logger,"info","retried [%s][%d][%s]", lockWith, waitCount, e);
+				Log.log(logger,"info","retried [%d][%d][%s]", lockWith, waitCount, e);
 				waitCount++;
 			}
 		}
 		
 		if(waitCount >= retryCount) {
 			Event.consumeEvent(lockEvent);
-			Log.log(logger,"info","** lockEvent consumed [waitCount=%d][retryCount=%d][Customer ID: %s]", waitCount, retryCount, lockWith);
+			Log.log(logger,"info","** lockEvent consumed [waitCount=%d][retryCount=%d][Customer ID: %d]", waitCount, retryCount, lockWith);
 			return null;
 		} else {
 			Event.assertEvent(lockEvent);

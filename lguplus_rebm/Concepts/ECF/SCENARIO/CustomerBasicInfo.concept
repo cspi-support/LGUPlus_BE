@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="CustomerBasicInfo" description="고객 기본 정보(월정액등 가입 여부, 해지추정, 이름)" GUID="A4FCC8CE-363F-E487-BF57-8F705C2035D3" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
-    <extendedProperties/>
-    <properties name="SID" ownerProjectName="lguplus_rebm"/>
-    <properties name="CID" ownerProjectName="lguplus_rebm"/>
-    <properties name="CTN" ownerProjectName="lguplus_rebm"/>
-	<properties name="MON_SUBS" ownerProjectName="lguplus_rebm" type="boolean"/>
-    <properties name="SUBSCRIBE_INFO" ownerProjectName="lguplus_rebm"/>
-    <properties name="UNSUB_CANDI" ownerProjectName="lguplus_rebm" type="boolean"/>
-    <properties name="NAME" ownerProjectName="lguplus_rebm"/>
-    <properties name="CLASS" ownerProjectName="lguplus_rebm"/>	
-    <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime"/>
-    <properties name="SEQ_ID" ownerProjectName="lguplus_rebm"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Concepts/ECF/SCENARIO/" name="CustomerBasicInfo" description="고객 기본 정보(월정액등 가입 여부, 해지추정, 이름)" GUID="A4FCC8CE-363F-E487-BF57-8F705C2035D3" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+  <extendedProperties/>
+  <properties name="SID" ownerProjectName="lguplus_rebm" type="long"/>
+  <properties name="CID" ownerProjectName="lguplus_rebm" type="long"/>
+  <properties name="CTN" ownerProjectName="lguplus_rebm"/>
+  <properties name="MON_SUBS" ownerProjectName="lguplus_rebm" type="boolean"/>
+  <properties name="SUBSCRIBE_INFO" ownerProjectName="lguplus_rebm"/>
+  <properties name="UNSUB_CANDI" ownerProjectName="lguplus_rebm" type="boolean"/>
+  <properties name="NAME" ownerProjectName="lguplus_rebm"/>
+  <properties name="CLASS" ownerProjectName="lguplus_rebm"/>
+  <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime"/>
+  <properties name="SEQ_ID" ownerProjectName="lguplus_rebm"/>
 </element:Concept>

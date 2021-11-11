@@ -1,0 +1,46 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.GetRefs_Category_ANY_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.DetectEvent detectEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		String CategorySet;		
+		int days; 
+	}
+	body {
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+		if(CategorySet == null || CategorySet == "" || userActivityTrace.CAT_ID == null || userActivityTrace.CAT_COUNT == null) return 0;
+
+		DateTime startTime = null;
+		DateTime endTime = null;
+		if(days > 0){ // 5 ->  now ~ (now-4)
+			String nowString= DateTime.format(DateTime.now(), "yyyyMMdd");
+			endTime = DateTime.parseString(nowString, "yyyyMMdd");
+			startTime = DateTime.addDay(endTime, -(days-1));
+		}
+
+		String[] categories = String.split(CategorySet, ",");
+		int totalCount = 0;
+		for(int i=0; i<categories@length; i++){
+			for(int j=0; j< userActivityTrace.CAT_ID@length; j++){
+				if(userActivityTrace.CAT_ID[j] == categories[i]){
+					String[] parsed = getParsedDateRefs(userActivityTrace.CAT_COUNT[j], startTime, endTime);
+					if(parsed != null){
+						for(int k=0; k<parsed@length; k++){
+							if(parsed[k] != null){
+								totalCount += Number.intValue(String.substring(parsed[k], 6, 7), 10); //yyMMddC
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return totalCount;
+	}
+}

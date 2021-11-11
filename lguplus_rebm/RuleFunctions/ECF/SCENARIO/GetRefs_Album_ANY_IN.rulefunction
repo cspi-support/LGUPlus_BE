@@ -1,0 +1,42 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.GetRefs_Album_ANY_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.DetectEvent detectEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		String AlbumSet;		
+		int days; //몇일동안
+	}
+	body {
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+		if(AlbumSet == null || AlbumSet == "" || userActivityTrace.ALBUM_ID == null) return 0;
+
+		DateTime startTime = null;
+		DateTime endTime = null;
+		if(days > 0){ // 5 ->  now ~ (now-4)
+			String nowString= DateTime.format(DateTime.now(), "yyyyMMdd");
+			endTime = DateTime.parseString(nowString, "yyyyMMdd");
+			startTime = DateTime.addDay(endTime, -(days-1));
+		}
+		String[] albums = String.split(AlbumSet, ",");
+		int totalCount = 0;
+		for(int i=0; i<albums@length; i++){
+			if(userActivityTrace.ALBUM_ID == albums[i]){
+				String[] parsed = getParsedDateRefs(userActivityTrace.ALBUM_COUNT, startTime, endTime);
+				if(parsed != null){
+					for(int j=0; j<parsed@length; j++){
+						if(parsed[j] != null){
+							totalCount += Number.intValue(String.substring(parsed[j], 6, 7), 10); //yyMMddC
+						}
+					}
+				}
+			}
+		}
+		return totalCount;
+	}
+}

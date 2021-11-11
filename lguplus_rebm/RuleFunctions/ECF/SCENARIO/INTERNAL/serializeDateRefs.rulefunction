@@ -1,0 +1,35 @@
+/**
+ * @description 
+ * format : yyMMdCyyMMdC....
+ */
+String rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.serializeDateRefs {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object mapObject;
+	}
+	body {
+		Object logger = Log.getLogger("serializeDateRefs");
+		if(mapObject == null) return null;
+		int maxContentSize = System.getGlobalVariableAsInt("AS/MAX_CONTENT_SIZE", 4096);
+		Object stringBuffer = null;
+
+		try{
+			stringBuffer = String.createBuffer(maxContentSize);
+			Object keySet = Collections.Map.keySet(mapObject);
+			Object iterator = Collections.iterator(keySet);
+			while(Collections.Iterator.hasNext(iterator)){
+				String pairKey = Collections.Iterator.next(iterator); // yyyyMMdd -> yyMMdd
+				Integer pairValue = Collections.Map.get(mapObject, pairKey);
+				String.append(stringBuffer, String.format("%s%01d", String.substring(pairKey, 2, String.length(pairKey)), pairValue));
+			}
+			return String.convertBufferToString(stringBuffer);
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:" + e);
+			return null;
+		}finally{
+			if(stringBuffer != null) String.clearBuffer(stringBuffer);
+		}
+	}
+}

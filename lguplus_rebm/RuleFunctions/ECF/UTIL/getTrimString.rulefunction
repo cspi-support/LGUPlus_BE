@@ -1,0 +1,17 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.UTIL.getTrimString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+	}
+	body {
+		if(data != null){
+			return String.trim(data);
+		}
+		return null;
+	}
+}

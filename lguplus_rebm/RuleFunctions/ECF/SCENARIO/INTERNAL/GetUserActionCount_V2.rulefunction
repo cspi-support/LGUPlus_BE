@@ -1,0 +1,58 @@
+/**
+ * @description 사용자 액션의 횟수를 구한다.
+ *  ActiveSpace 에서의 ActionCount 이다. 현 transaction 의 값은 제외된 상태의 값이다.
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.GetUserActionCount_V2 {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		long userId;
+		String actionId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":getUserActionCount");
+		int saveDayCount = System.getGlobalVariableAsInt("AS/SAVE_DAY_COUNT", 7);
+
+		try{
+			String[] actionIds = String[]{actionId};
+			
+			DateTime currentDateId = DateTime.now();
+			Object[] orgTuples = RuleFunctions.ECF.AS.PERF.getUserActionStats_V2(userId, actionIds);
+			int totalCount = 0;
+
+			if(orgTuples != null){
+				for(int i=0; i<orgTuples@length; i++){
+					String userAction = getValueAsString("userAction", orgTuples[i]);
+					String actId = String.substringAfter(userAction, ":");
+					String countInfo = getValueAsString("countInfo", orgTuples[i]);
+					
+					if(actId == actionId){
+						String[] dateRefs = getParsedDateRefs(countInfo, null, null);
+						if(dateRefs != null){
+							for(int j=0; j<dateRefs@length;j++){
+								if(dateRefs[j] != null){
+									totalCount += Number.intValue(String.substring(dateRefs[j], 6, 7), 10);
+								}
+							}
+						}
+						break;
+					}
+				}
+			}
+			
+			/* 이력성 마트로 부터 데이터를 구한다. */
+			/**
+			Object[] items = RuleFunctions.ECF.MART.getUserActionHistoryFromMart(userId, actionId, startDate, endDate);
+			if(items != null) {
+				count += items@length;
+			}		
+			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "count:%s", count);
+			**/
+			return totalCount;
+		}catch(Exception e){
+			Log.log(logger, "info", "Exception:" + e);
+			return 0;
+		}
+	}
+}

@@ -1,0 +1,17 @@
+/**
+ * @description 
+ */
+String[] rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.getStringsFromSet {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String stringSet;
+		String delimiter;
+	}
+	body {
+		if(stringSet == null || stringSet == "") return null;
+		String[] resArray = String.split(stringSet, delimiter);
+		return resArray;
+	}
+}

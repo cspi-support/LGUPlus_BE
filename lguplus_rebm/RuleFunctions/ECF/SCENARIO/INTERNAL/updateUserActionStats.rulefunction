@@ -1,0 +1,124 @@
+/**
+ * @description 
+ * userActivityTrace 의 DURATION,COUNT,LAST_ACTION_TIME 을 설정한다.
+ */
+void rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.updateUserActionStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		boolean durationMode;
+		String matchActionId;
+		boolean exitAction; //순서가 보장되지 않기 때문에, 현재 상태가 이탈모드 인지에 따라서 동작이 틀려진다.
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":updateUserActionStats");
+
+		// initialize
+		userActivityTrace.COUNT = null;
+		userActivityTrace.DURATION = 0;
+		userActivityTrace.LAST_ACTION_TIME = 0;
+
+		try{
+			String[] actionIds = null;
+			if(durationMode && userActivityTrace.ACTION_ID != matchActionId && matchActionId != null && matchActionId != ""){
+				actionIds = String[]{userActivityTrace.ACTION_ID, matchActionId};
+			}else{
+				actionIds = String[]{userActivityTrace.ACTION_ID};
+			}
+
+			DateTime nowTime = DateTime.now();
+			String currentDate = DateTime.format(nowTime, "yyyyMMdd");
+			Long prevActionTime = 0;
+			Long prevMatchActionTime = 0;
+
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(userActivityTrace.SEQ_ID, "before_userstats");
+			Object[] orgTuples = RuleFunctions.ECF.AS.PERF.getUserActionStats_V2(userActivityTrace.SID, actionIds);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(userActivityTrace.SEQ_ID, "after_userstats");
+
+			Object newTuple = Metaspace.Tuple.create();
+			Metaspace.Tuple.putString(newTuple, "userAction", String.format("%d:%s", userActivityTrace.SID, userActivityTrace.ACTION_ID));
+			Object countMap = Collections.Map.createHashMap();
+			Collections.Map.put(countMap, currentDate, 1);
+
+			if(orgTuples != null){
+				for(int i=0; i<orgTuples@length; i++){
+					String userAction = getValueAsString("userAction", orgTuples[i]);
+					String actionId = String.substringAfter(userAction, ":");
+					String countInfo = getValueAsString("countInfo", orgTuples[i]);
+					Long lastActionTime = getValueAsNumber("lastActionTime", orgTuples[i]);
+					
+					if(actionId == userActivityTrace.ACTION_ID){
+						prevActionTime = lastActionTime;
+						/** check
+						if(durationMode){
+							Log.log(logger, "info", "xsemiyas:prev" + "(" + userActivityTrace.SID + "):(" + actionId + ")" + prevActionTime);
+						}
+						**/
+						/* process DateCount */
+						Object cMap = parseDateRefs(countInfo, null, null);
+						Object object = Collections.Map.get(cMap, currentDate);
+						if(object != null){
+							Integer value = Collections.Map.get(countMap, currentDate);
+							if(value < 9) {
+								Collections.Map.put(cMap, currentDate, value + 1);
+							}
+						}else{
+							cMap = Collections.Map.createHashMap();
+							Collections.Map.put(cMap, currentDate, 1); 
+						}
+						countMap = cMap;
+					}else{ // for matchActionId
+						prevMatchActionTime = lastActionTime;
+						/** check
+						if(durationMode){
+							Log.log(logger, "info", "xsemiyas:Match" + "(" + userActivityTrace.SID + "):(" + actionId + ")" + prevMatchActionTime);
+						}
+						**/
+					}
+				}
+			}
+			
+			if(countMap != null){
+				userActivityTrace.COUNT = serializeDateRefs(countMap);
+				String serialized = serializeDateRefs(countMap);
+				if(newTuple != null){
+					Metaspace.Tuple.putString(newTuple, "countInfo", serialized);
+				}
+			}
+			
+			if(userActivityTrace.LAST_ACTION_TIME == 0){
+				userActivityTrace.LAST_ACTION_TIME = DateTime.getTimeInMillis(userActivityTrace.ACTIVITY_TIME);
+			}
+			
+			// get duration.
+			if(durationMode){
+				if(exitAction){ // 현재 actionId 가 exit 이다.
+					if(prevActionTime < prevMatchActionTime){
+						if(prevMatchActionTime < userActivityTrace.LAST_ACTION_TIME){
+							userActivityTrace.DURATION = Number.valueOfLong(userActivityTrace.LAST_ACTION_TIME-prevMatchActionTime)/1000;
+//							Log.log(logger, "info", "xsemiyas:" + "(" + userActivityTrace.SID + "):" + userActivityTrace.DURATION + " " + userActivityTrace.ACTION_ID + "-" + matchActionId);
+						}
+					}
+				}else{ // enter 타입이다.
+					if(userActivityTrace.LAST_ACTION_TIME < prevMatchActionTime){ // 기존 이탈 action 이 시간상 이후의 action 인 경우이다.
+						userActivityTrace.DURATION = Number.valueOfLong(prevMatchActionTime - userActivityTrace.LAST_ACTION_TIME)/1000;
+//						Log.log(logger, "info", "xsemiyas:" + "(" + userActivityTrace.SID + "):" + userActivityTrace.DURATION + " " + userActivityTrace.ACTION_ID + "-" + matchActionId);
+					}
+				}	
+			}
+
+			if(newTuple != null){
+				Metaspace.Tuple.putLong(newTuple, "lastActionTime", userActivityTrace.LAST_ACTION_TIME);
+				RuleFunctions.ECF.AS.PERF.putUserActionStats_V2(newTuple);
+			}
+
+			RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(userActivityTrace.SEQ_ID, "action-stats");
+			return ;
+		}catch(Exception e){
+			Log.log(logger, "info", "Exception:" + e);
+			return ;
+		}
+	}
+}

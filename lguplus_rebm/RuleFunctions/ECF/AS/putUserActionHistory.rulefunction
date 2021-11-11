@@ -1,6 +1,6 @@
 /**
  * @description 
- * define space name 'UserActionHistory' (field name 'uahId' type 'string' field name 'version' type 'string' field name 'timeStamp' type 'DateTime' field name 'actionId' type 'string' field name 'userActionHistory' type 'string' ) key (fields('uahId')) replication_count 3 persistence_policy 'async' persistence_type 'share_nothing'
+ * define space name 'UserActionHistory' (field name 'uahId' type 'string' field name 'timeStamp' type 'DateTime' field name 'actionId' type 'string' field name 'userActionHistory' type 'string' ) key (fields('uahId')) replication_count 3 persistence_policy 'async' persistence_type 'share_nothing'
  */
 void rulefunction RuleFunctions.ECF.AS.putUserActionHistory {
 	attribute {
@@ -13,14 +13,13 @@ void rulefunction RuleFunctions.ECF.AS.putUserActionHistory {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserActionHistory");
 		
 		/* don't use regular expression because of performance issue */
-		String uahId = userActionHistory.SID;
+		long uahId = userActionHistory.SID;
 		try{
 			Object tuple = Metaspace.Tuple.create();
 
-			Metaspace.Tuple.putString(tuple, "uahId", uahId);
+			Metaspace.Tuple.putLong(tuple, "uahId", uahId);
 			Metaspace.Tuple.putString(tuple, "seqId", userActionHistory.SEQ_ID);
 			Metaspace.Tuple.putString(tuple, "actionId", userActionHistory.ACTION_ID);
-			Metaspace.Tuple.putString(tuple, "version", "");
 			Metaspace.Tuple.putString(tuple, "userActionHistory", convertUAHToString(userActionHistory));
 			if(userActionHistory.ACTIVITY_TIME != null){
 				Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(userActionHistory.ACTIVITY_TIME));

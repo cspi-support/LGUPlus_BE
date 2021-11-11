@@ -1,0 +1,23 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SYSTEM.releaseResources {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Internal.DetectEvent detectEvent;
+		String seqId;
+	}
+	body {
+		String[] concepts = PERFUtil.getConceptExtIdsByKey(seqId);
+		
+		if(concepts != null){
+			for(int i=0; i< concepts@length; i++){
+				Instance.deleteInstance(Instance.getByExtId(concepts[i]));
+			}
+			RuleFunctions.ECF.SYSTEM.printPerformanceCheck(detectEvent);
+		}
+
+	}
+}

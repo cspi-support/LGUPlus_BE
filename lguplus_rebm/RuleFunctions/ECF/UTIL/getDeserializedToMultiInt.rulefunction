@@ -1,0 +1,23 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.UTIL.getDeserializedToMultiInt {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+	}
+	body {
+		if(data == null || data == "") return null;
+		String[] tokens = String.split(data, "[,]");
+		int[] res = null;
+		if(tokens@length > 0) {
+			res = int[]{};
+			for(int i=0; i < tokens@length;i++){
+				res[i] = Number.intValue(tokens[i], 10);
+			}
+		}
+		return res;
+	}
+}

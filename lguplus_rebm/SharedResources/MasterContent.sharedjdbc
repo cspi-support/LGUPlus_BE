@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<BWSharedResource>
+    <name>MasterContent</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <description/>
+    <config>
+        <description/>
+        <resourceType>ae.shared.JDBCSharedResource</resourceType>
+        <driver>oracle.jdbc.OracleDriver</driver>
+        <maxConnections>%%DB/MASTER_CONTENT_CONNECTION%%</maxConnections>
+        <loginTimeout>%%DB/MASTER_CONTENT_LOGIN_TIMEOUT%%</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>%%DB/MASTER_CONTENT_URL%%</location>
+        <user>%%DB/MASTER_CONTENT_USER_NAME%%</user>
+        <password>%%DB/MASTER_CONTENT_PASSWORD%%</password>
+        <ContextFactory>com.tibco.tibjms.naming.TibjmsInitialContextFactory</ContextFactory>
+        <ProviderUrl>tibjmsnaming://localhost:7222</ProviderUrl>
+        <UserName/>
+        <UserPassword>#!zX+zcoNyDAPu+egDsA11SQ==</UserPassword>
+        <jndiDataSourceName/>
+        <JndiSharedConfiguration/>
+        <useSsl>false</useSsl>
+        <ssl xmlns="http://www.tibco.com/xmlns/aemeta/services/2002">
+            <cert isRef="true"/>
+            <identity isRef="true"/>
+            <trustStorePassword>#!BUJ0g74YUsW8og+POM093A==</trustStorePassword>
+            <requiresClientAuthentication>false</requiresClientAuthentication>
+            <verifyHostName>true</verifyHostName>
+            <expectedHostName/>
+        </ssl>
+    </config>
+</BWSharedResource>

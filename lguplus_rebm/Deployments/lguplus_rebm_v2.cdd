@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/6.1">
     <revision>
-        <version>12</version>
+        <version>14</version>
         <author>shkim</author>
-        <date>2021/09/17 17:18:15</date>
+        <date>2021/10/29 14:48:09</date>
         <comment/>
     </revision>
     <name>lguplus_rebm_v2</name>
@@ -13,8 +13,8 @@
         <memory-manager/>
         <db-concepts>
             <db-uris>
-                <uri>/SharedResources/OracleConn.sharedjdbc</uri>
-                <uri>/SharedResources/CMS.sharedjdbc</uri>
+                <uri>/SharedResources/MasterUser.sharedjdbc</uri>
+                <uri>/SharedResources/MasterContent.sharedjdbc</uri>
             </db-uris>
             <check-interval>60</check-interval>
             <inactivity-timeout>0</inactivity-timeout>

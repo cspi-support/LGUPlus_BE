@@ -61,5 +61,25 @@
             <constraint/>
             <modTime>1631597711730</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>LOG_GEN_MODE</name>
+            <value>true</value>
+            <type>Boolean</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1633925822241</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>MART_FAKE_INIT_DATA</name>
+            <value>false</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1636363059206</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

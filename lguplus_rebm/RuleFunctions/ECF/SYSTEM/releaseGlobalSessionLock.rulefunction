@@ -10,8 +10,10 @@ void rulefunction RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock {
 	}
 	body {
 		Object logger = Log.getLogger("releaseGlobalSessionLock");
-		AS.unlockEvent("/Channels/legacyASChannel/GlobalSessionLock", sessionLock);
-		Event.consumeEvent(sessionLock);
-		Log.log(logger,"debug","** lock(%s) is unreleased", sessionLock.sessionKey);
+		if(sessionLock != null){
+			AS.unlockEvent("/Channels/legacyASChannel/GlobalSessionLock", sessionLock);
+			Event.consumeEvent(sessionLock);
+			//Log.log(logger,"debug","** lock(%s) is unreleased", sessionLock.sessionKey);
+		}
 	}
 }

@@ -1,0 +1,34 @@
+/**
+ * @description 사용자 행동 통계정보
+ */
+Object[] rulefunction RuleFunctions.ECF.AS.PERF.getUserActionStats_V2 {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		long userId;
+		String[] actionIds;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserActionStats");
+		
+		try{
+			if(userId < 0) return null;
+			String filters = "";
+			int count = 0;
+			for(int i=0; i<actionIds@length; i++){
+				if(i != 0) {
+					filters = filters + " or ";
+				}
+				filters = filters + "userAction=" + "\"" + userId + ":" + actionIds[i] + "\"";
+				count++;
+			}
+			Object[] results = AS.query("/Channels/legacyASChannel/UserActionStats", null, "get", "snapshot", "all", 0, count, filters);
+			return results;
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+		return null;
+	}
+}

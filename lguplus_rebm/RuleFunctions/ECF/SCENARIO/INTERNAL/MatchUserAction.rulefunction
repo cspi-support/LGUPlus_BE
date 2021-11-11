@@ -1,0 +1,27 @@
+/**
+ * @description ActionEvent 기준으로 다음을 체크하고 해당 함수는 Scenario 에서 제일 먼저 호출되어야 한다.
+ * 1. ActionEvent 가 concurrent 모드상에서 동일한 Thread 에서 생성및 수행을 보장한다.
+ * 2. ActionEvent 와 연관된 사용자 컨셉및 ActionId 를 체크한다.
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.MatchUserAction {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		String actionId;
+	}
+	body {
+		Object logger = Log.getLogger("MatchUserAction");
+		/*		
+		if(actionEvent != null && customerBasicInfo != null && (actionEvent.ThreadId == SystemUtil.getCurrentThreadId() && actionEvent.SeqId == customerBasicInfo.SEQ_ID) //&& updatePerformanceCheck("check")
+			&& (actionId == null || actionEvent.ActionTargetDtl == actionId)) return true;
+		return false;
+		*/
+		
+		if(actionEvent != null && customerBasicInfo != null && (actionId == null || actionId == actionEvent.ActionTargetDtl) && (actionEvent.SeqId == customerBasicInfo.SEQ_ID)) // && updatePerformanceCheck("check"))
+			return true;
+		return false;
+	}
+}

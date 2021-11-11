@@ -1,0 +1,114 @@
+/**
+ * @description 
+ * User 데이터는 메모리로 로드한다. AVAIL_ET 값에 따라서 재로드할지를 결정한다.
+ */
+Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.loadUserData {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG+ ":loadUserData");
+		boolean fakeInitData = System.getGlobalVariableAsBoolean("COMMON/MART_FAKE_INIT_DATA", false);
+		
+		/*
+		*	1. extId 로 사용자의 sid 를 사용한다. 중복될 수 있는 가능성을 체크해야한다.
+		* null 을 주어서 항상 생성되도록 해야 한다.
+		*/
+		String cust_extId = "" + actionEvent.SID + ":" + actionEvent.SeqId + ":CBI"; // for concurrent-rtc
+		
+		/*
+		* In-Memory 상의 User 정보를 가져온다. 
+		* preprocessor 에서는 Concept 의 업데이트가 불가능하고 생성만 가능하다.
+		* 확인 필요한 사항 : 이미 생성되어 있는 Concept 의 변경이 필요한 경우는 어떤식으로 진행해야 할지.
+		*/
+		Concepts.ECF.SCENARIO.CustomerBasicInfo cbiInstance = null; //Instance.getByExtId(cust_extId);
+
+		/* 2. workingMemory 아이템이 유효하다면 이를 사용한다. */
+		/** instance is deleted.
+		if(cbiInstance != null && (cbiInstance.AVAIL_ET == null || DateTime.before(actionEvent.ReqTime, cbiInstance.AVAIL_ET))){
+			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "User: %s from WorkingMemory", cust_extId);
+			return cbiInstance;
+		}
+		**/
+
+		/* 3. get UserData from ActiveSpace */
+		cbiInstance = RuleFunctions.ECF.AS.getCustomerBasicInformation(cust_extId, actionEvent.SID, actionEvent.SeqId);
+		if(cbiInstance != null && (cbiInstance.AVAIL_ET == null || DateTime.before(actionEvent.ReqTime, cbiInstance.AVAIL_ET) || DateTime.equals(actionEvent.ReqTime, cbiInstance.AVAIL_ET))){
+			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "User: %s from ActiveSpace", cust_extId);
+			return cbiInstance;
+		}
+
+		/* 4. get data from DataMart */
+		if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+			cbiInstance = RuleFunctions.ECF.MART.getCustomerBasicInfoFromMart(cust_extId, actionEvent.SID); 
+			if(cbiInstance != null){
+				if(cbiInstance.SUBSCRIBE_INFO != null && cbiInstance.SUBSCRIBE_INFO != ""){
+					String[] tokens = String.split(cbiInstance.SUBSCRIBE_INFO, ",");
+					cbiInstance.MON_SUBS = PersistentData.isAnyContained("MFAHashSet", tokens);
+				}
+			}
+		}else{
+			/** for join performance testing
+			RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "user_join");
+			// for  test sid : 500087982155
+			cbiInstance = RuleFunctions.ECF.MART.getCustomerBasicInfoFromMart(cust_extId, 500087982155); 
+			if(cbiInstance != null){
+				if(cbiInstance.SUBSCRIBE_INFO != null && cbiInstance.SUBSCRIBE_INFO != ""){
+					String[] tokens = String.split(cbiInstance.SUBSCRIBE_INFO, ",");
+					cbiInstance.MON_SUBS = PersistentData.isAnyContained("MFAHashSet", tokens);
+				}
+				Instance.deleteInstance(cbiInstance);
+				cbiInstance = null;
+			}
+			RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "user_join_end");
+			**/
+
+			RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "before_read_db");
+			Concepts.LGUPLUS.TB_CMCE_REBM_CUST_M item = RuleFunctions.ECF.MART.getFakeCustomerBasicInfoFromMart(actionEvent.SID); 
+			if(item != null){
+				Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "loaded User(%d) from Mart", item.ENTR_NO);
+				boolean mfaMode = false;
+				if(item.MFA_PROD_ENTR_LIST_CNTN != null && item.MFA_PROD_ENTR_LIST_CNTN != ""){
+					String[] tokens = String.split(item.MFA_PROD_ENTR_LIST_CNTN, ",");
+					mfaMode = PersistentData.isAnyContained("MFAHashSet", tokens);
+				}
+				cbiInstance = Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
+							cust_extId/*extId String */,
+							item.ENTR_NO/*SID String */,
+							item.CUST_NO/*CID String */,
+							item.HPNO/*CTN String */,
+							mfaMode/*MON_SUBS boolean */,
+							item.MFA_PROD_ENTR_LIST_CNTN/*SUBSCRIBE_INFO String */,
+							false/*UNSUB_CANDI boolean */,
+							null/*NAME String */,
+							item.CUST_DIVS_CD/*CLASS String */,
+							null/*AVAIL_ET DateTime */,
+							actionEvent.SeqId/*SEQ_ID String */);
+			}
+			RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "after_read_db");
+		}
+
+		if(cbiInstance == null){
+			if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+				return null;
+			}else{
+				if(fakeInitData) {
+					cbiInstance = createUserInfo(cust_extId, actionEvent);
+				}
+			}
+		}
+		
+		if(cbiInstance == null){
+			return null;
+		}else{
+			cbiInstance.AVAIL_ET = DateTime.addDay(DateTime.now(), 1);
+		}
+
+		/* 5. save to AS */
+		RuleFunctions.ECF.AS.putCustomerBasicInformation(cbiInstance);
+		return cbiInstance;
+	}
+}

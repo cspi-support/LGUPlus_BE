@@ -1,0 +1,53 @@
+/**
+ * @description 
+ * Genre = 대분류|중분류|소분류,대분류|소분류,소분류
+ * 마지막에 "|" 가 있는 경우가 있어서 rejoin 을 하도록 한다.
+ */
+String[] rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.getGenresFromSet {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String genreSet;
+		boolean isExactMatch;
+		String delimiter;
+	}
+	body {
+		if(genreSet == null || genreSet == "") return null;
+		
+		String subDelimiter = "|";
+
+		String[] genres = String.split(genreSet, delimiter);
+		if(isExactMatch){
+			if(genres@length == 1) {
+				String[] sub = getSubGenres(genres[0], isExactMatch, subDelimiter);
+				return String[]{sub[0]};
+			}else if(genres@length == 2){
+				String[] sub1 = getSubGenres(genres[0], isExactMatch, subDelimiter);
+				String[] sub2 = getSubGenres(genres[1], isExactMatch, subDelimiter);
+				return String[]{sub1[0],sub2[0]};
+			}else if(genres@length == 3){
+				String[] sub1 = getSubGenres(genres[0], isExactMatch, subDelimiter);
+				String[] sub2 = getSubGenres(genres[1], isExactMatch, subDelimiter);
+				String[] sub3 = getSubGenres(genres[2], isExactMatch, subDelimiter);
+				return String[]{sub1[0],sub2[0],sub3[0]};
+			}
+		}else{
+			if(genres@length == 1) {
+				String[] sub = getSubGenres(genres[0], isExactMatch, subDelimiter);
+				return sub;
+			}else if(genres@length == 2){
+				String[] sub1 = getSubGenres(genres[0], isExactMatch, subDelimiter);
+				String[] sub2 = getSubGenres(genres[1], isExactMatch, subDelimiter);
+				return LguplusUtil.unionArray(sub1,sub2);
+			}else if(genres@length == 3){
+				String[] sub1 = getSubGenres(genres[0], isExactMatch, subDelimiter);
+				String[] sub2 = getSubGenres(genres[1], isExactMatch, subDelimiter);
+				String[] res = LguplusUtil.unionArray(sub1,sub2);
+				String[] sub3 = getSubGenres(genres[2], isExactMatch, subDelimiter);
+				return LguplusUtil.unionArray(res, sub3);
+			}
+		}
+		return null;
+	}
+}

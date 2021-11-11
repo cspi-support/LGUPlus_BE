@@ -3,13 +3,13 @@
     <globalVariables>
         <globalVariable>
             <name>BROKER_URL</name>
-            <value>localhost:9092</value>
+            <value>172.23.100.151:9092</value>
             <type>String</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1631246114789</modTime>
+            <modTime>1634100620324</modTime>
         </globalVariable>
         <globalVariable>
             <name>TOPIC_INBOUND_1</name>
@@ -120,6 +120,16 @@
             <description/>
             <constraint/>
             <modTime>1631513549711</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>PROTOCOL</name>
+            <value>PLAINTEXT</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1633500846634</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

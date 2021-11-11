@@ -16,7 +16,6 @@ void rulefunction RuleFunctions.ECF.AS.putContentInformation {
 			Object tuple = Metaspace.Tuple.create();
 
 			Metaspace.Tuple.putString(tuple, "contentId", contentInfo.CID);
-			Metaspace.Tuple.putString(tuple, "version", "");
 			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(DateTime.now()));
 			Metaspace.Tuple.putString(tuple, "contentData", convertCIToString(contentInfo));
 

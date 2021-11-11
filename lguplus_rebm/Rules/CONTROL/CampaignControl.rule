@@ -20,12 +20,13 @@ rule Rules.CONTROL.CampaignControl {
 		
 		String[] value = String.split2(controlEvent.controlValue, "[,]", -1);
 		
+		/** for v1
 		if(value@length >= 1){
 			if(String.compareToIgnoreCase(value[0], "reload_cms") == 0){
 				RuleFunctions.ECF.MART.loadScnrCampMap();
 			}
-			// 다른 action 들을 정의한다. 
 		}
+		**/
 
 	}
 }

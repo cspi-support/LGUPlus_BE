@@ -11,31 +11,32 @@ String rulefunction RuleFunctions.ECF.CONCEPT.convertUATToString {
 	}
 	body {
 		Object logger = Log.getLogger("convertUATToString");
+		String delimiter = ";";
 		
 		Object spaceValue = String.createBuffer(2048);
 		if(spaceValue != null){
 			try{
-				String.append(spaceValue, userActivityTrace.SID);
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.SVC_NAME));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.ACT_DESC));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.ACT_START));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.ACT_TGT));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.ACT_TGT_DTL));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.VW_CURR));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.VW_CURR_DTL));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.MENU_ID));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.ALBUM_ID));
-				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.ALBUM_COUNT));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.CAT_ID));
-				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.CAT_COUNT));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.GENRE_ID));
-				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.GENRE_COUNT));
-				String.append(spaceValue, "," + getSerializedFromDatetime(userActivityTrace.ACTIVITY_TIME, null));
-				String.append(spaceValue, "," + getSerializedFromDatetime(userActivityTrace.RECEIVED_TIME, null));
-				String.append(spaceValue, "," + getSerializedFromString(userActivityTrace.VW_STATUS));
-				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.DURATION));
-				String.append(spaceValue, "," + getSerializedFromLong(userActivityTrace.LAST_ACTION_TIME));
-				String.append(spaceValue, "," + getSerializedFromInt(userActivityTrace.COUNT));
+				String.append(spaceValue, getSerializedFromLong(userActivityTrace.SID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.SVC_NAME));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.ACT_DESC));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.ACT_START));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.ACT_TGT));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.ACT_TGT_DTL));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.VW_CURR));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.VW_CURR_DTL));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.MENU_ID));
+				String.append(spaceValue, delimiter + "");//getSerializedFromString(userActivityTrace.ALBUM_ID));
+				String.append(spaceValue, delimiter + "");//getSerializedFromInt(userActivityTrace.ALBUM_COUNT));
+				String.append(spaceValue, delimiter + "");//getSerializedFromMultiString(userActivityTrace.CAT_ID, ",")); 
+				String.append(spaceValue, delimiter + "");//getSerializedFromMultiInt(userActivityTrace.CAT_COUNT));
+				String.append(spaceValue, delimiter + "");//getSerializedFromMultiString(userActivityTrace.GENRE_ID, ",")); //"대분류|소분류","대분류|중분류|소분류"
+				String.append(spaceValue, delimiter + "");//getSerializedFromMultiInt(userActivityTrace.GENRE_COUNT));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(userActivityTrace.ACTIVITY_TIME, null));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(userActivityTrace.RECEIVED_TIME, null));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActivityTrace.VW_STATUS));
+				String.append(spaceValue, delimiter + getSerializedFromInt(userActivityTrace.DURATION));
+				String.append(spaceValue, delimiter + getSerializedFromLong(userActivityTrace.LAST_ACTION_TIME));
+				String.append(spaceValue, delimiter + "");//getSerializedFromInt(userActivityTrace.COUNT));
 
 				String convertedString = String.convertBufferToString(spaceValue);
 				return convertedString;

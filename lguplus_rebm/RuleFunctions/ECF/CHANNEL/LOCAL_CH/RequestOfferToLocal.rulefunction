@@ -7,7 +7,7 @@ void rulefunction RuleFunctions.ECF.CHANNEL.LOCAL_CH.RequestOfferToLocal {
 	}
 	scope {
 		String offerId;	
-		String userId;
+		long userId;
 		String[] param;
 	}
 	body {

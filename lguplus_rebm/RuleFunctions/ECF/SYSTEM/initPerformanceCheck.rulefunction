@@ -6,11 +6,12 @@ void rulefunction RuleFunctions.ECF.SYSTEM.initPerformanceCheck {
 		validity = ACTION;
 	}
 	scope {
+		String keyValue;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":initPerformanceData");
 		
-		SystemUtil.addTimeData("init", DateTime.getTimeInMillis(DateTime.now()));
+		PERFUtil.addTimeDataByKey(keyValue, "init", DateTime.getTimeInMillis(DateTime.now()));
 		/*
 		try{
 			Object tuple = Metaspace.Tuple.create();

@@ -36,7 +36,6 @@ void rulefunction RuleFunctions.ECF.CONTROL.initializeFilterMap {
 			}
 		}
 		
-
 		if(enableFilter){
 			Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "filterEnable:true filterAction:[%s]", ScoreCard.filter_control.filter_control_iptv_in_action);
 		}else{

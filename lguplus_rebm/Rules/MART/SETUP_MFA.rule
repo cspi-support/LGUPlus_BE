@@ -1,0 +1,21 @@
+/**
+ * @description 
+ * @author EdwardMini
+ */
+rule Rules.MART.SETUP_MFA {
+	attribute {
+		priority = 2;
+		forwardChain = true;
+	}
+	declare {
+		Events.MART.MFAReload reloadMFAEvent;
+	}
+	when {
+		
+	}
+	then {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":SETUP_MFA");
+		Event.consumeEvent(reloadMFAEvent);
+		loadMFAList();
+	}
+}

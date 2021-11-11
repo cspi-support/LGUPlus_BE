@@ -11,12 +11,11 @@ void rulefunction RuleFunctions.ECF.AS.putUserActivityTrace {
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserActivityTrace");
 		
-		String userActId = userActivityTrace.SID;
+		long userActId = userActivityTrace.SID;
 		try{
 			Object tuple = Metaspace.Tuple.create();
 
-			Metaspace.Tuple.putString(tuple, "userActId", userActId);
-			Metaspace.Tuple.putString(tuple, "version", "");
+			Metaspace.Tuple.putLong(tuple, "userActId", userActId);
 			Metaspace.Tuple.putString(tuple, "userActData", convertUATToString(userActivityTrace));
 			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(DateTime.now()));
 

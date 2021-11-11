@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+String[] rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.getInFilteredStringsFromSet {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String stringSet;
+		String[] InFilter;
+	}
+	body {
+		if(stringSet == null || stringSet == "") return null;
+		if(InFilter == null) return null;
+		String[] tokens = String.split(stringSet, "[,]");
+		return LguplusUtil.InFilteredArray(tokens, InFilter);
+
+	}
+}

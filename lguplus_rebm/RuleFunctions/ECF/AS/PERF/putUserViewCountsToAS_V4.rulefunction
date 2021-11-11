@@ -1,0 +1,24 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.PERF.putUserViewCountsToAS_V4 {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object tuple;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserViewCountsToAS");
+
+		if(tuple == null)
+			return;
+
+		try{
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.put("LGUPLUS_METASPACE.UserViewCounts", tuple, putOption);
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

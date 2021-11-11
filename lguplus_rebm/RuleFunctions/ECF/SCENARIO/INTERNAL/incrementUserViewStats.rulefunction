@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+
+void rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.incrementUserViewStats {
+	attribute {
+		validity = ACTION;
+	}
+	scope { 
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		DateTime startDate;
+		DateTime endDate;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":incrementUserViewStats");
+		incrementUserViewStats_V4(userActivityTrace, contentInfo, startDate, endDate);
+	}
+}

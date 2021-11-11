@@ -13,20 +13,20 @@ Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.CONCEPT.c
 	}
 	body {
 		Object logger = Log.getLogger(":convertStringToCBI");
+
 		if(data == null || data == "") return null;
-		
-		String[] tokens = String.split2(data, "[,]", -1);
+		String[] tokens = String.split2(data, "[;]", -1);
 		return Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
 				extId/*extId String */,
-				tokens[0]/*SID String */,
-				tokens[1]/*CID String */,
+				getDeserializedToLong(tokens[0])/*SID String */,
+				getDeserializedToLong(tokens[1])/*CID String */,
 				tokens[2]/*CTN String */,
 				getDeserializedToBoolean(tokens[3])/*MON_SUBS boolean */,
 				tokens[4]/*SUBSCRIBE_INFO String */,
 				getDeserializedToBoolean(tokens[5])/*UNSUB_CANDI boolean */,
 				tokens[6]/*NAME String */,
 				tokens[7]/*CLASS String */,
-				getDeserializedToDatetime(tokens[8], null)/*AVAIL_ET DateTime */
+				getDeserializedToDatetime(tokens[8], "yyMMdd")/*AVAIL_ET DateTime */
 				,seqId); //for concurrent-rtc
 	}
 }

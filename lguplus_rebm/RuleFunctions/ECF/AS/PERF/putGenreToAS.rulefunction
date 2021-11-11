@@ -1,0 +1,42 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.PERF.putGenreToAS {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String genreSet;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putGenreToAS");
+		if(genreSet == null || genreSet == "") return;
+
+		boolean isExactMatch = true;
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+
+		String[] genreArray = getGenresFromSet(genreSet, isExactMatch, ",");
+		
+		Object tupleList = Collections.List.createArrayList();
+		int index = 0;
+
+		try{
+			for(int i=0; i<genreArray@length;i++){
+				Object tuple = Metaspace.Tuple.create();
+				Metaspace.Tuple.putString(tuple, "genreName", genreArray[i]);
+				Metaspace.Tuple.putLong(tuple, "genreCode", String.hashCode(genreArray[i]));
+				Collections.List.add(tupleList, index, tuple);
+				index = index + 1;
+			}
+
+			/** not supported by BE
+			Object putOption = Metaspace.Space.Options.createPutOptions();
+			Metaspace.Space.putAll("/Channels/legacyASChannel/GenreCode", tupleList, putOption);
+			**/
+			ASUtil.putAll(System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE"), "GenreCode", tupleList);
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

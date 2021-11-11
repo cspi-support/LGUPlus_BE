@@ -1,0 +1,29 @@
+/**
+ * @description 
+ */
+Object rulefunction RuleFunctions.ECF.AS.PERF.getUserViewCountsFromAS_V4 {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long userId;
+		String actionId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserViewCountsFromAS");
+		
+		if(actionId == null || actionId == "") return null;
+
+		String keyValue = "\"" + userId + ":" + actionId + "\"";
+		try{
+			String filters = "userView =" + keyValue;
+			Object[] tuples = AS.query("/Channels/legacyASChannel/UserViewCounts", null, "get", "snapshot", "all", 0, 1, filters);
+			if(tuples == null) return null;
+			return tuples[0];
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+			return null;
+		}
+	}
+}

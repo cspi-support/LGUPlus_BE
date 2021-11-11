@@ -1,0 +1,15 @@
+/**
+ * @description 
+ */
+DateTime rulefunction RuleFunctions.ECF.UTIL.getLocalTime {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		DateTime utcTime;
+	}
+	body {
+		if(utcTime == null) return null;
+		return DateTime.translateTime(utcTime, "Asia/Seoul");
+	}
+}

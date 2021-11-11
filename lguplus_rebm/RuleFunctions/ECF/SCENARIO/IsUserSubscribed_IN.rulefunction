@@ -7,10 +7,9 @@ boolean rulefunction RuleFunctions.ECF.SCENARIO.IsUserSubscribed_IN {
 		validity = CONDITION;
 	}
 	scope {
-		Events.Internal.ActionEvent actionEvent;
+		Events.Internal.DetectEvent detectEvent;
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
-		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
 		String CodeSet;
 	}
 	body {

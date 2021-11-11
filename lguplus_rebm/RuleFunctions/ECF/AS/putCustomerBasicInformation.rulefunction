@@ -11,12 +11,11 @@ void rulefunction RuleFunctions.ECF.AS.putCustomerBasicInformation {
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putCustomerBasicInformation");
 		
-		String custId = customerBasicInfo.SID;
+		long custId = customerBasicInfo.SID;
 		try{
 			Object tuple = Metaspace.Tuple.create();
 
-			Metaspace.Tuple.putString(tuple, "custId", custId);
-			Metaspace.Tuple.putString(tuple, "version", "");
+			Metaspace.Tuple.putLong(tuple, "custId", custId);
 			Metaspace.Tuple.putLong(tuple, "timeStamp", DateTime.getTimeInMillis(DateTime.now()));
 			Metaspace.Tuple.putString(tuple, "custData", convertCBIToString(customerBasicInfo));
 

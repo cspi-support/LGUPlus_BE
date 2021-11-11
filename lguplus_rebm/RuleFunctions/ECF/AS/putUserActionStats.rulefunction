@@ -7,20 +7,20 @@ void rulefunction RuleFunctions.ECF.AS.putUserActionStats {
 	}
 	scope {
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		long dateId;
+		int actionCount;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserActionStats");
 
 		try{
-			DateTime currentTime = DateTime.now();
 			Object tuple = Metaspace.Tuple.create();
 			
-			Metaspace.Tuple.putString(tuple, "uasId", userActivityTrace.SID);
-			long dateId = Number.longValue(DateTime.format(currentTime, "yyyyMMdd"), 10);
+			Metaspace.Tuple.putLong(tuple, "uasId", userActivityTrace.SID);
 			Metaspace.Tuple.putLong(tuple, "dateId", dateId);
 			Metaspace.Tuple.putString(tuple, "actionId", userActivityTrace.ACTION_ID);
 			Metaspace.Tuple.putLong(tuple, "lastActionTime", userActivityTrace.LAST_ACTION_TIME);
-			Metaspace.Tuple.putLong(tuple, "count", userActivityTrace.COUNT);
+			Metaspace.Tuple.putLong(tuple, "count", actionCount);
 
 			Object putOption = Metaspace.Space.Options.createPutOptions();
 			Metaspace.Space.put("LGUPLUS_METASPACE.UserActionStats", tuple, putOption);

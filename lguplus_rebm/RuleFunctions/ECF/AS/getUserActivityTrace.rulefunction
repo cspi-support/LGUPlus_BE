@@ -7,17 +7,17 @@ Concepts.ECF.SCENARIO.UserActivityTrace rulefunction RuleFunctions.ECF.AS.getUse
 	}
 	scope {
 		String extId;
-		String userId;
+		long userId;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserActivityTrace");
 		
-		String userActId = userId;
+		long userActId = userId;
 		
 		try{
 			Object tuple = Metaspace.Tuple.create();
 
-			Metaspace.Tuple.putString(tuple, "userActId", userActId);
+			Metaspace.Tuple.putLong(tuple, "userActId", userActId);
 			Object object = Metaspace.Space.get(System.getGlobalVariableAsString("AS/SPACE_USER_ACTIVITY_TRACE", "LGUPLUS_METASPACE.UserActivityTrace"), tuple);
 			if(object == null) return null;
 			String data = Metaspace.Tuple.getString(object, "userActData");

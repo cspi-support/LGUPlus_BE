@@ -1,0 +1,79 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.UserActivityTrace rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.loadUserActivityTrace {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long userId;
+		String seqId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":loadUserActivityTrace");
+		
+		/*
+		*	1. extId 로 사용자의 sid 를 사용한다. 중복될 수 있는 가능성을 체크해야한다.
+		*/
+		String cust_extId = "" + userId + ":" + seqId + ":Activity";
+		
+		/*
+		* In-Memory 상의 User 정보를 가져온다. 
+		* preprocessor 에서는 Concept 의 업데이트가 불가능하고 생성만 가능하다.
+		* 확인 필요한 사항 : 이미 생성되어 있는 Concept 의 변경이 필요한 경우는 어떤식으로 진행해야 할지.
+		*/
+		Concepts.ECF.SCENARIO.UserActivityTrace uatInstance;
+		
+		if(false){ //UAT는 신규로 생성한다.
+			uatInstance = Instance.getByExtId(cust_extId);
+
+			/* 2. workingMemory 아이템이 유효하다면 이를 사용한다. */
+			if(uatInstance != null){
+				Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "UserActivityTrace: %s from WorkingMemory", cust_extId);
+				PERFUtil.addConceptExtIdByKey(seqId, uatInstance@extId);
+				return uatInstance;
+			}
+
+			/* 3. get UserData from ActiveSpace */
+			uatInstance = RuleFunctions.ECF.AS.getUserActivityTrace(cust_extId, userId);
+			if(uatInstance != null){
+				Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "UserActivityTrace: %s from ActiveSpace", cust_extId);
+				PERFUtil.addConceptExtIdByKey(seqId, uatInstance@extId);
+				return uatInstance;
+			}
+		}
+
+		/* 4. making initial concept */
+		uatInstance = Concepts.ECF.SCENARIO.UserActivityTrace.UserActivityTrace(
+			cust_extId/*extId String */,
+			userId/*SID String */,
+			null/*SVC_NAME String */,
+			null/*ACT_DESC String */,
+			null/*ACT_START String */,
+			null/*ACT_TGT String */,
+			null/*ACT_TGT_DTL String */,
+			null/*VW_CURR String */,
+			null/*VW_CURR_DTL String */,
+			null/*ACTION_ID String */,
+			null/*MENU_ID String */,
+			null/*ALBUM_ID String */,
+			null/*ALBUM_COUNT int */,
+			null/*CAT_ID String */,
+			null/*CAT_COUNT int */,
+			null/*GENRE_ID String */,
+			null/*GENRE_COUNT int */,
+			null/*VW_STATUS String */,
+			null/*ACTIVITY_TIME DateTime */,
+			null/*RECEIVED_TIME DateTime */,
+			0/*DURATION int */,
+			null/*COUNT int */,
+			0/*LAST_ACTION_TIME */
+			,null); //xsemiyas_lock
+
+		if(uatInstance != null){
+			PERFUtil.addConceptExtIdByKey(seqId, uatInstance@extId);
+		}
+
+		return uatInstance;
+	}
+}

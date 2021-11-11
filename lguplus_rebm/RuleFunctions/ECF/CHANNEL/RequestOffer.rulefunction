@@ -6,7 +6,7 @@ void rulefunction RuleFunctions.ECF.CHANNEL.RequestOffer {
 		validity = ACTION;
 	}
 	scope {
-		Events.Internal.ActionEvent actionEvent;
+		Events.Internal.DetectEvent detectEvent;
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
 		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
@@ -14,14 +14,23 @@ void rulefunction RuleFunctions.ECF.CHANNEL.RequestOffer {
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "RequestOffer");
-		String offerId = DateTime.format(DateTime.now(), "yyyyMMddHHmmssSSS") + Random() % 100;
-		String[] param = {scenarioId, customerBasicInfo.CID, customerBasicInfo.CTN};
+		String currentTime = DateTime.format(DateTime.now(), "yyyyMMddHHmmssSSS");
+		String offerId = currentTime + Random(100);
+		String ctn = "";
+		if(customerBasicInfo.CTN != null && customerBasicInfo.CTN != "") {
+			ctn = customerBasicInfo.CTN;
+		}
+		String reqTime = "";
+		if(detectEvent.ReqTime != null){
+			reqTime = DateTime.format(detectEvent.ReqTime, "yyyyMMddHHmmssSSS");
+		}
+		String[] param = {scenarioId, "" + customerBasicInfo.CID, customerBasicInfo.CTN, detectEvent.SeqId, detectEvent.SvcName, reqTime, currentTime};
 
 		if(String.compareToIgnoreCase(System.getGlobalVariableAsString("COMMON/REVISION", "V2"), "V2") == 0){
-			Log.log(logger, "info", "request offer ");
-			RuleFunctions.ECF.CHANNEL.AS.RequestOfferToAS(offerId, actionEvent.SID, param);
+//			Log.log(logger, "info", "request offer: SeqId" + detectEvent.SeqId);
+			RuleFunctions.ECF.CHANNEL.AS.RequestOfferToAS(offerId, detectEvent.SID, param);
 		}else{
-			RuleFunctions.ECF.CHANNEL.LOCAL_CH.RequestOfferToLocal(offerId, actionEvent.SID, param);
+			RuleFunctions.ECF.CHANNEL.LOCAL_CH.RequestOfferToLocal(offerId, detectEvent.SID, param);
 		}
 	}
 }

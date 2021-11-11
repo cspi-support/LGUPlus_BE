@@ -13,18 +13,19 @@ String rulefunction RuleFunctions.ECF.CONCEPT.convertCBIToString {
 		Object logger = Log.getLogger("convertCBIToString");
 		
 		Object spaceValue = String.createBuffer(2048);
+		String delimiter = ";";
 
 		if(spaceValue != null){
 			try{
-				String.append(spaceValue, customerBasicInfo.SID);
-				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CID));
-				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CTN));
-				String.append(spaceValue, "," + getSerializedFromBoolean(customerBasicInfo.MON_SUBS));
-				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.SUBSCRIBE_INFO));
-				String.append(spaceValue, "," + getSerializedFromBoolean(customerBasicInfo.UNSUB_CANDI));
-				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.NAME));
-				String.append(spaceValue, "," + getSerializedFromString(customerBasicInfo.CLASS));
-				String.append(spaceValue, "," + getSerializedFromDatetime(customerBasicInfo.AVAIL_ET, null));
+				String.append(spaceValue, getSerializedFromLong(customerBasicInfo.SID));
+				String.append(spaceValue, delimiter + getSerializedFromLong(customerBasicInfo.CID));
+				String.append(spaceValue, delimiter + getSerializedFromString(customerBasicInfo.CTN));
+				String.append(spaceValue, delimiter + getSerializedFromBoolean(customerBasicInfo.MON_SUBS));
+				String.append(spaceValue, delimiter + getSerializedFromString(customerBasicInfo.SUBSCRIBE_INFO));
+				String.append(spaceValue, delimiter + getSerializedFromBoolean(customerBasicInfo.UNSUB_CANDI));
+				String.append(spaceValue, delimiter + getSerializedFromString(customerBasicInfo.NAME));
+				String.append(spaceValue, delimiter + getSerializedFromString(customerBasicInfo.CLASS));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(customerBasicInfo.AVAIL_ET, "yyMMdd"));
 
 				String convertedString = String.convertBufferToString(spaceValue);
 				return convertedString;

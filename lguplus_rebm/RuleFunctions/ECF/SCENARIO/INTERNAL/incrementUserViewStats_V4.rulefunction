@@ -1,0 +1,325 @@
+/**
+ * @description 
+ */
+
+void rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.incrementUserViewStats_V4 {
+	attribute {
+		validity = ACTION;
+	}
+	scope { 
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
+		DateTime startDate;
+		DateTime endDate;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":incrementUserViewStats");
+
+		String filterInAlbum = System.getGlobalVariableAsString("FILTER/IPTV_IN_ALBUM", null);
+		String filterInGenre = System.getGlobalVariableAsString("FILTER/IPTV_IN_GENRE", null);
+		String filterInCategory= System.getGlobalVariableAsString("FILTER/IPTV_IN_CATEGORY", null);
+		String filterDelimiter = ",";
+		int maxContentCount= System.getGlobalVariableAsInt("AS/MAX_CONTENT_COUNT", 67);
+		int maxContentSize = System.getGlobalVariableAsInt("AS/MAX_CONTENT_SIZE", 4096);
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+
+		DateTime nowTime = DateTime.now();
+		String currentDate = DateTime.format(nowTime, "yyyyMMdd");
+
+		if(userActivityTrace.ALBUM_ID == null || userActivityTrace.ALBUM_ID == "" || contentInfo == null) return;
+		
+		boolean isExactMatch = true;
+
+		/* filtered 된 아이템에 대해서만 동작되도록 해당 아이템을 array 에 저장한다.  */
+		String album_ASId = null;
+		String[] genre_ASId = null;
+		String[] category_ASId = null;
+
+		String fieldHeadForAS = String.format("%d:%s", userActivityTrace.SID , userActivityTrace.ACTION_ID );
+		Object fieldBufferForAS = null;
+		String delimiterForAS = "|";
+		
+		// HashMap 을 사용하여 재구성한다.
+		String albumId = contentInfo.CID;
+		String[] genres = getGenresFromSet(contentInfo.GENRE, isExactMatch, filterDelimiter);
+		String[] categories = getStringsFromSet(contentInfo.CATEGORY, filterDelimiter);
+		Object albumMap = Collections.Map.createHashMap();
+		Object genreMap = Collections.Map.createHashMap();
+		Object categoryMap = Collections.Map.createHashMap();
+
+		try{
+			/** 필터링 데이터를 초기화 한다.  
+			 * filtering 기준
+			  - filter-in 변수가 null : filtering 을 않한다. 
+			  - 그 이외 : filter-in 에 포함된 항목에 대해서만 AS 동작을 진행한다.
+			  - 해당 항목에 대해서는 COUNT 를 1로 초기화한다.  그 이외에는 0으로 한다.
+			*/
+
+			if(contentInfo.CID != null && contentInfo.CID != ""){
+				if(filterInAlbum == null || filterInAlbum == "") {
+					if(useHash){
+						album_ASId = NumberUtil.IntToHex(String.hashCode(contentInfo.CID));
+					}else{
+						album_ASId = contentInfo.CID;
+					}
+					Object countMap = Collections.Map.createHashMap();
+					Collections.Map.put(countMap, currentDate, 1);
+					Collections.Map.put(albumMap, album_ASId, countMap);
+				}else if(StringUtil.isContainAny(filterInAlbum, contentInfo.CID, filterDelimiter)){
+					if(useHash){
+						album_ASId = NumberUtil.IntToHex(String.hashCode(contentInfo.CID));
+					}else{
+						album_ASId = contentInfo.CID;
+					}
+					Object countMap = Collections.Map.createHashMap();
+					Collections.Map.put(countMap, currentDate, 1);
+					Collections.Map.put(albumMap, album_ASId, countMap);
+				}else{
+					// no action
+				}
+			}
+			if(contentInfo.GENRE != null && contentInfo.GENRE != "") {
+				if(genres != null){
+					if(filterInGenre == null || filterInGenre  == ""){
+						genre_ASId = String[genres@length]{};
+						for(int i=0;i <genres@length; i++){
+							if(useHash){
+								genre_ASId[i] = NumberUtil.IntToHex(String.hashCode(genres[i]));
+							}else{
+								genre_ASId[i] = genres[i];
+							}
+							Object countMap = Collections.Map.createHashMap();
+							Collections.Map.put(countMap, currentDate, 1);
+							Collections.Map.put(genreMap, genre_ASId[i], countMap);
+						}
+					}else{
+						String[] intersects = LguplusUtil.intersectsWith(genres, filterInGenre, filterDelimiter);
+						genre_ASId = String[intersects@length]{};
+						int tIndex = 0; //genres 에서 filter-in 갯수만 저장함으로 genre_ASId 와는 갯수가 틀리다.
+						for(int i=0;i < genres@length; i++){
+							if(StringUtil.contains(intersects, genres[i])){
+								if(useHash){
+									genre_ASId[tIndex] = NumberUtil.IntToHex(String.hashCode(genres[i]));
+								}else{
+									genre_ASId[tIndex] = genres[i];
+								}
+								Object countMap = Collections.Map.createHashMap();
+								Collections.Map.put(countMap, currentDate, 1);
+								Collections.Map.put(genreMap, genre_ASId[tIndex], countMap);
+								tIndex++;
+							}else{
+								// no action
+							}
+						}
+					}
+				}
+			}
+			if(contentInfo.CATEGORY != null && contentInfo.CATEGORY != "") {
+				if(categories != null){
+					if(filterInCategory == null || filterInCategory == ""){
+						category_ASId = String[categories@length]{};
+						for(int i=0; i < categories@length; i++){
+							if(useHash){
+								category_ASId[i] = NumberUtil.IntToHex(String.hashCode(categories[i]));
+							}else{
+								category_ASId[i] = categories[i];
+							}
+							Object countMap = Collections.Map.createHashMap();
+							Collections.Map.put(countMap, currentDate, 1);
+							Collections.Map.put(categoryMap, category_ASId[i], countMap);
+						}
+					}else{
+						String[] intersects = LguplusUtil.intersectsWith(categories, filterInCategory, filterDelimiter);
+						category_ASId = String[intersects@length]{};
+						int tIndex = 0;
+						for(int i=0; i< categories@length; i++){
+							if(StringUtil.contains(intersects, categories[i])){
+								if(useHash){
+									category_ASId[tIndex] = NumberUtil.IntToHex(String.hashCode(categories[i]));
+								}else{
+									category_ASId[tIndex] = categories[i];
+								}
+								Object countMap = Collections.Map.createHashMap();
+								Collections.Map.put(countMap, currentDate, 1);
+								Collections.Map.put(categoryMap, category_ASId[tIndex], countMap);
+								tIndex++;
+							}else{
+								//no action
+							}
+						}
+					}
+				}
+			}
+			
+			/** filtering후 조건에 부합되는 아이템이 없다 
+			 * CHECK : COUNT 를 1로 해야 하나 0으로 유지해야 하나?
+			*/
+			if((album_ASId == null || album_ASId == "")  && genre_ASId == null && category_ASId == null) return;
+			
+			// AS operation
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(userActivityTrace.SEQ_ID, "before_viewcounts");
+			Object orgTuple = RuleFunctions.ECF.AS.PERF.getUserViewCountsFromAS_V4(userActivityTrace.SID, userActivityTrace.ACTION_ID);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(userActivityTrace.SEQ_ID, "after_viewcounts");
+			fieldBufferForAS = String.createBuffer(maxContentSize);
+			
+			int itemCount = 0;
+			if(orgTuple != null){
+				String userView = getValueAsString("userView", orgTuple);
+				String countInfo = getValueAsString("countInfo", orgTuple);
+				if(countInfo != null && countInfo != ""){
+					String[] countTokens = String.split2(countInfo, delimiterForAS, -1);
+					if(countTokens != null && countTokens@length > 0){
+						for(int i=0; i < countTokens@length; i++){
+							String[] cells = String.split2(countTokens[i], "[:]", -1);
+
+							/** format : type(1B):hex(8B):yyMMddCyyMMddCyyMMddC **/
+							if(cells != null && cells@length == 3 && cells[1] != null && cells[2] != null){
+								int itemType; //0-> album, 1->genre, 2-> category
+
+								/** type 정보를 가져온다. */
+								if(cells[0] == "a" || cells[0] == "A") {
+									itemType = 0;
+								}else if(cells[0] == "g" || cells[0] == "G"){
+									itemType = 1;
+								}else{
+									itemType = 2;
+								}
+								/* filter 조건을 조사한다. */
+								if(itemType == 0){
+									if(cells[1] == album_ASId){
+										Object cMap = parseDateRefs(cells[2], null, null);
+										Object object = Collections.Map.get(cMap, currentDate);
+										if(object != null){
+											Integer value = Collections.Map.get(cMap, currentDate);
+											if(value < 9) {
+												Collections.Map.put(cMap, currentDate, value + 1);
+											}
+										}else{
+											cMap = Collections.Map.createHashMap();
+											Collections.Map.put(cMap, currentDate, 1); // 초기 +1
+										}
+										Collections.Map.put(albumMap, album_ASId, cMap);
+									}
+								}else if(itemType == 1){
+									int itemIndex = IsString_IN(cells[1], genre_ASId);
+									if(itemIndex >= 0){
+										Object cMap = parseDateRefs(cells[2], null, null);
+										Object object = Collections.Map.get(cMap, currentDate);
+										if(object != null){
+											Integer value = Collections.Map.get(cMap, currentDate);
+											if(value < 9) {
+												Collections.Map.put(cMap, currentDate, value + 1);
+											}
+										}else{
+											cMap = Collections.Map.createHashMap();
+											Collections.Map.put(cMap, currentDate, 1);
+										}
+										Collections.Map.put(genreMap, cells[1], cMap);
+									}
+								}else{
+									int itemIndex = IsString_IN(cells[1], category_ASId);
+									if(itemIndex >= 0){
+										Object cMap = parseDateRefs(cells[2], null, null);
+										Object object = Collections.Map.get(cMap, currentDate);
+										if(object != null){
+											Integer value = Collections.Map.get(cMap, currentDate);
+											if(value < 9){
+												Collections.Map.put(cMap, currentDate, value + 1);
+											}
+										}else{
+											cMap = Collections.Map.createHashMap();
+											Collections.Map.put(cMap, currentDate, 1);
+										}
+										Collections.Map.put(categoryMap, cells[1], cMap);
+									}
+								}
+							}
+						} //for countTokens
+					} //if
+				}
+			}
+
+			/* category 전체가 삭제될 수도 있다. 추가적인 logic 이 필요하다. */
+
+			if(albumId != null){
+				userActivityTrace.ALBUM_ID = albumId;
+				String codeName = null;
+				if(useHash){
+					codeName = NumberUtil.IntToHex(String.hashCode(userActivityTrace.ALBUM_ID));
+				}else{
+					codeName = userActivityTrace.ALBUM_ID;
+				}
+				Object countMap = Collections.Map.get(albumMap, codeName);
+				String serializedData = serializeDateRefs(countMap);
+				userActivityTrace.ALBUM_COUNT = serializedData;
+
+				if(itemCount<= maxContentCount){
+					if(itemCount > 0) String.append(fieldBufferForAS, delimiterForAS);
+					String.append(fieldBufferForAS, String.format("A:%s:%s", codeName, serializedData));
+					itemCount++;
+				}
+			}
+			if(genres != null){
+				for(int i=0; i<genres@length;i++){
+					userActivityTrace.GENRE_ID[i] = genres[i];
+					String codeName = null;
+					if(useHash){
+						codeName = NumberUtil.IntToHex(String.hashCode(userActivityTrace.GENRE_ID[i]));
+					}else{
+						codeName = userActivityTrace.GENRE_ID[i];
+					}
+					Object countMap = Collections.Map.get(albumMap, codeName);
+					if(countMap != null){
+						String serializedData = serializeDateRefs(countMap);
+						userActivityTrace.GENRE_COUNT[i] = serializedData;
+						if(itemCount<= maxContentCount){
+							if(itemCount > 0) String.append(fieldBufferForAS, delimiterForAS);
+							String.append(fieldBufferForAS, String.format("A:%s:%s", codeName, serializedData));
+							itemCount++;
+						}
+					}else{
+						userActivityTrace.GENRE_COUNT[i] = null;
+					}
+				}
+			}
+			if(categories != null){
+				for(int i=0; i<categories@length;i++){
+					userActivityTrace.CAT_ID[i] = categories[i];
+					String codeName = null;
+					if(useHash){
+						codeName = NumberUtil.IntToHex(String.hashCode(userActivityTrace.CAT_ID[i]));
+					}else{
+						codeName = userActivityTrace.CAT_ID[i];
+					}
+					Object countMap = Collections.Map.get(albumMap, codeName);
+					if(countMap != null){
+						String serializedData = serializeDateRefs(countMap);
+						userActivityTrace.CAT_COUNT[i] = serializedData;
+						if(itemCount<= maxContentCount){
+							if(itemCount > 0) String.append(fieldBufferForAS, delimiterForAS);
+							String.append(fieldBufferForAS, String.format("A:%s:%s", codeName, serializedData));
+							itemCount++;
+						}
+					}else{
+						userActivityTrace.CAT_COUNT[i] = null;
+					}
+				}
+			}
+			
+			if(itemCount > 0 && fieldBufferForAS != null){
+				String saveCountInfo = String.convertBufferToString(fieldBufferForAS);
+				Object newTuple = Metaspace.Tuple.create();
+				Metaspace.Tuple.putString(newTuple, "userView", fieldHeadForAS);
+				Metaspace.Tuple.putString(newTuple, "countInfo", saveCountInfo);
+				RuleFunctions.ECF.AS.PERF.putUserViewCountsToAS_V4(newTuple);
+			}	
+			return;
+
+		}catch(Exception e){
+			Log.log(logger, "info", "Exception:" + e);
+			return;
+		}finally{
+			if(fieldBufferForAS != null) String.clearBuffer(fieldBufferForAS);
+		}
+	}
+}

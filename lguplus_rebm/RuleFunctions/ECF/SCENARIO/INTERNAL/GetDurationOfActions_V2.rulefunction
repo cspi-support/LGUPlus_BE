@@ -1,0 +1,56 @@
+/**
+ * @description 액션간의 시간차이를 구한다. 
+ * 1. {firstAction, secondAction} 에서 가장 최근의 Action에 관한 정보를 구한다.
+ * 2. 현재 ActionEvent 가장 최근의 Action 과 다른경우에 시간차이를 반환한다.
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.GetDurationOfActions_V2 {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		String enterAction;
+		String exitAction;
+		Events.Internal.DetectEvent detectEvent;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":getDurationOfActions");
+		/* kafka 는 순서를 보장하지 않기 때문에 이를 감안하여 제일 마지막 액션을 기준으로 동작한다. */
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(detectEvent.SeqId, "durationOfActions");
+
+		int saveDayCount = System.getGlobalVariableAsInt("AS/SAVE_DAY_COUNT", 7);
+		try{
+			String[] actionIds = String[]{enterAction, exitAction};
+
+			Long prevEnterActionTime = 0;
+			Long prevExitActionTime = 0;
+			Object[] orgTuples = RuleFunctions.ECF.AS.PERF.getUserActionStats_V2(detectEvent.SID, actionIds);
+
+			if(orgTuples != null){
+				for(int i=0; i<orgTuples@length; i++){
+					String userAction = getValueAsString("userAction", orgTuples[i]);
+					String actionId = String.substringAfter(userAction, ":");
+					Long lastActionTime = getValueAsNumber("lastActionTime", orgTuples[i]);
+					if(actionId != enterAction){
+						prevEnterActionTime = lastActionTime;
+					}else{
+						prevExitActionTime = lastActionTime;
+					}
+				}
+				long currentActionTimeMillis = DateTime.getTimeInMillis(detectEvent.ReqTime);
+				if(detectEvent.ActionTargetDtl == exitAction){
+					if(prevExitActionTime < prevEnterActionTime && prevEnterActionTime < currentActionTimeMillis) {
+						return Number.valueOfLong(currentActionTimeMillis-prevEnterActionTime)/1000;
+					}
+				}else{
+					if(currentActionTimeMillis < prevExitActionTime){
+						return Number.valueOfLong(prevExitActionTime-currentActionTimeMillis)/1000;
+					}
+				}
+			}
+			return 0;
+		}catch(Exception e){
+			Log.log(logger, ScoreCard.log_control.ERROR_LEVEL, "Exception:" + e);
+			return 0;
+		}
+	}
+}

@@ -1,0 +1,40 @@
+/**
+ * @description 고객 정보를 MART 로 부터 가져온다.
+ */
+Concepts.LGUPLUS.TB_CMCE_REBM_CUST_M rulefunction RuleFunctions.ECF.MART.getFakeCustomerBasicInfoFromMart {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long userKey;
+	}
+	body {
+		
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getCustomerBasicInfo");
+		
+		try{
+			Database.setCurrentConnection("/SharedResources/MasterUser.sharedjdbc");
+			Database.beginTransaction();
+
+			if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+				Concepts.LGUPLUS.TB_CMCE_REBM_CUST_M[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/TB_CMCE_REBM_CUST_M", "select * from CUSTOMER_BASIC_INFO WHERE ENTR_NO = " + userKey , true);
+				if(items@length > 0){
+					return items[0];
+				}
+				else return null;
+			}else{
+				Concepts.LGUPLUS.TB_CMCE_REBM_CUST_M[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/TB_CMCE_REBM_CUST_M", "select * from TB_CMCE_REBM_CUST_M_T WHERE ENTR_NO = " + userKey , true);
+				if(items@length > 0){
+					return items[0];
+				}
+				else return null;
+			}
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:"+ e);
+			Database.rollback();
+			return null;
+		}finally{
+			Database.unsetConnection();
+		}
+	}
+}

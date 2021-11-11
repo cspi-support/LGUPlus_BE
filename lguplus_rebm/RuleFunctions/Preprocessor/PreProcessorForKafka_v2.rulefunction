@@ -11,16 +11,15 @@ void rulefunction RuleFunctions.Preprocessor.PreProcessorForKafka_v2 {
 	body {
 		
 		Object logger = Log.getLogger(ScoreCard.log_control.PREPROCESS_TAG + "Rebm:preprocessorForKafka");
-		Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "preprocessingForKafka:" + inboundLog@payload);
-//		Log.log(logger, "info", "preprocessingForKafka:" + inboundLog@payload);
 		
 		/** Kafka 메세지의 앞쪽이 깨져서 들어오는 경우가 있을 수 있기 때문에 이의 workaround 로서 SEQ_ID 이후의 문자열로 다시 재조합한다. 
 		String inputData = String.trim(inboundLog@payload);
 		*/
 		String inputData = "SEQ_ID" + String.substringAfter(inboundLog@payload, "SEQ_ID");
-
 		Event.consumeEvent(inboundLog);
 		
+		//Log.log(logger, "info", "kafka-inbound:" + inputData);
+
 		/* construct json string and put to topic  */
 		/* need try-catch */
 		if(inputData != null) {
@@ -40,10 +39,26 @@ void rulefunction RuleFunctions.Preprocessor.PreProcessorForKafka_v2 {
 			
 			/* 사용되지 않은 Action 은 filter-out 한다. */
 			if(Collections.Map.size(map) > 0) {
-				String sid = Collections.Map.get(map, "SID");
-				String sid_typ_cd = Collections.Map.get(map, "SID_TYP_CD");
+				String sidString = Collections.Map.get(map, "SID");
+				String timeValue = Collections.Map.get(map, "REQ_TIME");
+				DateTime reqTime = DateTime.parseString(timeValue, "yyyyMMddHHmmssSSS");
+				DateTime nowTime = DateTime.now(); //think about timezone
+//				Log.log(logger, "info", "" + DateTime.format(nowTime, "yyyyMMddHHmmSS") + ":" + DateTime.format(getLocalTime(nowTime), "yyyyMMddHHmmSS"));
+
+				long millisForMinute = 60000;
+				long sid = -1;
+				if(false == System.getGlobalVariableAsBoolean("COMMON/LOG_GEN_MODE", false)){
+					sid = getLongValueFromString(sidString, -1);
+					// real 모드에서는 들어온 transaction 이 1분 이상 경과된 경우에는 무시하도록 한다.
+					long diffTime = DateTime.getTimeInMillis(nowTime) - DateTime.getTimeInMillis(reqTime);
+					if(diffTime > millisForMinute || diffTime < 0) {
+						return;
+					}
+				}else{
+					sid = NumberUtil.toULong(String.hashCode(sidString));
+				}
 				String actionId = Collections.Map.get(map, "ACT_TARGET_DTL");
-				if(sid != null && sid != "" && sid_typ_cd != null && sid_typ_cd == "ENTR_NO" && actionId != null && actionId != "" 
+				if(sid >= 0 && actionId != null && actionId != "" 
 				  && String.indexOfString(ScoreCard.filter_control.filter_control_iptv_in_action, 0,String.toUpperCase(actionId)) > -1 ){
 
 					/* 1. changed to Critical Section : global session lock */
@@ -55,15 +70,13 @@ void rulefunction RuleFunctions.Preprocessor.PreProcessorForKafka_v2 {
 					/* 2. Local Event 생성 */
 					String seqId;
 					if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
-						seqId = Collections.Map.get(map, "SEQ_ID");
+						seqId = Collections.Map.get(map, "SEQ_ID") + sidString;
 					}else{
 						/* test data 의 seq_id 필드의 마지막 8자리가 잘못되어 있슴 */
 						seqId = Collections.Map.get(map, "SEQ_ID");
-						seqId = seqId + System.nanoTime();
+						seqId = String.substring(seqId,0,15) + SystemUtil.getCurrentThreadId() + DateTime.format(nowTime, "HHmmssSSS" + sid);
 					}
 
-					String timeValue = Collections.Map.get(map, "REQ_TIME");
-					DateTime reqTime = DateTime.parseString(timeValue, "yyyyMMddHHmmssSSS");
 					Events.Internal.ActionEvent actionEvent = Events.Internal.ActionEvent.ActionEvent(
 						null/*extId String */,
 						null/*payload String */,
@@ -86,30 +99,29 @@ void rulefunction RuleFunctions.Preprocessor.PreProcessorForKafka_v2 {
 						Collections.Map.get(map, "ACT_DTL9")/*ActionDTL9 String */,
 						Collections.Map.get(map, "ACT_DTL10")/*ActionDTL10 String */,
 						reqTime/*ReqTime DateTime */,
-						DateTime.now()
+						nowTime,
 						,SystemUtil.getCurrentThreadId()); //for concurrent-rtc
 
 					/* 3. 사용할 컨셉 데이터를 working memory 로 로드한다. */
+					RuleFunctions.ECF.SYSTEM.initPerformanceCheck(seqId);
 					Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo = loadUserData(actionEvent);
 
 					if(customerBasicInfo != null){
 						/* event 를 working memory 로 전송한다. */
 						Event.assertEvent(actionEvent);
-						EBMUtil.addConceptExtId(customerBasicInfo@extId); //for concurrent-rtc
-						RuleFunctions.ECF.SYSTEM.initPerformanceCheck();
-//						Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "asserted Event(%d): userId(%s), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
-//						Log.log(logger, "info", "asserted Event(%d): userId(%s), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
+						PERFUtil.addConceptExtIdByKey(seqId, customerBasicInfo@extId); //for concurrent-rtc
+						RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(seqId, "assert");
 					}else{
 						/* Unknown-user */
-
+						Log.log(logger, "info", "Unknown user(" + sidString + ") is skipped");
 						/** using critical section
 						RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock(acquireLock);
 						**/
 					}
-						
+				}else{
+					Log.log(logger, "info", "filtered-out: user(" + sidString + ") action(" + actionId + ")");
 				}
 			}
-			
 		}
 	}
 }

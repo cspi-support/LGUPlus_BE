@@ -1,17 +1,18 @@
 /**
  * @description 
  */
-void rulefunction RuleFunctions.ECF.SYSTEM.updatePerformanceCheck {
+boolean rulefunction RuleFunctions.ECF.SYSTEM.updatePerformanceCheck {
 	attribute {
 		validity = CONDITION;
 	}
 	scope {
+		String keyValue;
 		String type;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":updatePerformanceData");
 
-		SystemUtil.addTimeData(type, DateTime.getTimeInMillis(DateTime.now()));
+		PERFUtil.addTimeDataByKey(keyValue, type, DateTime.getTimeInMillis(DateTime.now()));
 		
 		/*
 		try{
@@ -60,5 +61,6 @@ void rulefunction RuleFunctions.ECF.SYSTEM.updatePerformanceCheck {
 			Log.log(logger, "Error", "error:" + e);
 		}	
 		*/
+		return true;
 	}
 }

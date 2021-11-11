@@ -1,0 +1,15 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.cleanResource {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Events.Internal.ActionEvent actionEvent;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "cleanResource");
+		Event.consumeEvent(actionEvent);
+	}
+}

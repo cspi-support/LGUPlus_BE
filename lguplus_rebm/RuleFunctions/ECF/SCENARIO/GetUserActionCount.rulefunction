@@ -7,34 +7,11 @@ int rulefunction RuleFunctions.ECF.SCENARIO.GetUserActionCount {
 		validity = CONDITION;
 	}
 	scope {
-		String userId;
+		long userId;
 		String actionId;
-		DateTime startDate;
-		DateTime endDate;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":getUserActionCount");
-		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("UserActionCount");
-		try{
-			Object[] history = RuleFunctions.ECF.AS.getUserActionStats(userId, actionId, null, startDate, endDate);
-			
-			int count = 0;
-			if(history != null){
-				for(int i=0; i < history@length; i++){
-					Long countValue = getValueAsNumber("count", history[i]);
-					count += countValue;
-				}
-			}
-			/* 이력성 마트로 부터 데이터를 구한다. */
-			Object[] items = RuleFunctions.ECF.MART.getUserActionHistoryFromMart(userId, actionId, startDate, endDate);
-			if(items != null) {
-				count += items@length;
-			}		
-			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "count:%s", count);
-			return count;
-		}catch(Exception e){
-			Log.log(logger, "info", "Exception:" + e);
-			return 0;
-		}
+		return GetUserActionCount_V2(userId, actionId);
 	}
 }

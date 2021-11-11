@@ -1,0 +1,30 @@
+/**
+ * @description action 과 ActivityTrace 정보를 매치시킨다.
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.MatchDetectCondition {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.DetectEvent detectEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		String actionId;
+	}
+	body {
+		
+		/*
+		if(detectEvent != null && userActivityTrace != null && customerBasicInfo != null && (detectEvent.ThreadId == SystemUtil.getCurrentThreadId() && detectEvent.SeqId == customerBasicInfo.SEQ_ID) 
+			&& (actionId == null || detectEvent.ActionTargetDtl == actionId)
+			&& (detectEvent.SeqId == userActivityTrace.SEQ_ID && detectEvent.ActionTargetDtl == userActivityTrace.ACTION_ID))
+			return true;
+		return false;
+		*/
+			
+				
+		if(detectEvent != null && userActivityTrace != null && customerBasicInfo != null && (actionId == null || actionId == detectEvent.ActionTargetDtl) && (detectEvent.SeqId == customerBasicInfo.SEQ_ID) 
+			&& (detectEvent.SeqId == userActivityTrace.SEQ_ID && detectEvent.ActionTargetDtl == userActivityTrace.ACTION_ID))
+			return true;
+		return false;
+	}
+}

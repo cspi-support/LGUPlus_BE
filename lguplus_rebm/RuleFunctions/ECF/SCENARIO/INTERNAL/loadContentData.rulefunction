@@ -1,0 +1,64 @@
+/**
+ * @description 컨텐츠 관련한 데이터를 로드한다.
+ * 컨텐츠 정보는 WorkingMemory 에 유지하고 AVAIL_ET 값에 따라서 재로드를 할지를 결정한다.  
+ */
+
+Concepts.ECF.SCENARIO.ContentInfo rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.loadContentData {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String albumId;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":loadContentData");
+		boolean fakeInitData = System.getGlobalVariableAsBoolean("COMMON/MART_FAKE_INIT_DATA", false);
+		
+		try{
+			/*
+			* 1. In-Memory 상의 Content 정보를 가져온다. 
+			*/
+			Concepts.ECF.SCENARIO.ContentInfo ciInstance = Instance.getByExtId(albumId);
+
+			/* 2. workingMemory 아이템이 유효하다면 이를 사용한다. */
+			if(ciInstance != null && (ciInstance.AVAIL_ET == null || DateTime.before(DateTime.now(), ciInstance.AVAIL_ET) || DateTime.equals(DateTime.now(), ciInstance.AVAIL_ET))){
+				Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "album: %s from WorkingMemory", albumId);
+				return ciInstance;
+			}
+
+			/* 3. get ContentData from ActiveSpace */
+			String data = RuleFunctions.ECF.AS.getContentInformation(albumId);
+			if(data != null){
+				ciInstance = convertStringToCI(albumId, data);
+				if(ciInstance != null && (ciInstance.AVAIL_ET == null || DateTime.before(DateTime.now(), ciInstance.AVAIL_ET) || DateTime.equals(DateTime.now(), ciInstance.AVAIL_ET))){
+					return ciInstance;
+				}
+			}
+			
+			/* 4. get ContentData from Mart */
+			ciInstance = RuleFunctions.ECF.MART.getContentInfoFromMart(albumId);
+			if(ciInstance == null){
+				if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+					return null;
+				}else{
+					if(fakeInitData){
+						ciInstance = createContentInfo(albumId);
+					}
+				}
+			}
+
+			if(ciInstance == null){
+				return null;
+			}else{
+				ciInstance.AVAIL_ET = DateTime.addDay(DateTime.now(), 1);
+			}
+
+			RuleFunctions.ECF.AS.putContentInformation(ciInstance);
+			Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "loadContentData:%s", ciInstance.CID);
+			return ciInstance;
+		}catch(Exception e){
+			Log.log(logger, ScoreCard.log_control.ERROR_LEVEL, "Exception:" + e);
+			return null;
+		}
+	}
+}

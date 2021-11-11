@@ -1,0 +1,22 @@
+/**
+ * @description 
+ */
+String rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.getSerializedDateRefs {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		String[] dateRefs;
+	}
+	body {
+		if(dateRefs == null) return null;
+		
+		String res = "";
+		for(int i=0; i< dateRefs@length; i++){
+			if(dateRefs[i] != null){
+				res += dateRefs[i];
+			}
+		}
+		return res;
+	}
+}

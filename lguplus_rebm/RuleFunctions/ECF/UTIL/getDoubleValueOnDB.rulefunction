@@ -1,0 +1,15 @@
+/**
+ * @description 
+ */
+double rulefunction RuleFunctions.ECF.UTIL.getDoubleValueOnDB {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object columnValue;
+	}
+	body {
+		if(columnValue == null) return 0;
+		return Number.doubleValue(String.format("%s", columnValue));
+	}
+}

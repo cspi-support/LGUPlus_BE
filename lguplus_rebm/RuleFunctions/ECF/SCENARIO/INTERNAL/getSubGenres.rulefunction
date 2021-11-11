@@ -1,0 +1,36 @@
+/**
+ * @description 
+ */
+String[] rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.getSubGenres {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String genre;
+		boolean isExactMatch;
+		String delimiter;		
+	}
+	body {
+		if(genre == null || genre == "") return null;
+		int length = String.length(genre);
+		if(isExactMatch){
+			if(String.substring(genre, length-1, length) == delimiter) { //마지막 문자가 delimiter 인 경우 제거한다.
+				return String[]{String.substring(genre, 0, length-1)};
+			}else{
+				return String[]{genre};
+			}
+		}else{
+			String[] tokens = String.split(genre, delimiter);
+			if(tokens@length == 1){
+				return String[]{tokens[0]};
+			}else if(tokens@length == 2){
+				return String[]{tokens[0], tokens[0]+delimiter+tokens[1]};
+			}else if(tokens@length == 3){
+				return String[]{tokens[0], tokens[0]+delimiter+tokens[1], tokens[0]+delimiter+tokens[1]+delimiter+tokens[2]};
+			}else{ // >3 => error
+				return null;
+			}
+		}
+
+	}
+}

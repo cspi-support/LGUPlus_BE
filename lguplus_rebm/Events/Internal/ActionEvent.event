@@ -1,28 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?><event:SimpleEvent xmlns:event="http:///com/tibco/cep/designtime/core/model/event" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Events/Internal/" name="ActionEvent" description="Log 이벤트로부터 필요한 정보만을 추출하여 WorkingMemory 에 assert 된다." GUID="7BA8EE0D-88A0-C614-44E2-DF2A1F00616F" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
-    <properties name="SID" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="SeqId" ownerProjectName="lguplus_rebm" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="SvcName" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionStart" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionTarget" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionTargetDtl" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ViewCurr" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ViewCurrDtl" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL1" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL2" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL3" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL4" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL5" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL6" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL7" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL8" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL9" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ActionDTL10" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ReqTime" ownerProjectName="lguplus_rebm" type="DateTime" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ReceivedTime" ownerProjectName="lguplus_rebm" type="DateTime" ownerPath="/Events/Internal/ActionEvent"/>
-    <properties name="ThreadId" ownerProjectName="lguplus_rebm" type="long" ownerPath="/Events/Internal/ActionEvent"/>
-    <expiryAction folder="/Events/Internal/ActionEvent" name="ViewEvent_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
-        <symbols>
-            <symbolList idName="viewevent" type="/Events/Internal/ActionEvent"/>
-        </symbols>
-    </expiryAction>
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/Internal/" name="ActionEvent" description="Log 이벤트로부터 필요한 정보만을 추출하여 WorkingMemory 에 assert 된다." GUID="7BA8EE0D-88A0-C614-44E2-DF2A1F00616F" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
+  <properties name="SID" ownerProjectName="lguplus_rebm" type="long" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="SeqId" ownerProjectName="lguplus_rebm"/>
+  <properties name="SvcName" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionStart" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionTarget" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionTargetDtl" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ViewCurr" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ViewCurrDtl" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL1" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL2" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL3" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL4" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL5" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL6" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL7" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL8" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL9" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ActionDTL10" ownerProjectName="lguplus_rebm" conceptTypePath="/Events/Internal/ActionEvent"/>
+  <properties name="ReqTime" ownerProjectName="lguplus_rebm" type="DateTime"/>
+  <properties name="ReceivedTime" ownerProjectName="lguplus_rebm" type="DateTime"/>
+  <properties name="ThreadId" ownerProjectName="lguplus_rebm" type="long"/>
+  <expiryAction folder="/Events/Internal/ActionEvent" name="ViewEvent_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="viewevent" type="/Events/Internal/ActionEvent"/>
+    </symbols>
+  </expiryAction>
 </event:SimpleEvent>

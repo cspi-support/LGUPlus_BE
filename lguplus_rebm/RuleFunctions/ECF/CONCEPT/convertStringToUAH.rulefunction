@@ -14,10 +14,10 @@ Concepts.ECF.SCENARIO.UserActionHistory rulefunction RuleFunctions.ECF.CONCEPT.c
 		if(data == null || data == "") return null;
 		
 		try{
-			String[] tokens = String.split2(data, "[,]", -1);
+			String[] tokens = String.split2(data, "[;]", -1);
 			return Concepts.ECF.SCENARIO.UserActionHistory.UserActionHistory(
 					extId/*extId String */,
-					tokens[0]/*SID String */,
+					getDeserializedToLong(tokens[0])/*SID String */,
 					tokens[1]/*SEQ_ID String */,
 					tokens[2]/*SVC_NAME String */,
 					tokens[3]/*ACT_START String */,

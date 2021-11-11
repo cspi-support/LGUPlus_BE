@@ -10,25 +10,26 @@ String rulefunction RuleFunctions.ECF.CONCEPT.convertUAHToString {
 	}
 	body {
 		Object logger = Log.getLogger("convertUAHToString");
+		String delimiter = ";";
 		
 		Object spaceValue = String.createBuffer(2048);
 		if(spaceValue != null){
 			try{
-				String.append(spaceValue, userActionHistory.SID);
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.SEQ_ID));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.SVC_NAME));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACT_START));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACT_TGT));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACT_TGT_DTL));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.VW_CURR));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.VW_CURR_DTL));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ACTION_ID));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.MENU_ID));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.ALBUM_ID));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.CAT_ID));
-				String.append(spaceValue, "," + getSerializedFromString(userActionHistory.GENRE_ID));
-				String.append(spaceValue, "," + getSerializedFromDatetime(userActionHistory.ACTIVITY_TIME, null));
-				String.append(spaceValue, "," + getSerializedFromDatetime(userActionHistory.RECEIVED_TIME, null));
+				String.append(spaceValue, getSerializedFromLong(userActionHistory.SID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.SEQ_ID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.SVC_NAME));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.ACT_START));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.ACT_TGT));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.ACT_TGT_DTL));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.VW_CURR));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.VW_CURR_DTL));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.ACTION_ID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.MENU_ID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.ALBUM_ID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.CAT_ID));
+				String.append(spaceValue, delimiter + getSerializedFromString(userActionHistory.GENRE_ID));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(userActionHistory.ACTIVITY_TIME, null));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(userActionHistory.RECEIVED_TIME, null));
 
 				String convertedString = String.convertBufferToString(spaceValue);
 				return convertedString;

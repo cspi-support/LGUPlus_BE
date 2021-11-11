@@ -7,7 +7,7 @@ Object[] rulefunction RuleFunctions.ECF.AS.getUserViewStats {
 		validity = ACTION;
 	}
 	scope {
-		String userId;
+		long userId;
 		String actionId;
 		DateTime specialDate; 
 		DateTime startDate; 
@@ -17,9 +17,9 @@ Object[] rulefunction RuleFunctions.ECF.AS.getUserViewStats {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":getUserViewStats");
 		
 		try{
-			if(userId == null || userId == "") return null;
+			if(userId < 0) return null;
 
-			String filters = "uvsId = \"" + userId + "\" AND actionId = \"" + actionId + "\"";
+			String filters = "uvsId = " + userId + " AND actionId = \"" + actionId + "\"";
 			if(specialDate != null){
 				String date = DateTime.format(specialDate, "yyyyMMdd");
 				filters = filters + " AND " + " dateId = " + date;

@@ -6,7 +6,7 @@ Object[] rulefunction RuleFunctions.ECF.MART.getUserActionHistoryFromMart {
 		validity = CONDITION;
 	}
 	scope {
-		String userId;
+		long userId;
 		String actionId;
 		DateTime startTime;
 		DateTime endTime;

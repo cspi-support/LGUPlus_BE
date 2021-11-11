@@ -4,6 +4,6 @@
     <nativeLibraryLocation/>
   </thirdpartyLibEntries>
   <javaSourceFolderEntries entryType="JAVA_SOURCE_FOLDER" path="/lguplus_rebm/JavaSrc" readOnly="true"/>
-  <enterpriseArchiveConfiguration name="lguplus_rebm" author="shkim" version="261" path="C:\Users\jwlee\git\LGUPlus_BE\lguplus_rebm\Deployments\lguplus_rebm.ear" overwrite="true"/>
+  <enterpriseArchiveConfiguration name="lguplus_rebm" author="shkim" version="513" path="D:\projects\lguplus_rebm\output\lguplus_rebm.ear" overwrite="true"/>
   <bpmnProcessSettings/>
 </configuration:StudioProjectConfiguration>

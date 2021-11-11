@@ -13,20 +13,21 @@ String rulefunction RuleFunctions.ECF.CONCEPT.convertCIToString {
 		Object logger = Log.getLogger("convertCIToString");
 		
 		Object spaceValue = String.createBuffer(2048);
+		String delimiter = ";";
 
 		if(spaceValue != null){
 			try{
 				String.append(spaceValue, contentInfo.CID);
-				String.append(spaceValue, "," + getSerializedFromString(contentInfo.TITLE));
-				String.append(spaceValue, "," + getSerializedFromDatetime(contentInfo.CREATED, null));
-				String.append(spaceValue, "," + getSerializedFromString(contentInfo.GENRE));
-				String.append(spaceValue, "," + getSerializedFromString(contentInfo.CATEGORY));
-				String.append(spaceValue, "," + getSerializedFromString(contentInfo.CODE));
-				String.append(spaceValue, "," + getSerializedFromInt(contentInfo.PRICE));
-				String.append(spaceValue, "," + getSerializedFromString(contentInfo.SERIES_MODE));
-				String.append(spaceValue, "," + getSerializedFromInt(contentInfo.EPISODE_NUM));
-				String.append(spaceValue, "," + getSerializedFromString(contentInfo.SVC_NAME));
-				String.append(spaceValue, "," + getSerializedFromDatetime(contentInfo.AVAIL_ET, "yyyyMMdd"));
+				String.append(spaceValue, delimiter + getSerializedFromString(contentInfo.TITLE));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(contentInfo.CREATED, null));
+				String.append(spaceValue, delimiter + getSerializedFromString(contentInfo.GENRE));
+				String.append(spaceValue, delimiter + getSerializedFromString(contentInfo.CATEGORY));
+				String.append(spaceValue, delimiter + getSerializedFromString(contentInfo.CODE));
+				String.append(spaceValue, delimiter + getSerializedFromInt(contentInfo.PRICE));
+				String.append(spaceValue, delimiter + getSerializedFromString(contentInfo.SERIES_MODE));
+				String.append(spaceValue, delimiter + getSerializedFromInt(contentInfo.EPISODE_NUM));
+				String.append(spaceValue, delimiter + getSerializedFromString(contentInfo.SVC_NAME));
+				String.append(spaceValue, delimiter + getSerializedFromDatetime(contentInfo.AVAIL_ET, "yyMMdd"));
 				
 				String convertedString = String.convertBufferToString(spaceValue);
 				return convertedString;

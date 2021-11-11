@@ -1,0 +1,15 @@
+/**
+ * @description 
+ */
+long rulefunction RuleFunctions.ECF.UTIL.getLongValueOnDB {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Object columnValue;
+	}
+	body {
+		if(columnValue == null) return 0;
+		return Number.longValue(String.format("%s", columnValue), 10);
+	}
+}

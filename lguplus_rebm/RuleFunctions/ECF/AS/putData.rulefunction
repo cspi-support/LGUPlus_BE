@@ -8,7 +8,6 @@ void rulefunction RuleFunctions.ECF.AS.putData {
 	scope {
 		String spaceName;
 		String keyValue;
-		String version;
 		DateTime timeStamp;
 		String value;
 	}
@@ -18,7 +17,6 @@ void rulefunction RuleFunctions.ECF.AS.putData {
 		try{
 			Object tuple = Metaspace.Tuple.create();
 			Metaspace.Tuple.putString(tuple, "key", keyValue);
-			Metaspace.Tuple.putString(tuple, "version", version);
 			Metaspace.Tuple.putLong(tuple, "timestamp", DateTime.getTimeInMillis(timeStamp));
 			Metaspace.Tuple.putString(tuple, "value", value);
 

@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.UTIL.getIntValueFromString {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String data;
+		long defaultValue;
+	}
+	body {
+		try{
+			return Number.intValue(data, 10);
+		}catch (Exception e){
+			return defaultValue;
+		}
+	}
+}

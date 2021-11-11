@@ -11,5 +11,35 @@
             <constraint/>
             <modTime>1632883552559</modTime>
         </globalVariable>
+        <globalVariable>
+            <name>IPTV_IN_ALBUM</name>
+            <value/>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634187569544</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>IPTV_IN_CATEGORY</name>
+            <value/>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634191979613</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>IPTV_IN_GENRE</name>
+            <value/>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1634273986608</modTime>
+        </globalVariable>
     </globalVariables>
 </repository>

@@ -12,10 +12,10 @@ Concepts.ECF.SCENARIO.UserActivityTrace rulefunction RuleFunctions.ECF.CONCEPT.c
 	body {
 		if(data == null || data == "") return null;
 		
-		String[] tokens = String.split2(data, "[,]", -1);
-		return Concepts.ECF.SCENARIO.UserActivityTrace.UserActivityTrace(
+		String[] tokens = String.split2(data, "[;]", -1);
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace = Concepts.ECF.SCENARIO.UserActivityTrace.UserActivityTrace(
 				extId/*extId String */,
-				tokens[0]/*SID String */,
+				getDeserializedToLong(tokens[0])/*SID String */,
 				tokens[1]/*SVC_NAME String */,
 				tokens[2]/*ACT_DESC String */,
 				tokens[3]/*ACT_START String */,
@@ -25,18 +25,47 @@ Concepts.ECF.SCENARIO.UserActivityTrace rulefunction RuleFunctions.ECF.CONCEPT.c
 				tokens[7]/*VW_CURR_DTL String */,
 				tokens[8]/*ACTION_ID String */,
 				tokens[9]/*MENU_ID String */,
-				tokens[10]/*ALBUM_ID String */,
-				getDeserializedToInt(tokens[11]),
-				tokens[12]/*CAT_ID String */,
-				getDeserializedToInt(tokens[13]),
-				tokens[14]/*GENRE_ID String */,
-				getDeserializedToInt(tokens[15]),
+				null, //tokens[10]/*ALBUM_ID String */,
+				null,//getDeserializedToInt(tokens[11]),
+				null, //getDeserializedToMultipleString(tokens[12])/*CAT_ID String */,
+				null, //getDeserializedToMultipleInt(tokens[13]),
+				null/*GENRE_ID String */,
+				null,
 				tokens[16]/*VW_STATUS String */,
 				getDeserializedToDatetime(tokens[17], null)/*ACTIVITY_TIME DateTime */,
 				getDeserializedToDatetime(tokens[18], null)/*RECEIVED_TIME DateTime */,
 				getDeserializedToInt(tokens[19])/*DURATION int */,
-				getDeserializedToInt(tokens[20])/*COUNT int */,
+				null,//getDeserializedToInt(tokens[20])/*COUNT int */,
 				getDeserializedToLong(tokens[21])/*lastActionTime*/
 				,null); //for concurrent-rtc
+				
+		/** unnecessary code because the value of category/genre/album is initialized after 
+		String[] CAT_ID = getDeserializedToMultiString(tokens[12], ",");
+		Integer[] CAT_COUNT = getDeserializedToMultiInt(tokens[13]);
+		if(CAT_ID != null && CAT_ID@length > 0) {
+			for(int i=0; i < CAT_ID@length; i++){
+				userActivityTrace.CAT_ID[i] = CAT_ID[i];
+				if(CAT_COUNT@length > 0) {
+					userActivityTrace.CAT_COUNT[i] = CAT_COUNT[i];
+				}else{
+					userActivityTrace.CAT_COUNT[i] = 0;
+				}
+			}
+		}
+		
+		String[] GENRE_ID = getDeserializedToMultiString(tokens[14], ",");
+		Integer[] GENRE_COUNT = getDeserializedToMultiInt(tokens[15]);
+		if(GENRE_ID != null && GENRE_ID@length > 0) {
+			for(int i=0; i < GENRE_ID@length; i++){
+				userActivityTrace.GENRE_ID[i] = GENRE_ID[i];
+				if(GENRE_COUNT@length > 0) {
+					userActivityTrace.CAT_COUNT[i] = GENRE_COUNT[i];
+				}else{
+					userActivityTrace.CAT_COUNT[i] = 0;
+				}
+			}
+		}
+		**/
+		return userActivityTrace;
 	}
 }

@@ -1,32 +1,72 @@
 /**
  * @description 고객 정보를 MART 로 부터 가져온다.
  */
-Concepts.LGUPLUS.CUSTOMER_BASIC_INFO rulefunction RuleFunctions.ECF.MART.getCustomerBasicInfoFromMart {
+Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.MART.getCustomerBasicInfoFromMart {
 	attribute {
 		validity = ACTION;
 	}
 	scope {
-		String userKey;
+		String extId;
+		long userKey;
 	}
 	body {
-		
-		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getCustomerBasicInfo");
-		
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getCustomerBasicInfoFromMart");
+		Object conn = null;
+		Object res = null;
 		try{
-			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
-			Database.beginTransaction();
-
-			Concepts.LGUPLUS.CUSTOMER_BASIC_INFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/CUSTOMER_BASIC_INFO", "select * from CUSTOMER_BASIC_INFO WHERE SID = " + "'" + userKey + "'", true);
-			if(items@length > 0){
-				return items[0];
+			conn = Oracle.getConnection("MasterUser");
+			String query = null;
+			if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+				query = "SELECT * FROM("
+						+ " SELECT A.ENTR_NO, A.HLDR_CUST_NO, A.HPNO, A.PROD_CD, B.SVC_CD"
+						+ " FROM(SELECT * FROM CSSADM.TB_SB_ENTR WHERE PROD_CD = 'LZP0000701') A"
+						+ " LEFT OUTER JOIN CSSADM.TB_SB_SVC_BY_ENTR B ON B.ENTR_NO=A.ENTR_NO" + " WHERE A.ENTR_NO = ?)";
+			}else{
+				query = "SELECT * FROM("
+						+ " SELECT A.ENTR_NO, A.HLDR_CUST_NO, A.HPNO, A.PROD_CD, B.SVC_CD"
+						+ " FROM(SELECT * FROM CSSADM.TB_SB_ENTR WHERE PROD_CD = 'LZP0000701') A"
+						+ " LEFT OUTER JOIN CSSADM.TB_SB_SVC_BY_ENTR B ON B.ENTR_NO=A.ENTR_NO" + " WHERE A.ENTR_NO = ?)";
 			}
-			else return null;
+
+			Object[] params = {userKey};
+			res = Oracle.executeQuery(conn, query, params);
+			String svcCD = "";
+			Concepts.ECF.SCENARIO.CustomerBasicInfo cbiInstance = null;
+			if(res!= null){
+				while(Oracle.next(res)){
+					if(cbiInstance == null){
+						cbiInstance = Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
+										extId/*extId String */,
+										userKey/*SID long */,
+										getLongValueOnDB(Oracle.getColumnValueByName(res,"HLDR_CUST_NO"))/*CID long */,
+										getTrimString(Oracle.getColumnValueByName(res, "HPNO"))/*CTN String */,
+										false/*MON_SUBS boolean */,
+										null/*SUBSCRIBE_INFO String */,
+										false/*UNSUB_CANDI boolean */,
+										null/*NAME String */,
+										null/*CLASS String */,
+										null/*AVAIL_ET DateTime */,
+										null/*SEQ_ID String */);
+					}
+					if(svcCD == ""){
+						svcCD = getTrimString(Oracle.getColumnValueByName(res, "SVC_CD"));
+					}else{
+						svcCD = svcCD + "," + getTrimString(Oracle.getColumnValueByName(res, "SVC_CD"));
+					}
+				}
+			}
+			if(cbiInstance != null){
+				cbiInstance.SUBSCRIBE_INFO = svcCD;
+			}
+			return cbiInstance;
 		}catch(Exception e){
 			Log.log(logger, "Error", "Exception:"+ e);
-			Database.rollback();
+			if(conn != null) Oracle.rollback(conn);
 			return null;
 		}finally{
-			Database.unsetConnection();
+			if(res != null) Oracle.closeResultSet(res);
+			if(conn != null) Oracle.releaseConnection(conn);
 		}
+		
 	}
 }

@@ -1,0 +1,19 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.IsString_IN {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String param;
+		String[] set;	
+	}
+	body {
+		if(set == null || set@length == 0) return -1;
+		for(int i = 0; i < set@length; i++){
+			if(param == set[i]) return i;
+		}
+		return -1;
+	}
+}

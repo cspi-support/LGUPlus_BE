@@ -12,7 +12,7 @@ Concepts.ECF.SCENARIO.ContentInfo rulefunction RuleFunctions.ECF.CONCEPT.convert
 	body {
 		if(data == null || data == "") return null;
 		
-		String[] tokens = String.split2(data, "[,]", -1);
+		String[] tokens = String.split2(data, "[;]", -1);
 		return Concepts.ECF.SCENARIO.ContentInfo.ContentInfo(
 				extId/*extId String */,
 				tokens[0]/*CID String */,
@@ -25,6 +25,6 @@ Concepts.ECF.SCENARIO.ContentInfo rulefunction RuleFunctions.ECF.CONCEPT.convert
 				tokens[7]/*SERIES_MODE String */,
 				getDeserializedToInt(tokens[8])/*EPISODE_NUM int */,
 				tokens[9]/*SVC_NAME String */,
-				getDeserializedToDatetime(tokens[10], null)/*AVAIL_ET DateTime */);
+				getDeserializedToDatetime(tokens[10], "yyMMdd")/*AVAIL_ET DateTime */);
 	}
 }

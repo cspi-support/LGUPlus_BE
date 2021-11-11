@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><element:Scorecard xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/ScoreCard/" name="lguplus_scenario_control" description="" GUID="577F4DA5-124B-F24B-1BEE-58F9FAF7CA69" ownerProjectName="lguplus_rebm" scorecard="true">
-    <properties name="HistoryCount" ownerProjectName="lguplus_rebm" type="int"/>
-    <properties name="StayPeriod" ownerProjectName="lguplus_rebm" type="int"/>
-    <properties name="MSVersion" ownerProjectName="lguplus_rebm"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Scorecard xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/ScoreCard/" name="lguplus_scenario_control" description="" GUID="577F4DA5-124B-F24B-1BEE-58F9FAF7CA69" ownerProjectName="lguplus_rebm" scorecard="true">
+  <properties name="HistoryCount" ownerProjectName="lguplus_rebm" type="int"/>
+  <properties name="StayPeriod" ownerProjectName="lguplus_rebm" type="int"/>
+  <properties name="MSVersion" ownerProjectName="lguplus_rebm"/>
 </element:Scorecard>

@@ -3,7 +3,7 @@
   <driver label="KAFKA" channel="/">
     <properties>
       <properties xsi:type="designtime:SimpleProperty" name="kafka.broker.urls" value="%%KAFKA/BROKER_URL%%" mandatory="true"/>
-      <properties xsi:type="designtime:SimpleProperty" name="kafka.security.protocol" value="PLAINTEXT" mandatory="true"/>
+      <properties xsi:type="designtime:SimpleProperty" name="kafka.security.protocol" value="%%KAFKA/PROTOCOL%%" mandatory="true"/>
       <properties xsi:type="designtime:SimpleProperty" name="kafka.sasl.mechanism" value="PLAIN"/>
       <properties xsi:type="designtime:SimpleProperty" name="kafka.trusted.certs.folder" value=""/>
       <properties xsi:type="designtime:SimpleProperty" name="kafka.keystore.identity" value=""/>

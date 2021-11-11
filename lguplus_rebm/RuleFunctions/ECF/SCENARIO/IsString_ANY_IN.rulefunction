@@ -6,8 +6,8 @@ boolean rulefunction RuleFunctions.ECF.SCENARIO.IsString_ANY_IN {
 		validity = CONDITION;
 	}
 	scope {
-		String AllSet;		
 		String paramSet;
+		String AllSet;		
 		String delimiter;
 	}
 	body {

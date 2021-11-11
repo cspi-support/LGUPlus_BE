@@ -1,0 +1,27 @@
+/**
+ * @description 
+ */
+int rulefunction RuleFunctions.ECF.SCENARIO.IsStringHash_IN {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String StringHashCode;
+		String[] set;	
+	}
+	body {
+		Object logger = Log.getLogger("IsStringHash_IN");
+		try{
+			int number = Number.intValue(StringHashCode, 10);
+			if(set == null || set@length == 0) return -1;
+
+			for(int i = 0; i < set@length; i++){
+				if(number == String.hashCode(set[i])) return i;
+			}
+			return -1;
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception" + e);
+			return -1;
+		}
+	}
+}

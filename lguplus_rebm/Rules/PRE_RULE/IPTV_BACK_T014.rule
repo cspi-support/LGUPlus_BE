@@ -12,12 +12,14 @@ rule Rules.PRE_RULE.IPTV_BACK_T014 {
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
 	}
 	when {
-		CheckUserAction(actionEvent, customerBasicInfo, "T014");
+		MatchUserAction(actionEvent, customerBasicInfo, "T014");
 	}
 	then {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + ":IPTV_BACK_T014");
-		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "PRE_RULE(%d), SID(%s), SEQ_ID(%s), started", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId);
+//		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "PRE_RULE(%d), SID(%d), SEQ_ID(%s), started", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId);
 
+		Event.consumeEvent(actionEvent);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(actionEvent.SeqId, "prerule");
 		Events.SYSTEM.sessionLock historyLock = acquireGlobalSessionLock(actionEvent.SID, 3, 3000);
 
 		/* 1. UserActivityTrace 컨셉에 정보를 저장한다. */
@@ -26,26 +28,25 @@ rule Rules.PRE_RULE.IPTV_BACK_T014 {
 		userActivityTrace.ACT_DESC = "VOD 상세 이탈";
 		userActivityTrace.ALBUM_ID = actionEvent.ViewCurrDtl;
 		
-		/* 탈퇴의 경우 duration 을 세팅한다. */
-		userActivityTrace.DURATION = RuleFunctions.ECF.SCENARIO.GetDurationOfActions("T008", "T014", actionEvent);
-		
 		/* 해당 action 에 대한 count 를 항상 구한다. */
 		/* 만약 시간정보를 추가로 filter 로 적용할 수 있다. */
-		userActivityTrace.COUNT = GetUserActionCount(actionEvent.SID, userActivityTrace.ACTION_ID, null, null) + 1;
+		updateUserActionStats(userActivityTrace, true, "T008", true);
 		
 		/* 2. ALBUM 정보가 있는 경우에는 컨텐츠에 대한 마스터 데이터를 로드한다. */
 		if(userActivityTrace.ALBUM_ID != null){
 			Concepts.ECF.SCENARIO.ContentInfo contentInfo = loadContentData(userActivityTrace.ALBUM_ID);
-			userActivityTrace.CAT_ID = contentInfo.CATEGORY; userActivityTrace.GENRE_ID = contentInfo.GENRE;
-//			Log.log(logger, "Info", "PRE_RULE(%d), SID(%s), SEQ_ID(%s), contentInfo", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId);
+			incrementUserViewStats(userActivityTrace, contentInfo, null, null);
+//			Log.log(logger, "Info", "PRE_RULE(%d), SID(%d), SEQ_ID(%s), contentInfo", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId);
 		}
 		
-		String[] orgStats = initializeUserViewStats(userActivityTrace, null, null);
+		
 		
 		/* 3. rebm 사용자 이력 데이터를 저장한다. */
-		saveUserActionHistory(userActivityTrace, actionEvent, historyLock, orgStats);
+		saveUserActionHistoryToAS(userActivityTrace, actionEvent);
+		releaseGlobalSessionLock(historyLock);
+		assertDetectEvent(actionEvent);
+		
 
 //		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "DESC:%s, AlbumId:%s, Duration:%d, Count:%d", userActivityTrace.ACT_DESC, userActivityTrace.ALBUM_ID, userActivityTrace.DURATION, userActivityTrace.COUNT);
-		Log.log(logger, "Info", "PRE_RULE(%d), SID(%s), SEQ_ID(%s), DESC:%s, AlbumId:%s, Duration:%d, Count:%d ended", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId, userActivityTrace.ACT_DESC, userActivityTrace.ALBUM_ID, userActivityTrace.DURATION, userActivityTrace.COUNT);
 	}
 }

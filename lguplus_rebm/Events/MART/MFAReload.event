@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" folder="/Events/MART/" name="MFAReload" description="" GUID="5625050F-0FFE-8152-8B2D-C727966217BC" ownerProjectName="lguplus_rebm" superEventPath="" ttlUnits="Seconds">
+  <expiryAction name="MFAReload_expiryAction" ownerProjectName="lguplus_rebm" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="mfareload" type="/Events/MART/MFAReload"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

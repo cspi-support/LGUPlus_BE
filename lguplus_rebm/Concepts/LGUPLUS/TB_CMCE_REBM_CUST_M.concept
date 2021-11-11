@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:designtime="http:///com/tibco/cep/designtime/core/model/designtime_ontology.ecore" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Concepts/LGUPLUS/" name="TB_CMCE_REBM_CUST_M" description="" GUID="8CE94AD6-EC60-EE5B-880B-88DBC7B27232" ownerProjectName="lguplus_rebm">
+  <extendedProperties>
+    <properties xsi:type="designtime:SimpleProperty" name="SCHEMA_NAME" value="LGUPLUS"/>
+    <properties xsi:type="designtime:SimpleProperty" name="OBJECT_NAME" value="TB_CMCE_REBM_CUST_M_T"/>
+    <properties xsi:type="designtime:SimpleProperty" name="OBJECT_TYPE" value="T"/>
+    <properties xsi:type="designtime:SimpleProperty" name="PRIMARY_KEY_PROPS" value="[ENTR_NO]"/>
+    <properties xsi:type="designtime:SimpleProperty" name="JDBC_RESOURCE" value="/SharedResources/MasterUser.sharedjdbc"/>
+  </extendedProperties>
+  <properties name="ENTR_NO" ownerProjectName="lguplus_rebm" type="long">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="ENTR_NO"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="NUMBER"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="12"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="12"/>
+    </extendedProperties>
+  </properties>
+  <properties name="PROD_CD" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="PROD_CD"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="10"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="10"/>
+    </extendedProperties>
+  </properties>
+  <properties name="CUST_NO" ownerProjectName="lguplus_rebm" type="long">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CUST_NO"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="NUMBER"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="15"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="15"/>
+    </extendedProperties>
+  </properties>
+  <properties name="HPNO" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="HPNO"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="20"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="20"/>
+    </extendedProperties>
+  </properties>
+  <properties name="MFA_PROD_ENT_YN" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="MFA_PROD_ENT_YN"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="CHAR"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="1"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="1"/>
+    </extendedProperties>
+  </properties>
+  <properties name="MFA_PROD_ENTR_LIST_CNTN" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="MFA_PROD_ENTR_LIST_CNTN"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="4000"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="4000"/>
+    </extendedProperties>
+  </properties>
+  <properties name="CUST_DIVS_CD" ownerProjectName="lguplus_rebm">
+    <extendedProperties>
+      <properties xsi:type="designtime:SimpleProperty" name="COLUMN_NAME" value="CUST_DIVS_CD"/>
+      <properties xsi:type="designtime:SimpleProperty" name="DATA_TYPE" value="VARCHAR2"/>
+      <properties xsi:type="designtime:SimpleProperty" name="LENGTH" value="20"/>
+      <properties xsi:type="designtime:SimpleProperty" name="PRECISION" value="20"/>
+    </extendedProperties>
+  </properties>
+</element:Concept>

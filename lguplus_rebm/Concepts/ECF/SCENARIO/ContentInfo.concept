@@ -1,14 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="ContentInfo" description="앨범 컨텐츠의 정보를 담는다&#13;&#10;앨범 컨텐츠 정보를 담는다" GUID="E08AA846-9D94-91BD-AE16-A31A3F159AB1" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
-    <extendedProperties/>
-    <properties name="CID" ownerProjectName="lguplus_rebm"/>
-    <properties name="TITLE" ownerProjectName="lguplus_rebm"/>
-    <properties name="CREATED" ownerProjectName="lguplus_rebm" type="DateTime"/>
-    <properties name="GENRE" ownerProjectName="lguplus_rebm"/>
-    <properties name="CATEGORY" ownerProjectName="lguplus_rebm"/>
-    <properties name="CODE" ownerProjectName="lguplus_rebm"/>
-    <properties name="PRICE" ownerProjectName="lguplus_rebm" type="int"/>
-    <properties name="SERIES_MODE" ownerProjectName="lguplus_rebm"/>
-    <properties name="EPISODE_NUM" ownerProjectName="lguplus_rebm" type="int"/>
-    <properties name="SVC_NAME" ownerProjectName="lguplus_rebm"/>
-    <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Concepts/ECF/SCENARIO/" name="ContentInfo" description="앨범 컨텐츠의 정보를 담는다&#xD;&#xA;앨범 컨텐츠 정보를 담는다" GUID="E08AA846-9D94-91BD-AE16-A31A3F159AB1" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+  <extendedProperties/>
+  <properties name="CID" ownerProjectName="lguplus_rebm"/>
+  <properties name="TITLE" ownerProjectName="lguplus_rebm"/>
+  <properties name="CREATED" ownerProjectName="lguplus_rebm" type="DateTime"/>
+  <properties name="GENRE" ownerProjectName="lguplus_rebm"/>
+  <properties name="CATEGORY" ownerProjectName="lguplus_rebm"/>
+  <properties name="CODE" ownerProjectName="lguplus_rebm"/>
+  <properties name="PRICE" ownerProjectName="lguplus_rebm" type="int"/>
+  <properties name="SERIES_MODE" ownerProjectName="lguplus_rebm"/>
+  <properties name="EPISODE_NUM" ownerProjectName="lguplus_rebm" type="int"/>
+  <properties name="SVC_NAME" ownerProjectName="lguplus_rebm"/>
+  <properties name="AVAIL_ET" ownerProjectName="lguplus_rebm" type="DateTime"/>
 </element:Concept>

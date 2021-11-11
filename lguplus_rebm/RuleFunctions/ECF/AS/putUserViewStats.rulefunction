@@ -7,25 +7,41 @@ void rulefunction RuleFunctions.ECF.AS.putUserViewStats {
 	}
 	scope {
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;
-		String[] jsonOrgStats;
+		Object orgTuple;
+		long currentDate;
+		int albumStat;
+		int[] genreStat;
+		int[] categoryStat;
 	}
 	body {
 		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserViewStats");
 
-		if(userActivityTrace.ALBUM_ID == null || userActivityTrace.ALBUM_ID == "" || jsonOrgStats == null)
+		if(userActivityTrace.ALBUM_ID == null || userActivityTrace.ALBUM_ID == "")
 			return;
 
 		try{
-			DateTime currentTime = DateTime.now();
+			String albumJsonStats = getValueAsString("albumStats", orgTuple);
+			String genreJsonStats = getValueAsString("genreStats", orgTuple);
+			String categoryJsonStats = getValueAsString("categoryStats", orgTuple);
+
 			Object tuple = Metaspace.Tuple.create();
 			
-			Metaspace.Tuple.putString(tuple, "uvsId", userActivityTrace.SID);
-			long dateId = Number.longValue(DateTime.format(currentTime, "yyyyMMdd"), 10);
-			Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+			Metaspace.Tuple.putLong(tuple, "uvsId", userActivityTrace.SID);
+			Metaspace.Tuple.putLong(tuple, "dateId", currentDate);
 			Metaspace.Tuple.putString(tuple, "actionId", userActivityTrace.ACTION_ID);
-			Metaspace.Tuple.putString(tuple, "albumStats", GsonUtil.setValue(jsonOrgStats[0], userActivityTrace.ALBUM_ID, "" + userActivityTrace.ALBUM_COUNT));
-			Metaspace.Tuple.putString(tuple, "categoryStats", GsonUtil.setValue(jsonOrgStats[1], userActivityTrace.CAT_ID, "" + userActivityTrace.CAT_COUNT));
-			Metaspace.Tuple.putString(tuple, "genreStats", GsonUtil.setValue(jsonOrgStats[2], userActivityTrace.GENRE_ID, "" + userActivityTrace.GENRE_COUNT));
+			Metaspace.Tuple.putString(tuple, "albumStats", GsonUtil.setValue(albumJsonStats, userActivityTrace.ALBUM_ID, "" + albumStat));
+
+			String jsonValue = genreJsonStats;
+			for(int i=0; i<userActivityTrace.GENRE_ID@length;i++){
+				jsonValue = GsonUtil.setValue(jsonValue, userActivityTrace.GENRE_ID[i], "" + genreStat[i]);
+			}
+			Metaspace.Tuple.putString(tuple, "genreStats", jsonValue);
+
+			jsonValue = categoryJsonStats;
+			for(int i=0; i<userActivityTrace.CAT_ID@length;i++){
+				jsonValue = GsonUtil.setValue(jsonValue, userActivityTrace.CAT_ID[i], "" + categoryStat[i]);
+			}
+			Metaspace.Tuple.putString(tuple, "categoryStats", jsonValue);
 
 			Object putOption = Metaspace.Space.Options.createPutOptions();
 			Metaspace.Space.put("LGUPLUS_METASPACE.UserViewStats", tuple, putOption);

@@ -12,11 +12,14 @@ void rulefunction RuleFunctions.StartUp.initializeDatasource {
 		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + ":initializeDatasource");
 		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "initialize datasource");
 		
-		/* 직접적으로 Oracle Connection 을 설정해야 하는 경우에 사용한다. 
-		Oracle.registerConnection("Oracle", "/SharedResources/OracleConn.sharedjdbc", 5);
-		*/
-		
-		RuleFunctions.ECF.MART.loadScnrCampMap();
-		RuleFunctions.ECF.MART.loadREBMScnrInfo();
+		try{
+			int connForUser = System.getGlobalVariableAsInt("DB/MASTER_USER_CONNECTION", 5);
+			Oracle.registerConnection("MasterUser", "/SharedResources/MasterUser.sharedjdbc", connForUser);
+			int connForContent = System.getGlobalVariableAsInt("DB/MASTER_CONTENT_CONNECTION", 5);
+			Oracle.registerConnection("MasterContent", "/SharedResources/MasterContent.sharedjdbc", connForContent);
+		}catch(Exception e){
+			Log.log(logger, "Error", "failed initializing oracle connection:" + e);
+			Engine.shutdown(true);
+		}		
 	}
 }

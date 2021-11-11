@@ -8,31 +8,20 @@ rule Rules.POST_RULE.POST_PROCESS {
 		forwardChain = true;
 	}
 	declare {
-		Events.Internal.ActionEvent actionEvent;
+		Events.Internal.DetectEvent detectEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
-//		Events.SYSTEM.sessionLock sessionLock; //using critical section in PRE-RULE
 	}
 	when {
-		CheckUserAction(actionEvent, customerBasicInfo, null);
-// 		sessionLock.sessionKey == customerBasicInfo.SID; //using critical section in PRE-RULE
+		MatchDetectCondition(detectEvent, userActivityTrace, customerBasicInfo, null);
 	}
 	then {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "PostProcess");
-		Event.consumeEvent(actionEvent);
-		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck("post");
+		Event.consumeEvent(detectEvent);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(detectEvent.SeqId, "post");
 
-		/* using critical section in PRE-RULE */
-//		RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock(sessionLock);
-		String[] concepts = EBMUtil.getConceptExtIds();
-		
-		if(concepts != null){
-			for(int i=0; i< concepts@length; i++){
-				Instance.deleteInstance(Instance.getByExtId(concepts[i]));
-			}
-		}
-
-		RuleFunctions.ECF.SYSTEM.printPerformanceCheck(actionEvent);
-		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "SEQ_ID:%s (%s == %s) ended", actionEvent.SeqId, actionEvent.SID, customerBasicInfo.SID);
+		releaseResources(detectEvent, userActivityTrace.SEQ_ID);
+		Log.log(logger, ScoreCard.log_control.RULE_LEVEL, "SEQ_ID:%s (%d == %d) ended", detectEvent.SeqId, detectEvent.SID, customerBasicInfo.SID);
 	}
 
 }

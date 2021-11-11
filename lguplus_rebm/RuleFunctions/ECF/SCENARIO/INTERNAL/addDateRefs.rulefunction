@@ -1,0 +1,40 @@
+/**
+ * @description 
+ */
+String[] rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.addDateRefs {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		String[] dateRefs;
+		DateTime time;
+		int count;
+	}
+	body {
+		String[] res = String[7]{};
+		String date = DateTime.format(time, "yyMMdd");
+		int blankIndex = -1;
+		if(dateRefs == null){
+			res[0] = String.format("%s%01d", date, count);
+			return res;
+		}else{
+			for(int i=0; i<dateRefs@length; i++){
+				if(dateRefs[i] != null){
+					String tDate = String.substring(dateRefs[i], 0, 6); //yyMMdd
+					int tCount = Number.intValue(String.substring(dateRefs[i], 6, 7), 10);
+					if(tDate == date){
+						tCount += count;
+						dateRefs[i] = String.format("%s%01d", tDate, tCount);
+						return dateRefs;
+					}
+				}else{
+					if(blankIndex < 0){
+						blankIndex = i;
+					}
+				}
+			}
+			dateRefs[blankIndex] = String.format("%s%01d", date, count);
+			return dateRefs;
+		}
+	}
+}

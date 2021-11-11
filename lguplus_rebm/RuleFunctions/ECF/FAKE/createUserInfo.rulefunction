@@ -1,0 +1,75 @@
+/**
+ * @description 
+ */
+Concepts.ECF.SCENARIO.CustomerBasicInfo rulefunction RuleFunctions.ECF.FAKE.createUserInfo {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		String extId;
+		Events.Internal.ActionEvent viewevent;	
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":createUserInfo");
+
+		try{
+			Database.setCurrentConnection("/SharedResources/MasterUser.sharedjdbc");
+			Database.beginTransaction();
+
+			
+			long cust_no = Random(1000000000);
+			String[] prod_cd_list = {"LZP0000701", "LZP0120080", "LZP0000765", "LZP1234567", "LZP1245234"}; 
+
+			String prod_cd = prod_cd_list[cust_no % 5];
+			String hpno = "010" + Random(100000000);
+			long[] number = long[]{Random(10000000),Random(10000000),Random(10000000)};
+			int mfa_idx = Random(10) % 4;
+			boolean is_adding = (Random(10) < 8);
+			if(!is_adding) return null;
+			
+			/* 
+				[mfa_YN 관련]
+				최초 생성시에는 mfaMode 를 false 로 하고 contentInfo 가 생성되고 난 이후부터는 그 데이터를 기반으로  월정액 가입여부를 판단한다. 
+			*/
+			String mfa = null;
+			if(mfa_idx == 0){
+				mfa = "";
+			}else if(mfa_idx == 1){
+				mfa = String.format("LRZ%07d", number[0]);
+			}else if(mfa_idx == 2){
+				mfa = String.format("LRZ%07d,LRZ%07d", number[0], number[1]);
+			}else if(mfa_idx == 3){
+				mfa = String.format("LRZ%07d,LRZ%07d,LRZ%07d", number[0], number[1],number[2]);
+			}
+			String cust_divs = "I";
+			if((cust_no % 8) == 0){
+				cust_divs = "G";
+			}
+			if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+			}else{
+				String query = "INSERT into TB_CMCE_REBM_CUST_M_T(ENTR_NO,PROD_CD,CUST_NO,HPNO,MFA_PROD_ENT_YN,MFA_PROD_ENTR_LIST_CNTN, CUST_DIVS_CD) Values (?,?,?,?,?,?,?)";
+				Object[] insObj = {viewevent.SID, prod_cd, cust_no, hpno, "N", mfa, cust_divs};
+				int insertCON = Database.executePreparedStmt(query, insObj);
+			}
+
+			return Concepts.ECF.SCENARIO.CustomerBasicInfo.CustomerBasicInfo(
+				extId/*extId String */,
+				viewevent.SID/*SID String */,
+				cust_no/*CID String */,
+				hpno/*CTN String */,
+				false/*MON_SUBS boolean */,
+				mfa/*SUBSCRIBE_INFO String */,
+				false/*UNSUB_CANDI boolean */,
+				null/*NAME String */,
+				cust_divs/*CLASS String */,
+				null/*AVAIL_ET DateTime */,
+				viewevent.SeqId/*SEQ_ID String */);
+
+		}catch(Exception e){
+			Database.rollback();
+			return null;
+		}finally{
+			Database.unsetConnection();
+		}
+	}
+}

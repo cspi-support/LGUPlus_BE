@@ -8,29 +8,35 @@ rule Rules.CAMPAIGN_RULE.CAMPAIGN_TEST_1 {
 		forwardChain = true;
 	}
 	declare {
-		Events.Internal.ActionEvent actionEvent;
+		Events.Internal.DetectEvent detectEvent;
 		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
 		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
-		Concepts.ECF.SCENARIO.ContentInfo contentInfo;
 	}
 	when {
-		MatchPreCondition(actionEvent, userActivityTrace, customerBasicInfo, contentInfo, "T014");
-
+		MatchDetectCondition(detectEvent, userActivityTrace, customerBasicInfo, "T014");
 		/** Matching 예제 
+		customerBasicInfo.MON_SUBS == true; //월정액 유저인지?
 		userActivityTrace.DURATION > 20; // 진입/이탈 사이의 duration(sec)
-		IsAlbumCategory_ANY_IN(actionEvent, userActivityTrace, customerBasicInfo, contentInfo, "다시보고싶은 영화,산책용 영화"); // 앨범의 카테고리가 특정 카테고리셋에 포함되는지
-		userActivityTrace.CAT_COUNT > 5; //카테고리 매칭 횟수
-		userActivityTrace.COUNT > 2; //행동의 횟수
+		GetRefs_User_Action(detectEvent, userActivityTrace, customerBasicInfo, 2) > 2; //2일동안의 Action 횟수가 2보다 크다.
+		IsCategory_ANY_IN(actionEvent, userActivityTrace, customerBasicInfo, "다시보고싶은 영화,산책용 영화"); // 앨범의 카테고리가 특정 카테고리셋에 포함되는지
+		GetRefs_Category_ANY_IN(detectEvent, userActivityTrace, customerBasicInfo, "Cat01,Cat02", 0) > 5;
+		GetRefs_Genre_ANY_IN(detectEvent, userActivityTrace, customerBasicInfo, "대분류|소분류,대분류|중분류|소분류", 0) > 10;
 		**/
 	}
 	then {
 		Object logger = Log.getLogger(ScoreCard.log_control.RULE_TAG + "CAMPAIGN_TEST_1");
-		Log.log(logger, "Info", "Matched(%d): SID(%s) : SEQ_ID:%s, customerBasicInfo:%s, userActionTrace:%s, count:%d", DateTime.getTimeInMillis(DateTime.now()),actionEvent.SID, actionEvent.SeqId, customerBasicInfo@id, userActivityTrace@id, userActivityTrace.COUNT);
+		Log.log(logger, "Info", "Matched(%d): SID(%d) : SEQ_ID:%s, customerBasicInfo:%s, userActionTrace:%s, count:%d", DateTime.getTimeInMillis(DateTime.now()),detectEvent.SID, detectEvent.SeqId, customerBasicInfo@id, userActivityTrace@id, GetRefs_User_Action(detectEvent, userActivityTrace, customerBasicInfo, 0));
 		
-		/* 발송 테스트 */
-		String scenarioId = "scenario_1234";
-		RequestOffer(actionEvent, userActivityTrace, customerBasicInfo, contentInfo, scenarioId);
+		RuleFunctions.ECF.SYSTEM.updatePerformanceCheck(detectEvent.SeqId, "capaign");
 
-//		completeCampaign(actionEvent);
+		Concepts.ECF.SCENARIO.ContentInfo contentInfo = null;
+		if(userActivityTrace.ALBUM_ID != null){
+			contentInfo = Instance.getByExtId(userActivityTrace.ALBUM_ID);
+		}
+
+		/* 발송 Example*/
+		String scenarioId = "scenario_1234";
+		RequestOffer(detectEvent, userActivityTrace, customerBasicInfo, contentInfo, scenarioId);
+
 	}
 }

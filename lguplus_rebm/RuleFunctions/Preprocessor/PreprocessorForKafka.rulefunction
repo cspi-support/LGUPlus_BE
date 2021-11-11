@@ -16,9 +16,10 @@ void rulefunction RuleFunctions.Preprocessor.PreprocessorForKafka {
 		Event.consumeEvent(inbound);
 		Object jsonEvent = JSON.parseJSON(inbound@payload);
 
-		String userId = getStringValueFromJSON(jsonEvent, "SID", "");
+		String userIdString = getStringValueFromJSON(jsonEvent, "SID", "");
+		long userId = Number.longValue(userIdString, 10);
 		String actionId = getStringValueFromJSON(jsonEvent, "ACT_TARGET_DTL", "");
-		if(userId == "") return;
+		if(userId < 0) return;
 
 		/* 1. global session lock */
 		/** using critical section
@@ -29,7 +30,7 @@ void rulefunction RuleFunctions.Preprocessor.PreprocessorForKafka {
 		/* 2. Local Event 생성 */
 		String seqId;
 		if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
-			seqId = getStringValueFromJSON(jsonEvent, "SEQ_ID", "");
+			seqId = getStringValueFromJSON(jsonEvent, "SEQ_ID", "") + userIdString;
 		}else{
 			/* test data 의 seq_id 필드의 마지막 8자리가 잘못되어 있슴 */
 			seqId = getStringValueFromJSON(jsonEvent, "SEQ_ID", "") + System.nanoTime();
@@ -69,8 +70,8 @@ void rulefunction RuleFunctions.Preprocessor.PreprocessorForKafka {
 			/* event 를 working memory 로 전송한다. */
 			Event.assertEvent(actionEvent);
 			EBMUtil.addConceptExtId(customerBasicInfo@extId); //for concurrent-rtc
-			RuleFunctions.ECF.SYSTEM.initPerformanceCheck();
-			Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "asserted Event(%d): userId(%s), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
+			RuleFunctions.ECF.SYSTEM.initPerformanceCheck(seqId);
+			Log.log(logger, ScoreCard.log_control.PREPROCESS_LEVEL, "asserted Event(%d): userId(%d), seq_id(%s), cus_seq_id(%s), action(%s)", DateTime.getTimeInMillis(DateTime.now()),  actionEvent.SID, actionEvent.SeqId, customerBasicInfo.SEQ_ID, actionEvent.ActionTargetDtl);
 		}else{
 			/** using critical section
 			RuleFunctions.ECF.SYSTEM.releaseGlobalSessionLock(acquireLock);

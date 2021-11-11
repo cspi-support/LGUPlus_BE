@@ -1,0 +1,122 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.MART.loadMFAList {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		
+	}
+	body {
+		Object logger = Log.getLogger("loadMFAList");
+		Object conn = null;
+		Object res = null;
+		String data = "";
+		try{
+			conn = Oracle.getConnection("MasterContent");
+			String query = null;
+			if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+				query = "WITH MFA AS("
+					+ "SELECT DISTINCT MFA_PROD_LIST_CNTN PROD_CD FROM("
+					+ " SELECT MFA_PROD_LIST_CNTN FROM TB_CMCE_REBM_BRD_CNTS_M WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN,',') = 0"
+					+ " UNION ALL"
+					+ " SELECT T.COL1 MFA FROM("
+					+ "   SELECT " 
+					+ " 	regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN,',') = 1" 
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL2 MFA FROM("
+					+ "   SELECT "
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN,',') = 1" 
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL1 MFA FROM ("
+					+ "   SELECT "
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M"
+					+ " WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN ,',') = 2"
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL2 MFA FROM ("
+					+ "   SELECT "
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M"
+					+ " WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN ,',') = 2" 
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL3 MFA FROM ("
+					+ "   SELECT" 
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M"
+					+ " WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN ,',') = 2" 
+					+ " ) T"
+					+ ") WHERE MFA_PROD_LIST_CNTN IS NOT NULL)"
+					+ "SELECT DISTINCT MFA.PROD_CD FROM MFA";
+			}else{
+				query = "WITH MFA AS("
+					+ "SELECT DISTINCT MFA_PROD_LIST_CNTN PROD_CD FROM("
+					+ " SELECT MFA_PROD_LIST_CNTN FROM TB_CMCE_REBM_BRD_CNTS_M_T WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN,',') = 0"
+					+ " UNION ALL"
+					+ " SELECT T.COL1 MFA FROM("
+					+ "   SELECT " 
+					+ " 	regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M_T WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN,',') = 1" 
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL2 MFA FROM("
+					+ "   SELECT "
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M_T WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN,',') = 1" 
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL1 MFA FROM ("
+					+ "   SELECT "
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M_T"
+					+ " WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN ,',') = 2"
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL2 MFA FROM ("
+					+ "   SELECT "
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M_T"
+					+ " WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN ,',') = 2" 
+					+ " ) T"
+					+ " UNION ALL"
+					+ " SELECT T.COL3 MFA FROM ("
+					+ "   SELECT" 
+					+ "     regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,1) COL1 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,2) COL2 ,regexp_substr(MFA_PROD_LIST_CNTN,'[^,]+',1,3) COL3"
+					+ "   FROM TB_CMCE_REBM_BRD_CNTS_M_T"
+					+ " WHERE 1=1 AND MFA_PROD_LIST_CNTN IS NOT NULL AND REGEXP_COUNT(MFA_PROD_LIST_CNTN ,',') = 2" 
+					+ " ) T"
+					+ ") WHERE MFA_PROD_LIST_CNTN IS NOT NULL)"
+					+ "SELECT DISTINCT MFA.PROD_CD FROM MFA";
+		
+			}
+
+			Object[] params = {};
+			res = Oracle.executeQuery(conn, query, params);
+			int count = 0;
+			if(res!= null){
+				PersistentData.cleanDatas("MFAHashSet");
+				while(Oracle.next(res)){
+					String item = getTrimString(Oracle.getColumnValueByName(res, "PROD_CD"));
+					data += item;
+					count++;
+					PersistentData.addData("MFAHashSet", item);
+				}
+			}
+			return ;
+		}catch(Exception e){
+			Log.log(logger, "Error", "Exception:"+ e);
+			if(conn != null) Oracle.rollback(conn);
+			return ;
+		}finally{
+			if(res != null) Oracle.closeResultSet(res);
+			if(conn != null) Oracle.releaseConnection(conn);
+		}
+	}
+}

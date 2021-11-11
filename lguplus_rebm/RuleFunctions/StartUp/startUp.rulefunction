@@ -13,15 +13,19 @@ void rulefunction RuleFunctions.StartUp.startUp {
 
 		Object logger = Log.getLogger(ScoreCard.log_control.INIT_TAG + ":startUp");
 		Log.log(logger, ScoreCard.log_control.INIT_LEVEL, "startUp REBM");
-//		RuleFunctions.StartUp.testFunction();
-//		RuleFunctions.ECF.UTIL.testJson();
 
 		initializeActiveSpace();
 		initializeDatasource();
 		initializeDefaultConcepts();
 
-		if(String.compareToIgnoreCase(System.getGlobalVariableAsString("COMMON/REVISION", "v1"), "v2") == 0){
+		if(String.compareToIgnoreCase(System.getGlobalVariableAsString("COMMON/REVISION", "v1"), "v1") == 0){
+			Log.log(logger, "info", "v1 was deprecated and so shutdowning system");
+			Engine.shutdown(true);
+		}else if(String.compareToIgnoreCase(System.getGlobalVariableAsString("COMMON/REVISION", "v1"), "v2") == 0){
 			RuleFunctions.ECF.CONTROL.initializeFilterMap(true);
 		} 
+
+		/* load MFA Data */
+		Event.assertEvent(Events.MART.MFAReload.MFAReload(null,null));
 	}
 }

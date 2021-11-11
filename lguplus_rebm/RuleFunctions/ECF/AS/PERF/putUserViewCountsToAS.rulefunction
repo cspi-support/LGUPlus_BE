@@ -1,0 +1,91 @@
+/**
+ * @description 
+ */
+void rulefunction RuleFunctions.ECF.AS.PERF.putUserViewCountsToAS {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		long userId;
+		String actionId;
+		Object viewCollection;
+	}
+	body {
+		Object logger = Log.getLogger(ScoreCard.log_control.IMDG_TAG + ":putUserViewCountsToAS");
+
+		if(viewCollection == null)
+			return;
+
+		try{
+			ASUtil.putAll(System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE"), "UserViewCounts", viewCollection);
+			
+			/** changed scheme
+			boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", false);
+			String fieldHead = "" + userId + ":" + actionId + ":";
+			long dateId = Number.longValue(DateTime.format(DateTime.now(), "yyyyMMdd"), 10);
+
+			Object albumMap= Collections.Map.get(viewCollection, "album");
+			Object genreMap = Collections.Map.get(viewCollection, "genre");
+			Object categoryMap = Collections.Map.get(viewCollection, "category");
+
+			Object tupleList = Collections.List.createArrayList();
+			int index = 0;
+
+			if(albumMap != null) {
+				Object keySet = Collections.Map.keySet(albumMap);
+				Object iterator = Collections.iterator(keySet);
+				while(Collections.Iterator.hasNext(iterator)){
+					Object tuple = Metaspace.Tuple.create();
+					String pairKey = Collections.Iterator.next(iterator);
+					Integer pairValue = Collections.Map.get(albumMap, pairKey);
+
+					Metaspace.Tuple.putString(tuple, "userView", fieldHead + pairKey);
+					Metaspace.Tuple.putLong(tuple, "count", pairValue);
+					Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+					Collections.List.add(tupleList, index, tuple);
+					index = index + 1;
+				}	
+			}
+
+			if(genreMap != null) {
+				Object keySet = Collections.Map.keySet(genreMap);
+				Object iterator = Collections.iterator(keySet);
+				while(Collections.Iterator.hasNext(iterator)){
+					Object tuple = Metaspace.Tuple.create();
+					String pairKey = Collections.Iterator.next(iterator);
+					Integer pairValue = Collections.Map.get(genreMap, pairKey);
+					if(useHash){
+						Metaspace.Tuple.putString(tuple, "userView", fieldHead + String.hashCode(pairKey));
+					}else{
+						Metaspace.Tuple.putString(tuple, "userView", fieldHead + pairKey);
+					}
+					Metaspace.Tuple.putLong(tuple, "count", pairValue);
+					Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+					Collections.List.add(tupleList, index, tuple);
+					index = index + 1;
+				}	
+			}
+			
+			if(categoryMap != null) {
+				Object keySet = Collections.Map.keySet(categoryMap);
+				Object iterator = Collections.iterator(keySet);
+				while(Collections.Iterator.hasNext(iterator)){
+					Object tuple = Metaspace.Tuple.create();
+					String pairKey = Collections.Iterator.next(iterator);
+					Integer pairValue = Collections.Map.get(categoryMap, pairKey);
+					Metaspace.Tuple.putString(tuple, "userView", fieldHead + pairKey);
+					Metaspace.Tuple.putLong(tuple, "count", pairValue);
+					Metaspace.Tuple.putLong(tuple, "dateId", dateId);
+					Collections.List.add(tupleList, index, tuple);
+					index = index + 1;
+				}	
+			}
+
+			ASUtil.putAll(System.getGlobalVariableAsString("AS/METASPACE", "LGUPLUS_METASPACE"), "UserViewCounts", tupleList);
+			**/
+
+		}catch(Exception e){
+			Log.log(logger, "Error", "error:" + e);
+		}	
+	}
+}

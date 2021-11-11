@@ -33,38 +33,6 @@
         <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
       </properties>
     </destinations>
-    <destinations name="DetectedEventHistory" description="" GUID="5A78BC2A-730F-9BF6-D99B-CA9495B1FE3E" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
-      <properties>
-        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
-        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="DetectedEventHistory"/>
-        <properties xsi:type="designtime:SimpleProperty" name="DistributionRole" value="LEECH"/>
-        <properties xsi:type="designtime:SimpleProperty" name="Filter" value=""/>
-        <properties xsi:type="designtime:SimpleProperty" name="ConsumptionMode" value="EventListener"/>
-        <properties xsi:type="designtime:SimpleProperty" name="BrowserType" value="GET"/>
-        <properties xsi:type="designtime:SimpleProperty" name="DistributionScope" value="ALL"/>
-        <properties xsi:type="designtime:SimpleProperty" name="TimeScope" value="ALL"/>
-        <properties xsi:type="designtime:SimpleProperty" name="PutEvent" value="true"/>
-        <properties xsi:type="designtime:SimpleProperty" name="TakeEvent" value="false"/>
-        <properties xsi:type="designtime:SimpleProperty" name="ExpireEvent" value="false"/>
-        <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
-      </properties>
-    </destinations>
-    <destinations name="ExecutedScnrHistory" description="" GUID="0C3D1D3B-20FB-1801-9099-3FCCD2D64C1A" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
-      <properties>
-        <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
-        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="ExecutedScnrHistory"/>
-        <properties xsi:type="designtime:SimpleProperty" name="DistributionRole" value="LEECH"/>
-        <properties xsi:type="designtime:SimpleProperty" name="Filter" value=""/>
-        <properties xsi:type="designtime:SimpleProperty" name="ConsumptionMode" value="EventListener"/>
-        <properties xsi:type="designtime:SimpleProperty" name="BrowserType" value="GET"/>
-        <properties xsi:type="designtime:SimpleProperty" name="DistributionScope" value="ALL"/>
-        <properties xsi:type="designtime:SimpleProperty" name="TimeScope" value="ALL"/>
-        <properties xsi:type="designtime:SimpleProperty" name="PutEvent" value="true"/>
-        <properties xsi:type="designtime:SimpleProperty" name="TakeEvent" value="false"/>
-        <properties xsi:type="designtime:SimpleProperty" name="ExpireEvent" value="false"/>
-        <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
-      </properties>
-    </destinations>
     <destinations name="UserActionStats" description="" GUID="21280C01-23D1-86D6-D880-7BC3C08B7035" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
       <properties>
         <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
@@ -97,10 +65,10 @@
         <properties xsi:type="designtime:SimpleProperty" name="Prefetch" value="-1"/>
       </properties>
     </destinations>
-    <destinations name="UserViewStats" description="" GUID="77870EC4-78F5-198E-1D95-1036A3AB2427" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
+    <destinations name="UserViewCounts" description="" GUID="CD05EE59-F6A5-E873-A909-015607BE77AE" ownerProjectName="lguplus_rebm" serializerDeserializerClass="com.tibco.cep.driver.as.serializers.ActiveSpacesSerializer" driverConfig="//@driver">
       <properties>
         <properties xsi:type="designtime:SimpleProperty" name="IncludeEventType" value="ALWAYS" mandatory="true"/>
-        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="UserViewStats"/>
+        <properties xsi:type="designtime:SimpleProperty" name="SpaceName" value="UserViewCounts"/>
         <properties xsi:type="designtime:SimpleProperty" name="DistributionRole" value="LEECH"/>
         <properties xsi:type="designtime:SimpleProperty" name="Filter" value=""/>
         <properties xsi:type="designtime:SimpleProperty" name="ConsumptionMode" value="EventListener"/>

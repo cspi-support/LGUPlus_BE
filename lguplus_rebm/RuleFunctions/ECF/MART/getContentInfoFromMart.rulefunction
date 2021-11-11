@@ -1,31 +1,57 @@
 /**
  * @description 컨텐트 정보를 MART 로 부터 가져온다.
  */
-Concepts.LGUPLUS.CONTENT_INFO rulefunction RuleFunctions.ECF.MART.getContentInfoFromMart {
+Concepts.ECF.SCENARIO.ContentInfo rulefunction RuleFunctions.ECF.MART.getContentInfoFromMart {
 	attribute {
 		validity = ACTION;
 	}
 	scope {
-		String vodKey;	
+		String albumId;	
 	}
 	body {
-		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getContentInfo");
-		
-		Log.log(logger, ScoreCard.log_control.DB_LEVEL, "Content loading:%s", vodKey);
-		
+		Object logger = Log.getLogger(ScoreCard.log_control.DB_TAG + ":getContentInfoFromMart");
+		Object conn = null;
+		Object res = null;
 		try{
-			Database.setCurrentConnection("/SharedResources/OracleConn.sharedjdbc");
-			Database.beginTransaction();
+			conn = Oracle.getConnection("MasterContent");
+			String query = null;
+			if(System.getGlobalVariableAsString("COMMON/MART_MODE", "real") == "real"){
+				query = "SELECT * FROM TB_CMCE_REBM_BRD_CNTS_M WHERE ALBM_ID = ?";
+			}else{
+				query = "SELECT * FROM TB_CMCE_REBM_BRD_CNTS_M_T WHERE ALBM_ID = ?";
+			}
 
-			Concepts.LGUPLUS.CONTENT_INFO[] items = Database.queryUsingSQL("/Concepts/LGUPLUS/CONTENT_INFO", "select * from CONTENT_INFO WHERE ALBUM_ID = " + "'" + vodKey + "'", true);
-			if(items@length > 0) return items[0];
-			else return null;
+			Object[] params = {albumId}; //for test
+			res = Oracle.executeQuery(conn, query, params);
+			Concepts.ECF.SCENARIO.ContentInfo ciInstance = null;
+			if(res!= null){
+				while(Oracle.next(res)){
+					if(ciInstance == null){
+						ciInstance = Concepts.ECF.SCENARIO.ContentInfo.ContentInfo(
+										albumId/*extId String */,
+										albumId/*CID String */,
+										null/*TITLE String */,
+										null/*CREATED DateTime */,
+										getTrimString(Oracle.getColumnValueByName(res, "CNTS_GNRE_NM_LIST_CNTN"))/*GENRE String */,
+										getTrimString(Oracle.getColumnValueByName(res, "CNTS_CATG_ID_LIST_CNTN"))/*CATEGORY String */,
+										getTrimString(Oracle.getColumnValueByName(res, "MFA_PROD_LIST_CNTN"))/*CODE String */,
+										getLongValueOnDB(Oracle.getColumnValueByName(res, "PROD_PRC"))/*PRICE int */,
+										null/*SERIES_MODE String */,
+										0/*EPISODE_NUM int */,
+										null/*SVC_NAME String */,
+										null/*AVAIL_ET DateTime */);
+						return ciInstance;
+					}
+				}
+			}
+			return ciInstance;
 		}catch(Exception e){
 			Log.log(logger, "Error", "Exception:"+ e);
-			Database.rollback();
+			if(conn != null) Oracle.rollback(conn);
 			return null;
 		}finally{
-			Database.unsetConnection();
-		}	
+			if(res != null) Oracle.closeResultSet(res);
+			if(conn != null) Oracle.releaseConnection(conn);
+		}
 	}
 }

@@ -1,0 +1,21 @@
+/**
+ * @description 
+ * GenreSet("다시보고싶은영화,산책용영화") 와 
+ */
+boolean rulefunction RuleFunctions.ECF.SCENARIO.IsGenre_ANY_IN {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		Events.Internal.DetectEvent detectEvent;
+		Concepts.ECF.SCENARIO.UserActivityTrace userActivityTrace;	
+		Concepts.ECF.SCENARIO.CustomerBasicInfo customerBasicInfo;
+		String GenreSet;		
+	}
+	body {
+		boolean useHash = System.getGlobalVariableAsBoolean("AS/USE_HASH_CODE", true);
+		boolean isExactMatch = true;
+		String serialized = getSerializedFromMultiString(userActivityTrace.GENRE_ID, ",");
+		return StringUtil.isContainAny(GenreSet, serialized, ",");
+	}
+}

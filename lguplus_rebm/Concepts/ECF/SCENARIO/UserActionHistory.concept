@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?><element:Concept xmlns:element="http:///com/tibco/cep/designtime/core/model/element" xmlns:xmi="http://www.omg.org/XMI" xmi:version="2.0" folder="/Concepts/ECF/SCENARIO/" name="UserActionHistory" description="사용자행동이력 용도의 컨셉&#13;&#10;사용자 행동이력 정보를 저장하고 불러올때 사용하기 위한 컨셉" GUID="ED795D4C-0AA7-8599-F170-DD4CAC39AAB4" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
-    <extendedProperties/>
-    <properties name="SID" ownerProjectName="lguplus_rebm"/>
-    <properties name="SEQ_ID" ownerProjectName="lguplus_rebm"/>
-    <properties name="SVC_NAME" ownerProjectName="lguplus_rebm"/>
-    <properties name="ACT_START" ownerProjectName="lguplus_rebm"/>
-    <properties name="ACT_TGT" ownerProjectName="lguplus_rebm"/>
-    <properties name="ACT_TGT_DTL" ownerProjectName="lguplus_rebm"/>
-    <properties name="VW_CURR" ownerProjectName="lguplus_rebm"/>
-    <properties name="VW_CURR_DTL" ownerProjectName="lguplus_rebm"/>
-    <properties name="ACTION_ID" ownerProjectName="lguplus_rebm"/>
-    <properties name="MENU_ID" ownerProjectName="lguplus_rebm"/>
-    <properties name="ALBUM_ID" ownerProjectName="lguplus_rebm"/>
-    <properties name="CAT_ID" ownerProjectName="lguplus_rebm"/>
-    <properties name="GENRE_ID" ownerProjectName="lguplus_rebm"/>
-    <properties name="ACTIVITY_TIME" ownerProjectName="lguplus_rebm" type="DateTime"/>
-    <properties name="RECEIVED_TIME" ownerProjectName="lguplus_rebm" type="DateTime"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" folder="/Concepts/ECF/SCENARIO/" name="UserActionHistory" description="사용자행동이력 용도의 컨셉&#xD;&#xA;사용자 행동이력 정보를 저장하고 불러올때 사용하기 위한 컨셉" GUID="ED795D4C-0AA7-8599-F170-DD4CAC39AAB4" ownerProjectName="lguplus_rebm" superConceptPath="" autoStartStateMachine="true">
+  <extendedProperties/>
+  <properties name="SID" ownerProjectName="lguplus_rebm" type="long"/>
+  <properties name="SEQ_ID" ownerProjectName="lguplus_rebm"/>
+  <properties name="SVC_NAME" ownerProjectName="lguplus_rebm"/>
+  <properties name="ACT_START" ownerProjectName="lguplus_rebm"/>
+  <properties name="ACT_TGT" ownerProjectName="lguplus_rebm"/>
+  <properties name="ACT_TGT_DTL" ownerProjectName="lguplus_rebm"/>
+  <properties name="VW_CURR" ownerProjectName="lguplus_rebm"/>
+  <properties name="VW_CURR_DTL" ownerProjectName="lguplus_rebm"/>
+  <properties name="ACTION_ID" ownerProjectName="lguplus_rebm"/>
+  <properties name="MENU_ID" ownerProjectName="lguplus_rebm"/>
+  <properties name="ALBUM_ID" ownerProjectName="lguplus_rebm"/>
+  <properties name="CAT_ID" ownerProjectName="lguplus_rebm"/>
+  <properties name="GENRE_ID" ownerProjectName="lguplus_rebm"/>
+  <properties name="ACTIVITY_TIME" ownerProjectName="lguplus_rebm" type="DateTime"/>
+  <properties name="RECEIVED_TIME" ownerProjectName="lguplus_rebm" type="DateTime"/>
 </element:Concept>

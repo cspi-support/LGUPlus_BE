@@ -1,0 +1,56 @@
+/**
+ * @description 
+ */
+String[] rulefunction RuleFunctions.ECF.SCENARIO.INTERNAL.getParsedDateRefs {
+	attribute {
+		validity = CONDITION;
+	}
+	scope {
+		String dateCounts;
+		DateTime startDate; //inclusive
+		DateTime endDate; //inclusive
+	}
+	body {
+		if(dateCounts == null || dateCounts == "") return null;
+
+		int saveDayCount = System.getGlobalVariableAsInt("AS/SAVE_DAY_COUNT", 7);
+		DateTime nowTime = DateTime.now();
+		int currentYear = DateTime.getYear(nowTime);
+		String currentYearPrefix = String.format("%02d", currentYear / 100);
+		DateTime minDateId = DateTime.addDay(nowTime, -saveDayCount + 1);  // minDateId is inclusive
+		
+		DateTime start = minDateId;;
+		DateTime end = nowTime;
+
+		if(startDate != null && Date.after(startDate, start)) {
+			start = startDate;
+		}
+		if(endDate != null && Date.before(endDate, end)) {
+			end = endDate;
+		}
+
+		int length = String.length(dateCounts);
+		String[] stringArray = String[saveDayCount]{};
+		int index=0;
+
+		for(int i=0; i<length; i=i+7){ //yyMMddC
+			String savedDate = String.substring(dateCounts, i, (i+6));
+			String compDate = currentYearPrefix + savedDate; // get yyMMdd
+			int count = Number.intValue(String.substring(dateCounts, i+6, i+7), 10);
+			DateTime dateId = DateTime.parseString(compDate, "yyyyMMdd");
+
+			/* 2199 -> 2200 으로 되는 경우를 위해 보정이 필요하다.  */
+			int savedYear = DateTime.getYear(dateId);
+			if((savedYear - currentYear) > 0){ // 저장된 Year 가 현재보다 1년 이상 앞서있다.
+				compDate = String.format("%02d", currentYear/100 -1);
+				dateId = DateTime.parseString(compDate, "yyyyMMdd");
+			}
+			if(!Date.before(dateId, start) && !Date.after(dateId, end)){
+				stringArray[index] = String.format("%s%01d", DateTime.format(dateId, "yyMMdd") , count);
+				index++;
+			}
+		}
+		
+		return stringArray;
+	}
+}
